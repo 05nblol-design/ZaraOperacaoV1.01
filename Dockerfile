@@ -2,7 +2,7 @@
 FROM node:18-alpine AS base
 
 # Install system dependencies including SSL libraries for Prisma
-RUN apk add --no-cache curl git openssl1.1-compat
+RUN apk add --no-cache curl git openssl openssl-dev libc6-compat
 
 # Set working directory
 WORKDIR /app
