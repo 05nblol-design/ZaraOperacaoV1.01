@@ -10,6 +10,13 @@ class PushNotificationService {
 
   async initializeFirebase() {
     try {
+      // Verificar se as variáveis essenciais estão configuradas
+      if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL) {
+        console.log('⚠️ Firebase não configurado - variáveis de ambiente ausentes');
+        this.initialized = false;
+        return;
+      }
+
       // Verificar se já foi inicializado
       if (admin.apps.length === 0) {
         // Configuração do Firebase Admin SDK
@@ -26,6 +33,11 @@ class PushNotificationService {
           client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL
         };
 
+        // Validar se project_id existe
+        if (!serviceAccount.project_id) {
+          throw new Error('FIREBASE_PROJECT_ID é obrigatório');
+        }
+
         admin.initializeApp({
           credential: admin.credential.cert(serviceAccount),
           projectId: process.env.FIREBASE_PROJECT_ID
@@ -36,6 +48,7 @@ class PushNotificationService {
       console.log('🔥 Firebase Admin SDK inicializado com sucesso');
     } catch (error) {
       console.error('❌ Erro ao inicializar Firebase:', error.message);
+      console.log('💡 Configure as variáveis: FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL');
       this.initialized = false;
     }
   }
