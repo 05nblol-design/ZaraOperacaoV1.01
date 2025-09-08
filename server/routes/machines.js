@@ -334,17 +334,17 @@ router.put('/:id', [
   const { id } = req.params;
   const updateData = req.body;
 
-  // Verificar se máquina existe - buscar por ObjectId ou código
-  const isObjectId = /^[0-9a-fA-F]{24}$/.test(id);
+  // Verificar se máquina existe - buscar por ID inteiro ou código
+  const isNumericId = /^\d+$/.test(id);
   let existingMachine;
   
-  if (isObjectId) {
+  if (isNumericId) {
     existingMachine = await prisma.machine.findUnique({
-      where: { id }
+      where: { id: parseInt(id) }
     });
   } else {
     existingMachine = await prisma.machine.findUnique({
-      where: { code: id }
+      where: { name: id }
     });
   }
 

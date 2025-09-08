@@ -1,7 +1,7 @@
 {
-  "name": "zara-server",
+  "name": "sistema-zara-backend",
   "version": "1.0.1",
-  "description": "Backend do Sistema ZARA - Node.js + Express + MongoDB",
+  "description": "Backend do Sistema ZARA - Node.js + Express + PostgreSQL",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
@@ -10,9 +10,13 @@
     "stop": "pm2 stop zara-server",
     "test": "jest --watchAll --verbose",
     "test:ci": "jest --ci --coverage",
+    "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
-    "prisma:studio": "prisma studio"
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "railway:build": "npm install && prisma generate",
+    "railway:start": "prisma migrate deploy && npm start"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
@@ -33,7 +37,7 @@
     "firebase-admin": "^11.11.1",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.3",
+    "pg": "^8.11.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "node-cache": "^5.1.2",

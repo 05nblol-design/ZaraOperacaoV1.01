@@ -1,11 +1,11 @@
-// Schema Prisma para PostgreSQL - Produção
+// Schema Prisma para SQLite - Teste Local
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 // Modelo de Usuário
@@ -67,8 +67,8 @@ model QualityTest {
   machineId Int
   createdAt DateTime @default(now())
   
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+  machine Machine @relation(fields: [machineId], references: [id])
   
   @@map("quality_tests")
 }
@@ -79,8 +79,8 @@ model TeflonChange {
   machineId Int
   createdAt DateTime @default(now())
   
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+  machine Machine @relation(fields: [machineId], references: [id])
   
   @@map("teflon_changes")
 }
@@ -91,22 +91,19 @@ model Notification {
   message   String
   createdAt DateTime @default(now())
   
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
   
   @@map("notifications")
 }
 
 model MachineOperation {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   userId    Int
   machineId Int
-  status    String    @default("ACTIVE")
-  startTime DateTime  @default(now())
-  endTime   DateTime?
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
   
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+  machine Machine @relation(fields: [machineId], references: [id])
   
   @@map("machine_operations")
 }
@@ -116,7 +113,7 @@ model UserDevice {
   userId Int
   token  String
   
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
   
   @@map("user_devices")
 }
@@ -125,7 +122,7 @@ model Shift {
   id     Int @id @default(autoincrement())
   userId Int
   
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
   
   @@map("shifts")
 }
@@ -134,7 +131,7 @@ model Report {
   id     Int @id @default(autoincrement())
   userId Int
   
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
   
   @@map("reports")
 }
@@ -143,7 +140,7 @@ model UserPermission {
   id     Int @id @default(autoincrement())
   userId Int
   
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
   
   @@map("user_permissions")
 }
@@ -152,7 +149,7 @@ model MachinePermission {
   id        Int @id @default(autoincrement())
   machineId Int
   
-  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  machine Machine @relation(fields: [machineId], references: [id])
   
   @@map("machine_permissions")
 }
@@ -162,8 +159,8 @@ model MachineStatusHistory {
   userId    Int
   machineId Int
   
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+  machine Machine @relation(fields: [machineId], references: [id])
   
   @@map("machine_status_history")
 }
@@ -173,8 +170,8 @@ model ProductionData {
   userId    Int
   machineId Int
   
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+  machine Machine @relation(fields: [machineId], references: [id])
   
   @@map("production_data")
 }
@@ -184,8 +181,8 @@ model ArchiveData {
   userId    Int
   machineId Int
   
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+  machine Machine @relation(fields: [machineId], references: [id])
   
   @@map("archive_data")
 }

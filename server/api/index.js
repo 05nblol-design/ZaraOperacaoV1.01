@@ -7,50 +7,50 @@ const rateLimit = require('express-rate-limit');
 const fileUpload = require('express-fileupload');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const { createHTTPSServer, httpsRedirect, httpsSecurityHeaders } = require('./config/ssl');
+const { createHTTPSServer, httpsRedirect, httpsSecurityHeaders } = require('../config/ssl');
 const path = require('path');
 require('dotenv').config();
 
 // Importar configurações
-const { connectDB, prisma } = require('./config/database');
-// const { connectRedis } = require('./config/redis'); // Desabilitado para desenvolvimento
-const { initSentry } = require('./config/sentry');
+const connectDB = require('../config/database');
+// const { connectRedis } = require('../config/redis'); // Desabilitado para desenvolvimento
+const { initSentry } = require('../config/sentry');
 const { 
   getCorsConfig, 
   getHelmetConfig, 
   getRateLimitConfig 
-} = require('./config/security');
+} = require('../config/security');
 
 // Importar rotas
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/users');
-const machineRoutes = require('./routes/machines');
-const productionRoutes = require('./routes/production');
-const qualityTestRoutes = require('./routes/qualityTests');
-const teflonRoutes = require('./routes/teflon');
-const notificationRoutes = require('./routes/notifications');
-const reportRoutes = require('./routes/reports');
-const uploadRoutes = require('./routes/upload');
-const permissionRoutes = require('./routes/permissions');
+const authRoutes = require('../routes/auth');
+const userRoutes = require('../routes/users');
+const machineRoutes = require('../routes/machines');
+const productionRoutes = require('../routes/production');
+const qualityTestRoutes = require('../routes/qualityTests');
+const teflonRoutes = require('../routes/teflon');
+const notificationRoutes = require('../routes/notifications');
+const reportRoutes = require('../routes/reports');
+const uploadRoutes = require('../routes/upload');
+const permissionRoutes = require('../routes/permissions');
 
 // Importar middlewares
-const { authenticateToken } = require('./middleware/auth');
-const { errorHandler } = require('./middleware/errorHandler');
+const { authenticateToken } = require('../middleware/auth');
+const { errorHandler } = require('../middleware/errorHandler');
 const { 
   validateSecurityHeaders, 
   sanitizeInput, 
   detectSQLInjection, 
   securityLogger, 
   addSecurityHeaders
-} = require('./middleware/security');
+} = require('../middleware/security');
 
 // Importar socket handlers
-const socketHandler = require('./socket/socketHandler');
+const socketHandler = require('../socket/socketHandler');
 
 // Importar serviços de notificação
-const NotificationService = require('./services/notificationService');
-const SchedulerService = require('./services/schedulerService');
-const RealTimeProductionService = require('./services/realTimeProductionService');
+const NotificationService = require('../services/notificationService');
+const SchedulerService = require('../services/schedulerService');
+const RealTimeProductionService = require('../services/realTimeProductionService');
 
 const app = express();
 
@@ -157,7 +157,7 @@ app.use('/api/notifications', authenticateToken, notificationRoutes);
 app.use('/api/reports', authenticateToken, reportRoutes);
 app.use('/api/upload', authenticateToken, uploadLimiter, uploadRoutes);
 app.use('/api/permissions', authenticateToken, permissionRoutes);
-app.use('/api/shifts', authenticateToken, require('./routes/shifts'));
+app.use('/api/shifts', authenticateToken, require('../routes/shifts'));
 
 // Rota de health check
 app.get('/api/health', (req, res) => {

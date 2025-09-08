@@ -184,19 +184,13 @@ router.get('/machine-performance', [
 
   if (machineId && machineId !== 'all') where.id = machineId;
 
-  // Usar MongoDB direto em vez do Prisma
-  const { MongoClient } = require('mongodb');
-  const client = new MongoClient(process.env.DATABASE_URL);
-  await client.connect();
-  const db = client.db('zara');
-  
-  const machinesCollection = db.collection('machines');
-  const qualityTestsCollection = db.collection('qualityTests');
+  // Usar Prisma para PostgreSQL
+  const { prisma } = require('../config/database');
   
   // Buscar máquinas
   const machineFilter = {};
   if (machineId && machineId !== 'all') {
-    machineFilter._id = machineId;
+    machineFilter.id = parseInt(machineId);
   }
   
   const machines = await machinesCollection.find(machineFilter).toArray();

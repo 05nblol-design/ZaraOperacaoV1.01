@@ -1,31 +1,28 @@
-const mongoose = require('mongoose');
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient({
+  log: ['query', 'info', 'warn', 'error'],
+});
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    console.log(`📊 MongoDB conectado: ${conn.connection.host}`);
+    await prisma.$connect();
+    console.log('📊 PostgreSQL conectado via Prisma');
     
-    // Event listeners para monitoramento
-    mongoose.connection.on('error', (err) => {
-      console.error('❌ Erro na conexão MongoDB:', err);
-    });
-
-    mongoose.connection.on('disconnected', () => {
-      console.log('⚠️ MongoDB desconectado');
-    });
-
-    mongoose.connection.on('reconnected', () => {
-      console.log('🔄 MongoDB reconectado');
-    });
-
+    // Testar a conexão
+    await prisma.$queryRaw`SELECT 1`;
+    console.log('✅ Conexão com PostgreSQL testada com sucesso');
+    
   } catch (error) {
-    console.error('❌ Erro ao conectar MongoDB:', error.message);
+    console.error('❌ Erro ao conectar PostgreSQL:', error.message);
     process.exit(1);
   }
 };
 
-module.exports = connectDB;
+// Graceful shutdown
+process.on('beforeExit', async () => {
+  await prisma.$disconnect();
+  console.log('🔌 PostgreSQL desconectado');
+});
+
+module.exports = { connectDB, prisma };

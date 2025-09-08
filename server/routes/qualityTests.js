@@ -165,7 +165,7 @@ router.post('/', [
     .notEmpty()
     .withMessage('ID da máquina é obrigatório')
     .custom((value) => {
-      // Aceitar tanto IDs inteiros quanto ObjectIds
+      // Aceitar IDs inteiros para PostgreSQL
       if (typeof value === 'string' && value.trim() === '') {
         throw new Error('ID da máquina não pode estar vazio');
       }

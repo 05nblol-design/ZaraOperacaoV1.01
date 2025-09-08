@@ -1,0 +1,252 @@
+// Schema Prisma para MongoDB - Sistema ZARA
+// Versão simplificada e compatível com MongoDB Atlas
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo de Usuário
+model User {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  email       String   @unique
+  password    String
+  name        String
+  avatar      String?
+  badgeNumber String?  @unique
+  role        String   @default("OPERATOR")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  qualityTests       QualityTest[]
+  teflonChanges      TeflonChange[]
+  notifications      Notification[]
+  machineOperations  MachineOperation[]
+  devices            UserDevice[]
+  statusChanges      MachineStatusHistory[]
+  machinePermissions MachinePermission[]
+  shiftData          ShiftData[]
+  productionArchives ProductionArchive[]
+
+  @@map("users")
+}
+
+// Modelo de Máquina
+model Machine {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  code        String   @unique
+  status      String   @default("STOPPED")
+  location    String?
+  model       String?
+  description String?
+  isActive    Boolean  @default(true)
+  
+  // Configurações de produção
+  productionSpeed  Float? @default(0)
+  targetProduction Float? @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  qualityTests       QualityTest[]
+  teflonChanges      TeflonChange[]
+  operations         MachineOperation[]
+  notifications      Notification[]
+  statusHistory      MachineStatusHistory[]
+  permissions        MachinePermission[]
+  shiftData          ShiftData[]
+  productionArchives ProductionArchive[]
+
+  @@map("machines")
+}
+
+// Testes de Qualidade
+model QualityTest {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  machineId String   @db.ObjectId
+  userId    String   @db.ObjectId
+  testType  String
+  result    String
+  notes     String?
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@map("quality_tests")
+}
+
+// Mudanças de Teflon
+model TeflonChange {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  machineId        String   @db.ObjectId
+  userId           String   @db.ObjectId
+  changeType       String
+  previousValue    String?
+  newValue         String?
+  reason           String?
+  notes            String?
+  scheduledDate    DateTime?
+  completedDate    DateTime?
+  status           String   @default("PENDING")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relacionamentos
+  machine Machine @relation(fields: [machineId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@map("teflon_changes")
+}
+
+// Operações de Máquina
+model MachineOperation {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  machineId     String    @db.ObjectId
+  userId        String    @db.ObjectId
+  operationType String
+  startTime     DateTime
+  endTime       DateTime?
+  status        String    @default("ACTIVE")
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relacionamentos
+  machine Machine @relation(fields: [machineId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@map("machine_operations")
+}
+
+// Notificações
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String?  @db.ObjectId
+  machineId String?  @db.ObjectId
+  title     String
+  message   String
+  type      String   @default("INFO")
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  user    User?    @relation(fields: [userId], references: [id])
+  machine Machine? @relation(fields: [machineId], references: [id])
+
+  @@map("notifications")
+}
+
+// Dispositivos do Usuário
+model UserDevice {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String   @db.ObjectId
+  deviceToken  String   @unique
+  deviceType   String
+  isActive     Boolean  @default(true)
+  lastUsed     DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("user_devices")
+}
+
+// Histórico de Status da Máquina
+model MachineStatusHistory {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  machineId   String   @db.ObjectId
+  userId      String?  @db.ObjectId
+  oldStatus   String
+  newStatus   String
+  reason      String?
+  notes       String?
+  changedAt   DateTime @default(now())
+
+  // Relacionamentos
+  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [userId], references: [id])
+
+  @@map("machine_status_history")
+}
+
+// Permissões de Máquina
+model MachinePermission {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  machineId  String   @db.ObjectId
+  permission String
+  grantedAt  DateTime @default(now())
+  grantedBy  String?
+
+  // Relacionamentos
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, machineId, permission])
+  @@map("machine_permissions")
+}
+
+// Dados de Turno
+model ShiftData {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  machineId         String   @db.ObjectId
+  operatorId        String   @db.ObjectId
+  shiftStart        DateTime
+  shiftEnd          DateTime?
+  targetProduction  Int      @default(0)
+  actualProduction  Int      @default(0)
+  efficiency        Float    @default(0)
+  downtime          Int      @default(0)
+  qualityIssues     Int      @default(0)
+  notes             String?
+  status            String   @default("ACTIVE")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relacionamentos
+  machine           Machine            @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  operator          User               @relation(fields: [operatorId], references: [id])
+  productionArchive ProductionArchive?
+
+  @@map("shift_data")
+}
+
+// Arquivo de Produção
+model ProductionArchive {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  shiftDataId  String    @unique @db.ObjectId
+  machineId    String    @db.ObjectId
+  operatorId   String    @db.ObjectId
+  date         DateTime
+  production   Int
+  efficiency   Float
+  downtime     Int
+  notes        String?
+  archivedAt   DateTime  @default(now())
+
+  // Relacionamentos
+  shiftData ShiftData @relation(fields: [shiftDataId], references: [id], onDelete: Cascade)
+  machine   Machine   @relation(fields: [machineId], references: [id])
+  operator  User      @relation(fields: [operatorId], references: [id])
+
+  @@map("production_archives")
+}
+
+// Comentários para referência dos valores válidos:
+// UserRole: OPERATOR, LEADER, MANAGER, ADMIN
+// MachineStatus: STOPPED, RUNNING, MAINTENANCE, ERROR
+// OperationType: START, STOP, PAUSE, RESUME, MAINTENANCE
+// NotificationType: INFO, WARNING, ERROR, SUCCESS
+// TestResult: PASS, FAIL, PENDING
+// ChangeStatus: PENDING, IN_PROGRESS, COMPLETED, CANCELLED

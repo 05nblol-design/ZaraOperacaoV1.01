@@ -18,18 +18,17 @@ const errorHandler = (err, req, res, next) => {
     query: req.query
   });
 
-  // Erro de validação do Mongoose
-  if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map(val => val.message).join(', ');
+  // Erro de validação do Prisma
+  if (err.name === 'PrismaClientValidationError') {
     error = {
-      message,
+      message: 'Dados de entrada inválidos',
       code: 'VALIDATION_ERROR',
       statusCode: 400
     };
   }
 
-  // Erro de cast do Mongoose (ID inválido)
-  if (err.name === 'CastError') {
+  // Erro de registro não encontrado do Prisma
+  if (err.name === 'NotFoundError' || err.code === 'P2025') {
     error = {
       message: 'Recurso não encontrado',
       code: 'RESOURCE_NOT_FOUND',
@@ -37,9 +36,9 @@ const errorHandler = (err, req, res, next) => {
     };
   }
 
-  // Erro de duplicação (código 11000)
-  if (err.code === 11000) {
-    const field = Object.keys(err.keyValue)[0];
+  // Erro de duplicação do Prisma (código P2002)
+  if (err.code === 'P2002') {
+    const field = err.meta?.target?.[0] || 'campo';
     error = {
       message: `${field} já existe`,
       code: 'DUPLICATE_FIELD',
