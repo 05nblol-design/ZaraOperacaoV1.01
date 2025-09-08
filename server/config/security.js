@@ -10,7 +10,7 @@ const getCorsConfig = () => {
       if (!origin && !isProduction) return callback(null, true);
       
       const allowedOrigins = isProduction
-        ? (process.env.CORS_ORIGIN || '').split(',').map(url => url.trim()).filter(Boolean)
+        ? (process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || '').split(',').map(url => url.trim()).filter(Boolean)
         : [
             'http://localhost:5173',
             'http://localhost:5174',
@@ -22,12 +22,18 @@ const getCorsConfig = () => {
             process.env.CLIENT_URL
           ].filter(Boolean);
       
-      // Em produção, ser mais restritivo
+      // Em produção, permitir requisições sem origin para health checks e Railway
       if (isProduction && !origin) {
-        return callback(new Error('Origem não especificada'));
+        // Permitir para CORS_ORIGINS=* ou requisições internas (Railway health checks)
+        if (allowedOrigins.includes('*') || allowedOrigins.length === 0) {
+          return callback(null, true);
+        }
+        console.warn('⚠️ Requisição sem origin em produção - pode ser health check do Railway');
+        return callback(null, true); // Permitir para health checks
       }
       
-      if (allowedOrigins.includes(origin)) {
+      // Verificar se origin está nas origens permitidas ou se é wildcard
+      if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         console.warn(`🚫 CORS blocked origin: ${origin}`);
