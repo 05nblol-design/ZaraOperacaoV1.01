@@ -14,17 +14,6 @@ router.get('/aggregate', authenticateToken, async (req, res) => {
     const machines = await prisma.machine.findMany({
       where: {
         isActive: true
-      },
-      include: {
-        shiftData: {
-          where: {
-            isActive: true
-          },
-          orderBy: {
-            id: 'desc'
-          },
-          take: 1
-        }
       }
     });
 
