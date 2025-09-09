@@ -145,7 +145,7 @@ router.post('/login', [
   const token = generateToken(user.id);
 
   // Log de acesso (temporariamente desabilitado - tabela SystemLog não existe)
-  logger.info(`✅ Login realizado: ${user.email} (${user.role})`););
+  logger.info(`✅ Login realizado: ${user.email} (${user.role})`);
 
   res.json({
     success: true,

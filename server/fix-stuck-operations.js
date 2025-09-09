@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function fixStuckOperations() {
   try {
-    logger.info('=== Corrigindo operações travadas ==='););
+    logger.info('=== Corrigindo operações travadas ===');
     
     // Buscar operações ativas há mais de 24 horas (1440 minutos)
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -26,7 +26,7 @@ async function fixStuckOperations() {
       }
     });
     
-    logger.info(`Encontradas ${stuckOperations.length} operações travadas (mais de 24h ativas)`););
+    logger.info(`Encontradas ${stuckOperations.length} operações travadas (mais de 24h ativas)`);
     
     if (stuckOperations.length > 0) {
       // Finalizar operações travadas
@@ -44,7 +44,7 @@ async function fixStuckOperations() {
         }
       });
       
-      logger.info(`${result.count} operações foram canceladas automaticamente.`););
+      logger.info(`${result.count} operações foram canceladas automaticamente.`);
       
       // Atualizar status das máquinas para STOPPED
       const machineIds = stuckOperations.map(op => op.machineId);
@@ -61,12 +61,12 @@ async function fixStuckOperations() {
         }
       });
       
-      logger.info(`Status de ${uniqueMachineIds.length} máquinas foi atualizado para STOPPED.`););
+      logger.info(`Status de ${uniqueMachineIds.length} máquinas foi atualizado para STOPPED.`);
       
       // Mostrar detalhes das operações canceladas
       stuckOperations.forEach(op => {
         const duration = Math.round((new Date() - new Date(op.startTime)) / 1000 / 60);
-        logger.info(`- Cancelada: ${op.user.name} na ${op.machine.name} (${duration} min)`););
+        logger.info(`- Cancelada: ${op.user.name} na ${op.machine.name} (${duration} min)`);
       });
     }
     
@@ -79,14 +79,14 @@ async function fixStuckOperations() {
       }
     });
     
-    logger.info(`\nOperações ativas restantes: ${remainingOps.length}`););
+    logger.info(`\nOperações ativas restantes: ${remainingOps.length}`);
     remainingOps.forEach(op => {
       const duration = Math.round((new Date() - new Date(op.startTime)) / 1000 / 60);
-      logger.info(`- ${op.user.name} na ${op.machine.name} (${duration} min)`););
+      logger.info(`- ${op.user.name} na ${op.machine.name} (${duration} min)`);
     });
     
   } catch (error) {
-    logger.error('Erro:', error););
+    logger.error('Erro:', error);
   } finally {
     await prisma.$disconnect();
   }

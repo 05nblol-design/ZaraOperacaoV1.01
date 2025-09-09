@@ -8,17 +8,17 @@ const prisma = new PrismaClient();
 // Middleware para verificar token JWT
 const authenticateToken = async (req, res, next) => {
   try {
-    logger.info('🔐 AuthenticateToken middleware iniciado'););
-    logger.info('🔐 URL:', req.method, req.originalUrl););
+    logger.info('🔐 AuthenticateToken middleware iniciado');
+    logger.info('🔐 URL:', req.method, req.originalUrl);
     
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
     
-    logger.info('🔐 AuthHeader:', authHeader ? 'Presente' : 'Ausente'););
-    logger.info('🔐 Token:', token ? 'Presente' : 'Ausente'););
+    logger.info('🔐 AuthHeader:', authHeader ? 'Presente' : 'Ausente');
+    logger.info('🔐 Token:', token ? 'Presente' : 'Ausente');
 
     if (!token) {
-      logger.info('🔐 ❌ Token não fornecido'););
+      logger.info('🔐 ❌ Token não fornecido');
       return res.status(401).json({ 
         message: 'Token de acesso requerido',
         code: 'NO_TOKEN'
@@ -26,9 +26,9 @@ const authenticateToken = async (req, res, next) => {
     }
 
     // Verificar token
-    logger.info('🔐 Verificando token JWT...'););
+    logger.info('🔐 Verificando token JWT...');
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    logger.info('🔐 Token decodificado:', { id: decoded.id, exp: decoded.exp }););
+    logger.info('🔐 Token decodificado:', { id: decoded.id, exp: decoded.exp });
     
     // Verificar se é um dos usuários de teste
     const testUsers = {
@@ -64,7 +64,7 @@ const authenticateToken = async (req, res, next) => {
     
     let user = testUsers[decoded.id];
     
-    logger.info('🔐 Usuário de teste encontrado:', user ? 'Sim' : 'Não'););
+    logger.info('🔐 Usuário de teste encontrado:', user ? 'Sim' : 'Não');
     
     if (!user) {
       // Buscar usuário no banco se não for usuário de teste
@@ -102,11 +102,11 @@ const authenticateToken = async (req, res, next) => {
 
     // Adicionar usuário ao request
     req.user = user;
-    logger.info('🔐 ✅ Autenticação bem-sucedida para:', user.email););
+    logger.info('🔐 ✅ Autenticação bem-sucedida para:', user.email);
     next();
 
   } catch (error) {
-    logger.error('🔐 ❌ Erro na autenticação:', error.message););
+    logger.error('🔐 ❌ Erro na autenticação:', error.message);
     
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ 
@@ -133,11 +133,11 @@ const authenticateToken = async (req, res, next) => {
 // Middleware para verificar permissões por role
 const requireRole = (roles) => {
   return (req, res, next) => {
-    logger.info('RequireRole middleware - req.user:', req.user););
-    logger.info('RequireRole middleware - required roles:', roles););
+    logger.info('RequireRole middleware - req.user:', req.user);
+    logger.info('RequireRole middleware - required roles:', roles);
     
     if (!req.user) {
-      logger.info('RequireRole middleware - Usuário não autenticado'););
+      logger.info('RequireRole middleware - Usuário não autenticado');
       return res.status(401).json({ 
         message: 'Usuário não autenticado',
         code: 'NOT_AUTHENTICATED'
@@ -147,10 +147,10 @@ const requireRole = (roles) => {
     const userRole = req.user.role;
     const allowedRoles = Array.isArray(roles) ? roles : [roles];
     
-    logger.info('RequireRole middleware - userRole:', userRole, 'allowedRoles:', allowedRoles););
+    logger.info('RequireRole middleware - userRole:', userRole, 'allowedRoles:', allowedRoles);
 
     if (!allowedRoles.includes(userRole)) {
-      logger.info('RequireRole middleware - Acesso negado'););
+      logger.info('RequireRole middleware - Acesso negado');
       return res.status(403).json({ 
         message: 'Acesso negado - permissão insuficiente',
         code: 'INSUFFICIENT_PERMISSION',
@@ -159,7 +159,7 @@ const requireRole = (roles) => {
       });
     }
 
-    logger.info('RequireRole middleware - Acesso permitido'););
+    logger.info('RequireRole middleware - Acesso permitido');
     next();
   };
 };
@@ -241,7 +241,7 @@ const requireMachinePermission = (permissionType = 'canView') => {
 
       next();
     } catch (error) {
-      logger.error('Erro no middleware de permissão de máquina:', error););
+      logger.error('Erro no middleware de permissão de máquina:', error);
       captureException(error, { context: 'requireMachinePermission' });
       return res.status(500).json({
         success: false,

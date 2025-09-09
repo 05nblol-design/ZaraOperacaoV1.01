@@ -171,7 +171,7 @@ async function calculateProduction(machineId, startTime, endTime) {
     };
 
   } catch (error) {
-    logger.error('Erro ao calcular produção:', error););
+    logger.error('Erro ao calcular produção:', error);
     throw error;
   }
 }
@@ -191,7 +191,7 @@ async function calculateMultipleProduction(machineIds, startTime, endTime) {
       const production = await calculateProduction(machineId, startTime, endTime);
       results.push(production);
     } catch (error) {
-      logger.error(`Erro ao calcular produção da máquina ${machineId}:`, error););
+      logger.error(`Erro ao calcular produção da máquina ${machineId}:`, error);
       results.push({
         machineId,
         error: error.message,

@@ -1,13 +1,14 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-// Configuração base da API - detecta automaticamente localhost vs IP externo
+// Configuração base da API - detecta automaticamente localhost vs produção
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     return import.meta.env.VITE_API_URL_LOCAL || 'http://localhost:5000/api';
   } else {
-    return import.meta.env.VITE_API_URL || `http://${hostname}:5000/api`;
+    // Em produção, sempre usar a variável de ambiente configurada
+    return import.meta.env.VITE_API_URL || 'https://zara-backend-production-aab3.up.railway.app/api';
   }
 };
 

@@ -13,7 +13,7 @@ async function setupFrontendAuth() {
     });
     
     if (!user) {
-      logger.info('❌ Usuário Lucas não encontrado'););
+      logger.info('❌ Usuário Lucas não encontrado');
       return;
     }
     
@@ -32,14 +32,14 @@ async function setupFrontendAuth() {
       { expiresIn: '7d' }
     );
     
-    logger.info('\n🔑 Token gerado:'););
-    logger.info(token););
+    logger.info('\n🔑 Token gerado:');
+    logger.info(token);
     
-    logger.info('\n📋 Instruções para configurar no frontend:'););
-    logger.info('1. Abra o DevTools do navegador (F12)'););
-    logger.info('2. Vá para a aba Console'););
-    logger.info('3. Execute os seguintes comandos:'););
-    logger.info(''););
+    logger.info('\n📋 Instruções para configurar no frontend:');
+    logger.info('1. Abra o DevTools do navegador (F12)');
+    logger.info('2. Vá para a aba Console');
+    logger.info('3. Execute os seguintes comandos:');
+    logger.info('');
     logger.info(`localStorage.setItem('token', '${token}');`););
     logger.info(`localStorage.setItem('user', '${JSON.stringify({);
       id: user.id,
@@ -48,13 +48,13 @@ async function setupFrontendAuth() {
       role: user.role,
       isActive: user.isActive
     })}');`);
-    logger.info(''););
-    logger.info('4. Recarregue a página (F5)'););
-    logger.info(''););
-    logger.info('✅ Após isso, todos os erros de autenticação devem ser resolvidos!'););
+    logger.info('');
+    logger.info('4. Recarregue a página (F5)');
+    logger.info('');
+    logger.info('✅ Após isso, todos os erros de autenticação devem ser resolvidos!');
     
   } catch (error) {
-    logger.error('❌ Erro:', error););
+    logger.error('❌ Erro:', error);
   } finally {
     await prisma.$disconnect();
   }

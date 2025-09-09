@@ -20,17 +20,17 @@ router.get('/', [
   query('type').optional().isIn(['QUALITY_TEST_MISSING', 'TEFLON_EXPIRING', 'TEFLON_EXPIRED', 'MACHINE_ALERT', 'MACHINE_STATUS', 'SYSTEM_ALERT']).withMessage('Tipo de notificação inválido'),
   query('priority').optional().isIn(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).withMessage('Prioridade inválida')
 ], requireOperator, asyncHandler(async (req, res) => {
-  logger.info('=== DEBUG NOTIFICAÇÕES ==='););
-  logger.info('Query params recebidos:', JSON.stringify(req.query, null, 2)););
-  logger.info('Headers:', JSON.stringify(req.headers, null, 2)););
-  logger.info('User:', JSON.stringify(req.user, null, 2)););
+  logger.info('=== DEBUG NOTIFICAÇÕES ===');
+  logger.info('Query params recebidos:', JSON.stringify(req.query, null, 2));
+  logger.info('Headers:', JSON.stringify(req.headers, null, 2));
+  logger.info('User:', JSON.stringify(req.user, null, 2));
   
   const errors = validationResult(req);
-  logger.info('Validation errors:', JSON.stringify(errors.array(), null, 2)););
+  logger.info('Validation errors:', JSON.stringify(errors.array(), null, 2));
   
   if (!errors.isEmpty()) {
-    logger.info('❌ Erro de validação nas notificações:', errors.array()););
-    logger.info('❌ Query params recebidos:', req.query););
+    logger.info('❌ Erro de validação nas notificações:', errors.array());
+    logger.info('❌ Query params recebidos:', req.query);
     return res.status(400).json({
       success: false,
       message: 'Dados de entrada inválidos',
@@ -39,7 +39,7 @@ router.get('/', [
     });
   }
   
-  logger.info('✅ Validação passou, continuando...');}]}}});
+  logger.info('✅ Validação passou, continuando...');
 
   const {
     page = 1,

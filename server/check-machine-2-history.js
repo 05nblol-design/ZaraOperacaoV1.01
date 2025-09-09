@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function checkMachine2History() {
   try {
-    logger.info('🔍 Verificando histórico da Máquina 02...'););
+    logger.info('🔍 Verificando histórico da Máquina 02...');
     
     // Verificar últimas operações na Máquina 02
     const recentOperations = await prisma.machineOperation.findMany({
@@ -21,23 +21,23 @@ async function checkMachine2History() {
       take: 10
     });
     
-    logger.info(`\n📊 Últimas ${recentOperations.length} operações na Máquina 02:`););
+    logger.info(`\n📊 Últimas ${recentOperations.length} operações na Máquina 02:`);
     
     if (recentOperations.length === 0) {
-      logger.info('   ❌ Nenhuma operação encontrada'););
+      logger.info('   ❌ Nenhuma operação encontrada');
     } else {
       recentOperations.forEach((op, index) => {
         const duration = op.endTime 
           ? Math.floor((new Date(op.endTime) - new Date(op.startTime)) / (1000 * 60))
           : Math.floor((new Date() - new Date(op.startTime)) / (1000 * 60));
         
-        logger.info(`\n   ${index + 1}. Operação ID: ${op.id}`););
-        logger.info(`      Usuário: ${op.user.name} (${op.user.email})`););
-        logger.info(`      Status: ${op.status}`););
-        logger.info(`      Início: ${op.startTime}`););
-        logger.info(`      Fim: ${op.endTime || 'Em andamento'}`););
-        logger.info(`      Duração: ${duration} minutos`););
-        logger.info(`      Notas: ${op.notes || 'Nenhuma'}`););
+        logger.info(`\n   ${index + 1}. Operação ID: ${op.id}`);
+        logger.info(`      Usuário: ${op.user.name} (${op.user.email})`);
+        logger.info(`      Status: ${op.status}`);
+        logger.info(`      Início: ${op.startTime}`);
+        logger.info(`      Fim: ${op.endTime || 'Em andamento'}`);
+        logger.info(`      Duração: ${duration} minutos`);
+        logger.info(`      Notas: ${op.notes || 'Nenhuma'}`);
       });
     }
     
@@ -52,17 +52,17 @@ async function checkMachine2History() {
       }
     });
     
-    logger.info(`\n🔧 Operações ativas em todas as máquinas: ${allActiveOps.length}`););
+    logger.info(`\n🔧 Operações ativas em todas as máquinas: ${allActiveOps.length}`);
     
     if (allActiveOps.length > 0) {
       allActiveOps.forEach(op => {
         const duration = Math.floor((new Date() - new Date(op.startTime)) / (1000 * 60));
-        logger.info(`   - ${op.machine.name}: ${op.user.name} (${duration} min)`););
+        logger.info(`   - ${op.machine.name}: ${op.user.name} (${duration} min)`);
       });
     }
     
   } catch (error) {
-    logger.error('❌ Erro:', error););
+    logger.error('❌ Erro:', error);
   } finally {
     await prisma.$disconnect();
   }

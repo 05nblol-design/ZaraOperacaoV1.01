@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function cancelRemainingOperation() {
   try {
-    logger.info('=== Cancelando operação restante ==='););
+    logger.info('=== Cancelando operação restante ===');
     
     // Buscar a operação ativa restante
     const activeOp = await prisma.machineOperation.findFirst({
@@ -17,7 +17,7 @@ async function cancelRemainingOperation() {
     
     if (activeOp) {
       const duration = Math.round((new Date() - new Date(activeOp.startTime)) / 1000 / 60);
-      logger.info(`Encontrada operação ativa: ${activeOp.user.name} na ${activeOp.machine.name} (${duration} min)`););
+      logger.info(`Encontrada operação ativa: ${activeOp.user.name} na ${activeOp.machine.name} (${duration} min)`);
       
       // Cancelar a operação
       await prisma.machineOperation.update({
@@ -35,9 +35,9 @@ async function cancelRemainingOperation() {
         data: { status: 'STOPPED' }
       });
       
-      logger.info('Operação cancelada com sucesso!'););
+      logger.info('Operação cancelada com sucesso!');
     } else {
-      logger.info('Nenhuma operação ativa encontrada.'););
+      logger.info('Nenhuma operação ativa encontrada.');
     }
     
     // Verificar se não há mais operações ativas
@@ -45,14 +45,14 @@ async function cancelRemainingOperation() {
       where: { status: 'ACTIVE' }
     });
     
-    logger.info(`\nOperações ativas restantes: ${finalCheck}`););
+    logger.info(`\nOperações ativas restantes: ${finalCheck}`);
     
     if (finalCheck === 0) {
-      logger.info('✅ Todas as operações foram finalizadas! Operadores podem agora iniciar novas operações.'););
+      logger.info('✅ Todas as operações foram finalizadas! Operadores podem agora iniciar novas operações.');
     }
     
   } catch (error) {
-    logger.error('Erro:', error););
+    logger.error('Erro:', error);
   } finally {
     await prisma.$disconnect();
   }

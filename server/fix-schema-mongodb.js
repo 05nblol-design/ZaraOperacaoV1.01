@@ -20,7 +20,7 @@ function log(message, color = 'reset') {
     reset: '\x1b[0m',
     bold: '\x1b[1m'
   };
-  logger.info(`${colors[color]}${message}${colors.reset}`););
+  logger.info(`${colors[color]}${message}${colors.reset}`);
 }
 
 function fixSchema() {

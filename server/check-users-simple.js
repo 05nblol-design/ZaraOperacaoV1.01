@@ -13,13 +13,13 @@ async function checkUsers() {
       }
     });
     
-    logger.info('Usuários cadastrados:', users.length););
+    logger.info('Usuários cadastrados:', users.length);
     users.forEach(u => {
-      logger.info(`- ${u.name} (ID: ${u.id}, Role: ${u.role}, Email: ${u.email})`););
+      logger.info(`- ${u.name} (ID: ${u.id}, Role: ${u.role}, Email: ${u.email})`);
     });
     
   } catch (error) {
-    logger.error('Erro:', error););
+    logger.error('Erro:', error);
   } finally {
     await prisma.$disconnect();
   }

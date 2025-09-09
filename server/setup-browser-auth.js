@@ -16,13 +16,13 @@ const user = {
   isActive: true
 };
 
-logger.info('🔑 Token gerado para o navegador:'););
-logger.info(token););
-logger.info('\n📋 Execute estes comandos no console do navegador (F12):'););
-logger.info(''););
+logger.info('🔑 Token gerado para o navegador:');
+logger.info(token);
+logger.info('\n📋 Execute estes comandos no console do navegador (F12):');
+logger.info('');
 logger.info(`localStorage.setItem('token', '${token}');`););
 logger.info(`localStorage.setItem('user', '${JSON.stringify(user)}');`););
-logger.info(''););
-logger.info('✅ Depois recarregue a página (F5)'););
-logger.info(''););
-logger.info('👤 Usuário configurado:', user););
+logger.info('');
+logger.info('✅ Depois recarregue a página (F5)');
+logger.info('');
+logger.info('👤 Usuário configurado:', user);

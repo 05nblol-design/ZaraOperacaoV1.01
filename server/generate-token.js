@@ -9,4 +9,4 @@ const token = jwt.sign(
   { expiresIn: '24h' }
 );
 
-logger.info('Token gerado:', token););
+logger.info('Token gerado:', token);

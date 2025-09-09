@@ -125,18 +125,18 @@ NotificationService.setSocketIO(io);
 
 // Inicializar serviços de notificação
 if (process.env.NOTIFICATIONS_ENABLED === 'true') {
-  logger.info('📧 Serviços de notificação habilitados'););
+  logger.info('📧 Serviços de notificação habilitados');
 }
 
 // Inicializar agendador de tarefas
 if (process.env.SCHEDULER_ENABLED === 'true') {
-  logger.info('⏰ Agendador de tarefas habilitado'););
+  logger.info('⏰ Agendador de tarefas habilitado');
 }
 
 // Inicializar serviço de produção em tempo real
 const productionService = new RealTimeProductionService(io);
 productionService.start();
-logger.info('🏭 Serviço de produção em tempo real iniciado'););
+logger.info('🏭 Serviço de produção em tempo real iniciado');
 
 // Disponibilizar io para as rotas
 app.use((req, res, next) => {
@@ -188,17 +188,17 @@ const HTTPS_PORT = process.env.HTTPS_PORT || 443;
 
 // Iniciar servidor HTTP
 server.listen(PORT, () => {
-  logger.info(`🚀 Servidor ZARA (HTTP) rodando na porta ${PORT}`););
-  logger.info(`🌍 Ambiente: ${process.env.NODE_ENV}`););
-  logger.info(`📊 Health check: http://localhost:${PORT}/api/health`););
+  logger.info(`🚀 Servidor ZARA (HTTP) rodando na porta ${PORT}`);
+  logger.info(`🌍 Ambiente: ${process.env.NODE_ENV}`);
+  logger.info(`📊 Health check: http://localhost:${PORT}/api/health`);
 });
 
 // Iniciar servidor HTTPS se disponível (desabilitado no Railway)
 if (httpsServer && process.env.SSL_ENABLED === 'true' && process.env.RAILWAY_ENVIRONMENT !== 'production') {
   httpsServer.listen(HTTPS_PORT, () => {
-    logger.info(`🔒 Servidor ZARA (HTTPS) rodando na porta ${HTTPS_PORT}`););
-    logger.info(`🔐 SSL/TLS habilitado`););
-    logger.info(`📊 Health check: https://localhost:${HTTPS_PORT}/api/health`););
+    logger.info(`🔒 Servidor ZARA (HTTPS) rodando na porta ${HTTPS_PORT}`);
+    logger.info(`🔐 SSL/TLS habilitado`);
+    logger.info(`📊 Health check: https://localhost:${HTTPS_PORT}/api/health`);
   });
 
   // Configurar Socket.IO para HTTPS também
@@ -212,9 +212,9 @@ if (httpsServer && process.env.SSL_ENABLED === 'true' && process.env.RAILWAY_ENV
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  logger.info('🛑 Recebido SIGTERM, encerrando servidor...'););
+  logger.info('🛑 Recebido SIGTERM, encerrando servidor...');
   server.close(() => {
-    logger.info('✅ Servidor encerrado com sucesso'););
+    logger.info('✅ Servidor encerrado com sucesso');
     process.exit(0);
   });
 });

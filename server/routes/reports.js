@@ -1238,7 +1238,7 @@ router.get('/dashboard', asyncHandler(async (req, res) => {
       data: executiveData
     });
   } catch (error) {
-    logger.error('Erro no dashboard:', error););
+    logger.error('Erro no dashboard:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'
@@ -1309,7 +1309,7 @@ router.get('/aggregated', asyncHandler(async (req, res) => {
       data: aggregatedData
     });
   } catch (error) {
-    logger.error('Erro nos dados agregados:', error););
+    logger.error('Erro nos dados agregados:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'

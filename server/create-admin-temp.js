@@ -12,9 +12,9 @@ async function createTempAdmin() {
     });
 
     if (existingAdmin) {
-      logger.info('✅ Admin temporário já existe'););
-      logger.info('Email: temp.admin@zara.com'););
-      logger.info('Senha: 123456'););
+      logger.info('✅ Admin temporário já existe');
+      logger.info('Email: temp.admin@zara.com');
+      logger.info('Senha: 123456');
       return;
     }
 
@@ -32,14 +32,14 @@ async function createTempAdmin() {
       }
     });
 
-    logger.info('✅ Admin temporário criado com sucesso!'););
-    logger.info('ID:', admin.id););
-    logger.info('Email: temp.admin@zara.com'););
-    logger.info('Senha: 123456'););
-    logger.info('Role:', admin.role););
+    logger.info('✅ Admin temporário criado com sucesso!');
+    logger.info('ID:', admin.id);
+    logger.info('Email: temp.admin@zara.com');
+    logger.info('Senha: 123456');
+    logger.info('Role:', admin.role);
 
   } catch (error) {
-    logger.error('❌ Erro ao criar admin temporário:', error.message););
+    logger.error('❌ Erro ao criar admin temporário:', error.message);
   } finally {
     await prisma.$disconnect();
   }

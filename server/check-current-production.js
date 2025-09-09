@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function checkCurrentProduction() {
   try {
-    logger.info('📊 Verificando dados de produção atuais...'););
+    logger.info('📊 Verificando dados de produção atuais...');
     
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -21,14 +21,14 @@ async function checkCurrentProduction() {
       }
     });
     
-    logger.info(`\n📈 Dados de produção de hoje (${today.toLocaleDateString()}):`););
+    logger.info(`\n📈 Dados de produção de hoje (${today.toLocaleDateString()}):`);
     
     if (shiftData.length === 0) {
-      logger.info('❌ Nenhum dado de produção encontrado para hoje'););
+      logger.info('❌ Nenhum dado de produção encontrado para hoje');
     } else {
       shiftData.forEach(shift => {
-        logger.info(`- ${shift.machine.name}: ${shift.totalProduction} peças (Operador: ${shift.operator.name})`););
-        logger.info(`  Turno: ${shift.shiftType} | Atualizado: ${shift.updatedAt.toLocaleString()}`););
+        logger.info(`- ${shift.machine.name}: ${shift.totalProduction} peças (Operador: ${shift.operator.name})`);
+        logger.info(`  Turno: ${shift.shiftType} | Atualizado: ${shift.updatedAt.toLocaleString()}`);
       });
     }
     
@@ -39,13 +39,13 @@ async function checkCurrentProduction() {
       }
     });
     
-    logger.info(`\n🏭 Máquinas funcionando: ${runningMachines.length}`););
+    logger.info(`\n🏭 Máquinas funcionando: ${runningMachines.length}`);
     runningMachines.forEach(machine => {
-      logger.info(`- ${machine.name} (Velocidade: ${machine.productionSpeed} peças/min)`););
+      logger.info(`- ${machine.name} (Velocidade: ${machine.productionSpeed} peças/min)`);
     });
     
   } catch (error) {
-    logger.error('❌ Erro ao verificar produção:', error.message););
+    logger.error('❌ Erro ao verificar produção:', error.message);
   } finally {
     await prisma.$disconnect();
   }

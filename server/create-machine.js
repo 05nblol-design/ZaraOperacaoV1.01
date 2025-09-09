@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function createMachine() {
   try {
-    logger.info('Criando máquina MAQ001...'););
+    logger.info('Criando máquina MAQ001...');
     
     const machine = await prisma.machine.create({
       data: {
@@ -19,10 +19,10 @@ async function createMachine() {
       }
     });
     
-    logger.info('✅ Máquina criada:', machine););
+    logger.info('✅ Máquina criada:', machine);
     
   } catch (error) {
-    logger.error('❌ Erro ao criar máquina:', error););
+    logger.error('❌ Erro ao criar máquina:', error);
   } finally {
     await prisma.$disconnect();
   }

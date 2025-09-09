@@ -11,7 +11,7 @@ async function createOperator() {
     });
     
     if (existing) {
-      logger.info('Usuário operador já existe'););
+      logger.info('Usuário operador já existe');
       return;
     }
     
@@ -29,9 +29,9 @@ async function createOperator() {
       }
     });
     
-    logger.info('Usuário operador criado:', operator.email););
+    logger.info('Usuário operador criado:', operator.email);
   } catch (error) {
-    logger.error('Erro ao criar operador:', error););
+    logger.error('Erro ao criar operador:', error);
   } finally {
     await prisma.$disconnect();
   }

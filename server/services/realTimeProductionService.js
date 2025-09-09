@@ -14,11 +14,11 @@ class RealTimeProductionService {
    */
   start() {
     if (this.isRunning) {
-      logger.info('⚠️ Serviço de produção em tempo real já está rodando'););
+      logger.info('⚠️ Serviço de produção em tempo real já está rodando');
       return;
     }
 
-    logger.info('🚀 Iniciando serviço de produção em tempo real...'););
+    logger.info('🚀 Iniciando serviço de produção em tempo real...');
     this.isRunning = true;
     
     // Atualizar a cada 30 segundos
@@ -39,7 +39,7 @@ class RealTimeProductionService {
       this.updateInterval = null;
     }
     this.isRunning = false;
-    logger.info('🛑 Serviço de produção em tempo real parado'););
+    logger.info('🛑 Serviço de produção em tempo real parado');
   }
 
   /**
@@ -47,7 +47,7 @@ class RealTimeProductionService {
    */
   async updateProduction() {
     try {
-      logger.info('🔄 RealTimeProductionService: Executando updateProduction...'););
+      logger.info('🔄 RealTimeProductionService: Executando updateProduction...');
       // Buscar máquinas com status FUNCIONANDO
       const runningMachines = await prisma.machine.findMany({
         where: {
@@ -72,7 +72,7 @@ class RealTimeProductionService {
         }
       });
 
-      logger.info(`🔄 Atualizando produção para ${runningMachines.length} máquinas funcionando`););
+      logger.info(`🔄 Atualizando produção para ${runningMachines.length} máquinas funcionando`);
 
       for (const machine of runningMachines) {
         if (machine.operations.length > 0) {
@@ -82,7 +82,7 @@ class RealTimeProductionService {
       }
 
     } catch (error) {
-      logger.error('❌ Erro ao atualizar produção:', error););
+      logger.error('❌ Erro ao atualizar produção:', error);
     }
   }
 
@@ -129,7 +129,7 @@ class RealTimeProductionService {
             }
           });
           
-          logger.info(`📈 Produção incremental - ${machine.name}: +${incrementalProduction} peças (${incrementalMinutes}min a ${currentSpeed}/min) = ${newTotalProduction} total`););
+          logger.info(`📈 Produção incremental - ${machine.name}: +${incrementalProduction} peças (${incrementalMinutes}min a ${currentSpeed}/min) = ${newTotalProduction} total`);
         }
       } else {
         // Criar novos dados de turno
@@ -154,7 +154,7 @@ class RealTimeProductionService {
           }
         });
         
-        logger.info(`🆕 Novo turno criado - ${machine.name}: ${totalProduction} peças`););
+        logger.info(`🆕 Novo turno criado - ${machine.name}: ${totalProduction} peças`);
       }
 
       // Buscar dados atualizados do turno para emitir via WebSocket
@@ -181,10 +181,10 @@ class RealTimeProductionService {
         });
       }
 
-      logger.info(`✅ Produção atualizada - ${machine.name}: ${currentTotalProduction} peças (${operationDurationMinutes}min)`););
+      logger.info(`✅ Produção atualizada - ${machine.name}: ${currentTotalProduction} peças (${operationDurationMinutes}min)`);
 
     } catch (error) {
-      logger.error(`❌ Erro ao atualizar produção da máquina ${machine.name}:`, error););
+      logger.error(`❌ Erro ao atualizar produção da máquina ${machine.name}:`, error);
     }
   }
 
@@ -241,7 +241,7 @@ class RealTimeProductionService {
       
       return machine?.productionSpeed || 1;
     } catch (error) {
-      logger.error(`❌ Erro ao buscar velocidade anterior da máquina ${machineId}:`, error););
+      logger.error(`❌ Erro ao buscar velocidade anterior da máquina ${machineId}:`, error);
       return 1; // Velocidade padrão segura
     }
   }
@@ -277,7 +277,7 @@ class RealTimeProductionService {
       
       return false;
     } catch (error) {
-      logger.error(`❌ Erro ao forçar atualização da máquina ${machineId}:`, error););
+      logger.error(`❌ Erro ao forçar atualização da máquina ${machineId}:`, error);
       return false;
     }
   }

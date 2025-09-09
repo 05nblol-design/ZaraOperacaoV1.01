@@ -12,8 +12,8 @@ async function createAdmin() {
     });
 
     if (existingAdmin) {
-      logger.info('✅ Admin já existe!'););
-      logger.info('📋 Credenciais: admin@zara.com / admin123'););
+      logger.info('✅ Admin já existe!');
+      logger.info('📋 Credenciais: admin@zara.com / admin123');
       return;
     }
 
@@ -33,12 +33,12 @@ async function createAdmin() {
       }
     });
 
-    logger.info('✅ Admin criado com sucesso!'););
-    logger.info('📋 Credenciais: admin@zara.com / admin123'););
-    logger.info('ID:', admin.id););
+    logger.info('✅ Admin criado com sucesso!');
+    logger.info('📋 Credenciais: admin@zara.com / admin123');
+    logger.info('ID:', admin.id);
 
   } catch (error) {
-    logger.error('❌ Erro ao criar admin:', error.message););
+    logger.error('❌ Erro ao criar admin:', error.message);
   } finally {
     await prisma.$disconnect();
   }

@@ -7,7 +7,7 @@ async function createMachineDirectly() {
   
   try {
     await client.connect();
-    logger.info('✅ Conectado ao MongoDB'););
+    logger.info('✅ Conectado ao MongoDB');
     
     const db = client.db();
     const machinesCollection = db.collection('machines');
@@ -16,7 +16,7 @@ async function createMachineDirectly() {
     const existingMachine = await machinesCollection.findOne({ code: 'MAQ001' });
     
     if (existingMachine) {
-      logger.info('⚠️  Máquina MAQ001 já existe:', existingMachine););
+      logger.info('⚠️  Máquina MAQ001 já existe:', existingMachine);
       return;
     }
     
@@ -58,17 +58,17 @@ async function createMachineDirectly() {
     ];
     
     const result = await machinesCollection.insertMany(machines);
-    logger.info(`✅ ${result.insertedCount} máquinas criadas com sucesso!`););
+    logger.info(`✅ ${result.insertedCount} máquinas criadas com sucesso!`);
     
     // Listar as máquinas criadas
     const createdMachines = await machinesCollection.find({}).toArray();
-    logger.info('\n📋 Máquinas no banco de dados:'););
+    logger.info('\n📋 Máquinas no banco de dados:');
     createdMachines.forEach(machine => {
-      logger.info(`- ID: ${machine._id}, Código: ${machine.code}, Nome: ${machine.name}`););
+      logger.info(`- ID: ${machine._id}, Código: ${machine.code}, Nome: ${machine.name}`);
     });
     
   } catch (error) {
-    logger.error('❌ Erro:', error););
+    logger.error('❌ Erro:', error);
   } finally {
     await client.close();
   }

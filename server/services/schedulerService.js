@@ -12,54 +12,54 @@ class SchedulerService {
   }
 
   initializeJobs() {
-    logger.info('⏰ Inicializando agendador de tarefas...'););
+    logger.info('⏰ Inicializando agendador de tarefas...');
     
     // Relatório diário às 18:00
     this.scheduleJob('daily-report', '0 18 * * *', async () => {
-      logger.info('📊 Executando relatório diário agendado...'););
+      logger.info('📊 Executando relatório diário agendado...');
       await notificationService.sendDailyReport();
     });
 
     // Verificação de teflon vencido a cada 6 horas
     this.scheduleJob('teflon-check', '0 */6 * * *', async () => {
-      logger.info('🔍 Verificando trocas de teflon vencidas...'););
+      logger.info('🔍 Verificando trocas de teflon vencidas...');
       await this.checkExpiredTeflon();
     });
 
     // Limpeza de notificações antigas (30 dias) - diariamente às 02:00
     this.scheduleJob('cleanup-notifications', '0 2 * * *', async () => {
-      logger.info('🧹 Limpando notificações antigas...'););
+      logger.info('🧹 Limpando notificações antigas...');
       await this.cleanupOldNotifications();
     });
 
     // Verificação de máquinas inativas - a cada 2 horas
     this.scheduleJob('machine-check', '0 */2 * * *', async () => {
-      logger.info('🔧 Verificando status das máquinas...'););
+      logger.info('🔧 Verificando status das máquinas...');
       await this.checkInactiveMachines();
     });
 
     // Arquivamento automático de turnos às 7:00 e 19:00
     this.scheduleJob('archive-shifts', '0 7,19 * * *', async () => {
-      logger.info('📦 Verificando turnos para arquivar...'););
+      logger.info('📦 Verificando turnos para arquivar...');
       await this.archiveCompletedShifts();
     });
 
     // Verificação de dados de turno a cada 15 minutos
     this.scheduleJob('update-shifts', '*/15 * * * *', async () => {
-      logger.info('🔄 Verificando dados de turno...'););
+      logger.info('🔄 Verificando dados de turno...');
       await this.updateShiftData();
     });
 
-    logger.info(`✅ ${this.jobs.size} tarefas agendadas inicializadas`););
+    logger.info(`✅ ${this.jobs.size} tarefas agendadas inicializadas`);
   }
 
   scheduleJob(name, cronPattern, task) {
     try {
       const job = new cron.CronJob(cronPattern, task, null, true, 'America/Sao_Paulo');
       this.jobs.set(name, job);
-      logger.info(`⏰ Tarefa '${name}' agendada: ${cronPattern}`););
+      logger.info(`⏰ Tarefa '${name}' agendada: ${cronPattern}`);
     } catch (error) {
-      logger.error(`❌ Erro ao agendar tarefa '${name}':`, error.message););
+      logger.error(`❌ Erro ao agendar tarefa '${name}':`, error.message);
     }
   }
 
@@ -85,7 +85,7 @@ class SchedulerService {
         }
       });
 
-      logger.info(`🔍 Encontradas ${expiringChanges.length} trocas de teflon para notificar`););
+      logger.info(`🔍 Encontradas ${expiringChanges.length} trocas de teflon para notificar`);
 
       for (const change of expiringChanges) {
         const daysUntilExpiry = Math.ceil((change.expiryDate - now) / (1000 * 60 * 60 * 24));
@@ -104,7 +104,7 @@ class SchedulerService {
 
       return { success: true, processed: expiringChanges.length };
     } catch (error) {
-      logger.error('❌ Erro ao verificar teflon vencido:', error););
+      logger.error('❌ Erro ao verificar teflon vencido:', error);
       return { success: false, error: error.message };
     }
   }
@@ -123,10 +123,10 @@ class SchedulerService {
         }
       });
 
-      logger.info(`🧹 ${result.count} notificações antigas removidas`););
+      logger.info(`🧹 ${result.count} notificações antigas removidas`);
       return { success: true, deleted: result.count };
     } catch (error) {
-      logger.error('❌ Erro ao limpar notificações antigas:', error););
+      logger.error('❌ Erro ao limpar notificações antigas:', error);
       return { success: false, error: error.message };
     }
   }
@@ -155,7 +155,7 @@ class SchedulerService {
 
       const inactiveMachines = machines.filter(machine => machine.qualityTests.length === 0);
 
-      logger.info(`🔧 Encontradas ${inactiveMachines.length} máquinas inativas`););
+      logger.info(`🔧 Encontradas ${inactiveMachines.length} máquinas inativas`);
 
       for (const machine of inactiveMachines) {
         // Verificar se já foi enviada notificação recentemente
@@ -188,14 +188,14 @@ class SchedulerService {
 
       return { success: true, inactiveMachines: inactiveMachines.length };
     } catch (error) {
-      logger.error('❌ Erro ao verificar máquinas inativas:', error););
+      logger.error('❌ Erro ao verificar máquinas inativas:', error);
       return { success: false, error: error.message };
     }
   }
 
   async generateWeeklyReport() {
     try {
-      logger.info('📊 Gerando relatório semanal...'););
+      logger.info('📊 Gerando relatório semanal...');
       
       const now = new Date();
       const weekAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
@@ -274,10 +274,10 @@ class SchedulerService {
         }
       });
 
-      logger.info('✅ Relatório semanal gerado com sucesso'););
+      logger.info('✅ Relatório semanal gerado com sucesso');
       return { success: true, reportData };
     } catch (error) {
-      logger.error('❌ Erro ao gerar relatório semanal:', error););
+      logger.error('❌ Erro ao gerar relatório semanal:', error);
       return { success: false, error: error.message };
     }
   }
@@ -287,7 +287,7 @@ class SchedulerService {
     if (job) {
       job.stop();
       this.jobs.delete(name);
-      logger.info(`⏹️ Tarefa '${name}' parada`););
+      logger.info(`⏹️ Tarefa '${name}' parada`);
       return true;
     }
     return false;
@@ -297,7 +297,7 @@ class SchedulerService {
     const job = this.jobs.get(name);
     if (job) {
       job.start();
-      logger.info(`▶️ Tarefa '${name}' iniciada`););
+      logger.info(`▶️ Tarefa '${name}' iniciada`);
       return true;
     }
     return false;
@@ -317,12 +317,12 @@ class SchedulerService {
 
   async archiveCompletedShifts() {
     try {
-      logger.info('📦 Iniciando arquivamento de turnos completos...'););
+      logger.info('📦 Iniciando arquivamento de turnos completos...');
       const result = await shiftService.archiveCompletedShifts();
-      logger.info(`✅ ${result.archived} turnos arquivados`););
+      logger.info(`✅ ${result.archived} turnos arquivados`);
       return result;
     } catch (error) {
-      logger.error('❌ Erro ao arquivar turnos:', error););
+      logger.error('❌ Erro ao arquivar turnos:', error);
       return { success: false, error: error.message };
     }
   }
@@ -332,16 +332,16 @@ class SchedulerService {
       const result = await shiftService.updateCurrentShiftData();
       return result;
     } catch (error) {
-      logger.error('❌ Erro ao atualizar dados de turno:', error););
+      logger.error('❌ Erro ao atualizar dados de turno:', error);
       return { success: false, error: error.message };
     }
   }
 
   stopAll() {
-    logger.info('⏹️ Parando todas as tarefas agendadas...'););
+    logger.info('⏹️ Parando todas as tarefas agendadas...');
     for (const [name, job] of this.jobs) {
       job.stop();
-      logger.info(`⏹️ Tarefa '${name}' parada`););
+      logger.info(`⏹️ Tarefa '${name}' parada`);
     }
     this.jobs.clear();
   }

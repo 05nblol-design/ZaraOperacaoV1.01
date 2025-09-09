@@ -7,29 +7,29 @@ const logger = require('utils/logger');
 const RAILWAY_DATABASE_URL = 'postgresql://postgres:bBBAa*A-4EE*4EcbGEGCfCBdGgBGEGbE@viaduct.proxy.rlwy.net:18006/railway';
 
 async function migrateRailwayDatabase() {
-  logger.info('🚀 Migrando banco PostgreSQL do Railway...'););
-  logger.info('🔗 URL:', RAILWAY_DATABASE_URL.replace(/:[^:]*@/, ':****@')););
+  logger.info('🚀 Migrando banco PostgreSQL do Railway...');
+  logger.info('🔗 URL:', RAILWAY_DATABASE_URL.replace(/:[^:]*@/, ':****@'));
   
   // Configurar variável de ambiente temporariamente
   process.env.DATABASE_URL = RAILWAY_DATABASE_URL;
   
   try {
     // 1. Gerar cliente Prisma
-    logger.info('📦 Gerando cliente Prisma...'););
+    logger.info('📦 Gerando cliente Prisma...');
     execSync('npx prisma generate', { 
       stdio: 'inherit',
       env: { ...process.env, DATABASE_URL: RAILWAY_DATABASE_URL }
     });
     
     // 2. Fazer push do schema (cria tabelas se não existem)
-    logger.info('🔄 Criando tabelas com db push...'););
+    logger.info('🔄 Criando tabelas com db push...');
     execSync('npx prisma db push --accept-data-loss', { 
       stdio: 'inherit',
       env: { ...process.env, DATABASE_URL: RAILWAY_DATABASE_URL }
     });
     
     // 3. Testar conexão
-    logger.info('🔍 Testando conexão...'););
+    logger.info('🔍 Testando conexão...');
     const prisma = new PrismaClient({
       datasources: {
         db: {
@@ -41,7 +41,7 @@ async function migrateRailwayDatabase() {
     await prisma.$connect();
     
     // 4. Verificar tabelas criadas
-    logger.info('📋 Verificando tabelas...'););
+    logger.info('📋 Verificando tabelas...');
     const tables = await prisma.$queryRaw`
       SELECT table_name 
       FROM information_schema.tables 
@@ -50,21 +50,21 @@ async function migrateRailwayDatabase() {
       ORDER BY table_name;
     `;
     
-    logger.info('✅ Tabelas criadas:'););
+    logger.info('✅ Tabelas criadas:');
     tables.forEach(table => {
-      logger.info(`  - ${table.table_name}`););
+      logger.info(`  - ${table.table_name}`);
     });
     
     // 5. Verificar tabela users especificamente
     try {
       const userCount = await prisma.user.count();
-      logger.info(`👥 Tabela 'users': ${userCount} registros`););
+      logger.info(`👥 Tabela 'users': ${userCount} registros`);
     } catch (error) {
-      logger.info('⚠️ Tabela users ainda não acessível:', error.message););
+      logger.info('⚠️ Tabela users ainda não acessível:', error.message);
     }
     
     // 6. Criar usuário admin se não existir
-    logger.info('👤 Verificando usuário admin...'););
+    logger.info('👤 Verificando usuário admin...');
     try {
       const adminExists = await prisma.user.findFirst({
         where: { email: 'admin@zara.com' }
@@ -83,26 +83,26 @@ async function migrateRailwayDatabase() {
             badgeNumber: 'ADM001'
           }
         });
-        logger.info('✅ Usuário admin criado!'););
+        logger.info('✅ Usuário admin criado!');
       } else {
-        logger.info('✅ Usuário admin já existe!'););
+        logger.info('✅ Usuário admin já existe!');
       }
     } catch (error) {
-      logger.info('⚠️ Erro ao criar admin:', error.message););
+      logger.info('⚠️ Erro ao criar admin:', error.message);
     }
     
     await prisma.$disconnect();
-    logger.info('🎉 Migração concluída com sucesso!'););
+    logger.info('🎉 Migração concluída com sucesso!');
     
   } catch (error) {
-    logger.error('❌ Erro na migração:', error.message););
+    logger.error('❌ Erro na migração:', error.message);
     
     if (error.message.includes('P1001')) {
-      logger.info('\n🔧 Problema de conexão com o banco.'););
-      logger.info('📋 Verifique se:'););
-      logger.info('  1. O serviço PostgreSQL está ativo no Railway'););
-      logger.info('  2. A URL do banco está correta'););
-      logger.info('  3. As credenciais estão válidas'););
+      logger.info('\n🔧 Problema de conexão com o banco.');
+      logger.info('📋 Verifique se:');
+      logger.info('  1. O serviço PostgreSQL está ativo no Railway');
+      logger.info('  2. A URL do banco está correta');
+      logger.info('  3. As credenciais estão válidas');
     }
     
     process.exit(1);

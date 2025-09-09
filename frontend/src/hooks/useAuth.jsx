@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
         try {
           const response = await authService.login({
             email: 'admin@zara.com',
-            password: '123456'
+            password: 'admin123'
           });
           
           if (response.data.success) {

@@ -7,7 +7,7 @@ async function createMachineConfig() {
   
   try {
     await client.connect();
-    logger.info('✅ Conectado ao MongoDB'););
+    logger.info('✅ Conectado ao MongoDB');
     
     const db = client.db();
     const machineConfigsCollection = db.collection('machine_configs');
@@ -21,7 +21,7 @@ async function createMachineConfig() {
       const existingConfig = await machineConfigsCollection.findOne({ machineId: machine._id });
       
       if (existingConfig) {
-        logger.info(`⚠️  Configuração já existe para máquina ${machine.name}`););
+        logger.info(`⚠️  Configuração já existe para máquina ${machine.name}`);
         continue;
       }
       
@@ -70,13 +70,13 @@ async function createMachineConfig() {
       };
       
       const result = await machineConfigsCollection.insertOne(config);
-      logger.info(`✅ Configuração criada para máquina ${machine.name} - ID: ${result.insertedId}`););
+      logger.info(`✅ Configuração criada para máquina ${machine.name} - ID: ${result.insertedId}`);
     }
     
-    logger.info('\n📋 Configurações criadas com sucesso!'););
+    logger.info('\n📋 Configurações criadas com sucesso!');
     
   } catch (error) {
-    logger.error('❌ Erro ao criar configurações:', error););
+    logger.error('❌ Erro ao criar configurações:', error);
   } finally {
     await client.close();
   }

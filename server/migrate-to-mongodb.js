@@ -26,7 +26,7 @@ const colors = {
 };
 
 function log(message, color = 'reset') {
-  logger.info(`${colors[color]}${message}${colors.reset}`););
+  logger.info(`${colors[color]}${message}${colors.reset}`);
 }
 
 function logStep(step, message) {

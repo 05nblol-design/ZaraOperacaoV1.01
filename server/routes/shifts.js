@@ -53,7 +53,7 @@ router.get('/current', async (req, res) => {
       data: shiftData
     });
   } catch (error) {
-    logger.error('Erro ao buscar turno atual:', error););
+    logger.error('Erro ao buscar turno atual:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
@@ -92,7 +92,7 @@ router.post('/update', async (req, res) => {
       message: 'Dados do turno atualizados com sucesso'
     });
   } catch (error) {
-    logger.error('Erro ao atualizar turno:', error););
+    logger.error('Erro ao atualizar turno:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
@@ -130,7 +130,7 @@ router.post('/reset', async (req, res) => {
       message: 'Dados do operador resetados para novo turno'
     });
   } catch (error) {
-    logger.error('Erro ao resetar dados do operador:', error););
+    logger.error('Erro ao resetar dados do operador:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
@@ -198,7 +198,7 @@ router.get('/history', async (req, res) => {
       }
     });
   } catch (error) {
-    logger.error('Erro ao buscar histórico de turnos:', error););
+    logger.error('Erro ao buscar histórico de turnos:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
@@ -246,7 +246,7 @@ router.get('/archives', async (req, res) => {
       }
     });
   } catch (error) {
-    logger.error('Erro ao buscar dados arquivados:', error););
+    logger.error('Erro ao buscar dados arquivados:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
@@ -279,7 +279,7 @@ router.post('/archive/:id', async (req, res) => {
       message: 'Turno arquivado com sucesso'
     });
   } catch (error) {
-    logger.error('Erro ao arquivar turno:', error););
+    logger.error('Erro ao arquivar turno:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
@@ -389,7 +389,7 @@ router.get('/summary', async (req, res) => {
       period: { startDate, endDate }
     });
   } catch (error) {
-    logger.error('Erro ao gerar resumo de turnos:', error););
+    logger.error('Erro ao gerar resumo de turnos:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
@@ -420,7 +420,7 @@ router.post('/manual-archive', async (req, res) => {
       message: 'Arquivamento manual executado com sucesso'
     });
   } catch (error) {
-    logger.error('Erro no arquivamento manual:', error););
+    logger.error('Erro no arquivamento manual:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',

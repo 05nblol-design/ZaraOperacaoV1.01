@@ -20,9 +20,9 @@ async function checkMachinePermissions() {
       }
     });
     
-    logger.info('Permissões do usuário Lucas (ID: 2):', permissions.length););
+    logger.info('Permissões do usuário Lucas (ID: 2):', permissions.length);
     permissions.forEach(p => {
-      logger.info(`- Máquina: ${p.machine.name} (${p.machine.code}) - canView: ${p.canView}, canOperate: ${p.canOperate}`););
+      logger.info(`- Máquina: ${p.machine.name} (${p.machine.code}) - canView: ${p.canView}, canOperate: ${p.canOperate}`);
     });
     
     // Verificar todas as máquinas disponíveis
@@ -35,13 +35,13 @@ async function checkMachinePermissions() {
       }
     });
     
-    logger.info('\nTodas as máquinas:', allMachines.length););
+    logger.info('\nTodas as máquinas:', allMachines.length);
     allMachines.forEach(m => {
-      logger.info(`- ${m.name} (${m.code}) - Ativa: ${m.isActive}`););
+      logger.info(`- ${m.name} (${m.code}) - Ativa: ${m.isActive}`);
     });
     
   } catch (error) {
-    logger.error('Erro:', error););
+    logger.error('Erro:', error);
   } finally {
     await prisma.$disconnect();
   }

@@ -118,7 +118,7 @@ const detectSQLInjection = (req, res, next) => {
   ].some(checkValue);
 
   if (suspicious) {
-    logger.warn(`🚨 Possível SQL Injection detectado:`, {);
+    logger.warn(`🚨 Possível SQL Injection detectado:`, {
       ip: req.ip,
       userAgent: req.get('User-Agent'),
       url: req.originalUrl,
@@ -168,7 +168,7 @@ const securityLogger = (req, res, next) => {
     );
 
     if (isSuspicious) {
-      logger.warn('🚨 Requisição suspeita detectada:', securityInfo););
+      logger.warn('🚨 Requisição suspeita detectada:', securityInfo);
     }
   }
 

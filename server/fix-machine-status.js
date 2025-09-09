@@ -9,7 +9,7 @@ async function fixMachineStatus() {
       data: { status: 'FUNCIONANDO' }
     });
     
-    logger.info('✅ Status da Máquina 01d atualizado para FUNCIONANDO'););
+    logger.info('✅ Status da Máquina 01d atualizado para FUNCIONANDO');
     
     // Verificar o status atualizado
     const machine = await prisma.machine.findUnique({
@@ -17,10 +17,10 @@ async function fixMachineStatus() {
       select: { name: true, status: true }
     });
     
-    logger.info(`Status atual: ${machine.name} - ${machine.status}`););
+    logger.info(`Status atual: ${machine.name} - ${machine.status}`);
     
   } catch (error) {
-    logger.error('Erro:', error););
+    logger.error('Erro:', error);
   } finally {
     await prisma.$disconnect();
   }

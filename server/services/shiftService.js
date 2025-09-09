@@ -106,7 +106,7 @@ class ShiftService {
 
       return shiftData;
     } catch (error) {
-      logger.error('Erro ao criar/atualizar dados do turno:', error););
+      logger.error('Erro ao criar/atualizar dados do turno:', error);
       throw error;
     }
   }
@@ -194,10 +194,10 @@ class ShiftService {
         }
       });
 
-      logger.info(`✅ Dados do turno ${shiftData.shiftType} arquivados para máquina ${shiftData.machine.name}`););
+      logger.info(`✅ Dados do turno ${shiftData.shiftType} arquivados para máquina ${shiftData.machine.name}`);
       return archive;
     } catch (error) {
-      logger.error('Erro ao arquivar dados do turno:', error););
+      logger.error('Erro ao arquivar dados do turno:', error);
       throw error;
     }
   }
@@ -241,10 +241,10 @@ class ShiftService {
         rejectedTests: 0
       });
 
-      logger.info(`🔄 Dados resetados para novo turno ${currentShiftType} - Máquina: ${machineId}, Operador: ${operatorId}`););
+      logger.info(`🔄 Dados resetados para novo turno ${currentShiftType} - Máquina: ${machineId}, Operador: ${operatorId}`);
       return newShiftData;
     } catch (error) {
-      logger.error('Erro ao resetar dados do operador:', error););
+      logger.error('Erro ao resetar dados do operador:', error);
       throw error;
     }
   }
@@ -277,7 +277,7 @@ class ShiftService {
 
       return shiftData;
     } catch (error) {
-      logger.error('Erro ao buscar dados do turno atual:', error););
+      logger.error('Erro ao buscar dados do turno atual:', error);
       throw error;
     }
   }
@@ -316,7 +316,7 @@ class ShiftService {
         archivedData: JSON.parse(archive.archivedData)
       }));
     } catch (error) {
-      logger.error('Erro ao buscar dados arquivados:', error););
+      logger.error('Erro ao buscar dados arquivados:', error);
       throw error;
     }
   }
@@ -346,7 +346,7 @@ class ShiftService {
         }
       });
 
-      logger.info(`🔍 Encontrados ${activeShifts.length} turnos para arquivar`););
+      logger.info(`🔍 Encontrados ${activeShifts.length} turnos para arquivar`);
 
       const results = [];
       for (const shift of activeShifts) {
@@ -354,7 +354,7 @@ class ShiftService {
           const archive = await this.archiveShiftData(shift.id);
           results.push({ success: true, shiftId: shift.id, archiveId: archive.id });
         } catch (error) {
-          logger.error(`Erro ao arquivar turno ${shift.id}:`, error););
+          logger.error(`Erro ao arquivar turno ${shift.id}:`, error);
           results.push({ success: false, shiftId: shift.id, error: error.message });
         }
       }
@@ -366,7 +366,7 @@ class ShiftService {
         results
       };
     } catch (error) {
-      logger.error('Erro ao verificar turnos para arquivar:', error););
+      logger.error('Erro ao verificar turnos para arquivar:', error);
       throw error;
     }
   }
@@ -399,7 +399,7 @@ class ShiftService {
           
           results.push({ success: true, shiftId: shift.id });
         } catch (error) {
-          logger.error(`Erro ao atualizar turno ${shift.id}:`, error););
+          logger.error(`Erro ao atualizar turno ${shift.id}:`, error);
           results.push({ success: false, shiftId: shift.id, error: error.message });
         }
       }
@@ -409,7 +409,7 @@ class ShiftService {
         results
       };
     } catch (error) {
-      logger.error('Erro ao atualizar dados de turno:', error););
+      logger.error('Erro ao atualizar dados de turno:', error);
       throw error;
     }
   }
@@ -490,7 +490,7 @@ class ShiftService {
         }
       };
     } catch (error) {
-      logger.error('Erro ao calcular dados de produção:', error););
+      logger.error('Erro ao calcular dados de produção:', error);
       return { totalProduction: 0, efficiency: 0, downtime: 0, qualityTests: 0, approvedTests: 0, rejectedTests: 0 };
     }
   }

@@ -12,17 +12,17 @@ class ShiftMiddleware {
    * Atualiza dados do turno quando há mudanças na produção
    */
   static async trackMachineOperation(req, res, next) {
-    logger.info('🔍 MIDDLEWARE trackMachineOperation - INÍCIO'););
+    logger.info('🔍 MIDDLEWARE trackMachineOperation - INÍCIO');
     try {
       // Armazenar dados originais para comparação
       req.originalBody = { ...req.body };
       req.shiftTrackingEnabled = true;
       
-      logger.info('✅ trackMachineOperation - Dados armazenados, continuando...'););
+      logger.info('✅ trackMachineOperation - Dados armazenados, continuando...');
       // Continuar com a requisição
       next();
     } catch (error) {
-      logger.error('❌ Erro no middleware de turno:', error););
+      logger.error('❌ Erro no middleware de turno:', error);
       next(error);
     }
   }
@@ -41,7 +41,7 @@ class ShiftMiddleware {
           await ShiftMiddleware.processShiftUpdate(req, data);
         }
       } catch (error) {
-        logger.error('Erro ao atualizar dados de turno:', error););
+        logger.error('Erro ao atualizar dados de turno:', error);
       }
       
       // Chamar o send original
@@ -97,9 +97,9 @@ class ShiftMiddleware {
       // Atualizar dados do turno
       await shiftService.createOrUpdateShiftData(machineId, finalOperatorId, productionData);
       
-      logger.info(`🔄 Dados de turno atualizados - Máquina: ${machineId}, Operador: ${finalOperatorId}`););
+      logger.info(`🔄 Dados de turno atualizados - Máquina: ${machineId}, Operador: ${finalOperatorId}`);
     } catch (error) {
-      logger.error('Erro ao processar atualização de turno:', error););
+      logger.error('Erro ao processar atualização de turno:', error);
     }
   }
 
@@ -165,7 +165,7 @@ class ShiftMiddleware {
         }
       };
     } catch (error) {
-      logger.error('Erro ao calcular dados de produção:', error););
+      logger.error('Erro ao calcular dados de produção:', error);
       return {
         totalProduction: 0,
         efficiency: 0,
@@ -181,22 +181,22 @@ class ShiftMiddleware {
    * Middleware para verificar mudança de turno
    */
   static async checkShiftChange(req, res, next) {
-    logger.info('🔍 MIDDLEWARE checkShiftChange - INÍCIO'););
+    logger.info('🔍 MIDDLEWARE checkShiftChange - INÍCIO');
     try {
       const { machineId, operatorId } = req.body || {};
       const { user } = req;
       
-      logger.info('📋 checkShiftChange - machineId:', machineId, 'operatorId:', operatorId, 'user:', user?.id););
+      logger.info('📋 checkShiftChange - machineId:', machineId, 'operatorId:', operatorId, 'user:', user?.id);
       
       if (!machineId) {
-        logger.info('⚠️ checkShiftChange - Sem machineId, continuando...'););
+        logger.info('⚠️ checkShiftChange - Sem machineId, continuando...');
         return next();
       }
       
       const finalOperatorId = operatorId || (user && user.role === 'OPERATOR' ? user.id : null);
       
       if (!finalOperatorId) {
-        logger.info('⚠️ checkShiftChange - Sem operatorId, continuando...'););
+        logger.info('⚠️ checkShiftChange - Sem operatorId, continuando...');
         return next();
       }
 
@@ -207,7 +207,7 @@ class ShiftMiddleware {
       
       // Se não há turno ativo ou o tipo de turno mudou, resetar dados
       if (!currentShift || (currentShift && currentShift.shiftType !== currentShiftType)) {
-        logger.info(`🔄 Mudança de turno detectada para máquina ${machineId}`););
+        logger.info(`🔄 Mudança de turno detectada para máquina ${machineId}`);
         await shiftService.resetOperatorData(machineId, finalOperatorId);
         
         // Adicionar informação à requisição
@@ -215,10 +215,10 @@ class ShiftMiddleware {
         req.newShiftType = currentShiftType;
       }
       
-      logger.info('✅ checkShiftChange - Concluído, continuando...'););
+      logger.info('✅ checkShiftChange - Concluído, continuando...');
       next();
     } catch (error) {
-      logger.error('❌ Erro ao verificar mudança de turno:', error););
+      logger.error('❌ Erro ao verificar mudança de turno:', error);
       next(error);
     }
   }
@@ -227,24 +227,24 @@ class ShiftMiddleware {
    * Middleware para validar horário de operação
    */
   static validateOperationTime(req, res, next) {
-    logger.info('🔍 MIDDLEWARE validateOperationTime - INÍCIO'););
+    logger.info('🔍 MIDDLEWARE validateOperationTime - INÍCIO');
     try {
       const now = new Date();
       const hour = now.getHours();
       
-      logger.info('⏰ validateOperationTime - Hora atual:', hour, 'Minutos:', now.getMinutes()););
+      logger.info('⏰ validateOperationTime - Hora atual:', hour, 'Minutos:', now.getMinutes());
       
       // Verificar se está dentro do horário de operação (6:30 - 19:30)
       if (hour < 6 || (hour >= 19 && now.getMinutes() > 30)) {
         // Permitir operações, mas marcar como fora de turno
         req.outsideShiftHours = true;
-        logger.info(`⚠️ Operação fora do horário de turno: ${now.toLocaleTimeString()}`););
+        logger.info(`⚠️ Operação fora do horário de turno: ${now.toLocaleTimeString()}`);
       }
       
-      logger.info('✅ validateOperationTime - Concluído, continuando...'););
+      logger.info('✅ validateOperationTime - Concluído, continuando...');
       next();
     } catch (error) {
-      logger.error('❌ Erro ao validar horário de operação:', error););
+      logger.error('❌ Erro ao validar horário de operação:', error);
       next(error);
     }
   }

@@ -55,34 +55,34 @@ const optionalEnvVars = {
   'SENTRY_DSN': 'https://...@sentry.io/...'
 };
 
-logger.info('=== VARIÁVEIS DE AMBIENTE NECESSÁRIAS NO RAILWAY ===\n'););
+logger.info('=== VARIÁVEIS DE AMBIENTE NECESSÁRIAS NO RAILWAY ===\n');
 
-logger.info('🔴 ESSENCIAIS (obrigatórias):'););
+logger.info('🔴 ESSENCIAIS (obrigatórias):');
 Object.entries(requiredEnvVars).forEach(([key, example]) => {
   const current = process.env[key];
   const status = current ? '✅' : '❌';
-  logger.info(`${status} ${key}: ${current || `(faltando - exemplo: ${example})`}`););
+  logger.info(`${status} ${key}: ${current || `(faltando - exemplo: ${example})`}`);
 });
 
-logger.info('\n🟡 OPCIONAIS (recomendadas):'););
+logger.info('\n🟡 OPCIONAIS (recomendadas):');
 Object.entries(optionalEnvVars).forEach(([key, example]) => {
   const current = process.env[key];
   const status = current ? '✅' : '⚠️';
-  logger.info(`${status} ${key}: ${current || `(não configurada - exemplo: ${example})`}`););
+  logger.info(`${status} ${key}: ${current || `(não configurada - exemplo: ${example})`}`);
 });
 
-logger.info('\n=== INSTRUÇÕES PARA RAILWAY ==='););
-logger.info('1. Acesse o painel do Railway'););
-logger.info('2. Vá em Variables na aba do zara-backend'););
-logger.info('3. Configure as variáveis marcadas com ❌'););
-logger.info('4. Redeploy o serviço após configurar'););
+logger.info('\n=== INSTRUÇÕES PARA RAILWAY ===');
+logger.info('1. Acesse o painel do Railway');
+logger.info('2. Vá em Variables na aba do zara-backend');
+logger.info('3. Configure as variáveis marcadas com ❌');
+logger.info('4. Redeploy o serviço após configurar');
 
 const missingRequired = Object.keys(requiredEnvVars).filter(key => !process.env[key]);
 if (missingRequired.length > 0) {
-  logger.info(`\n❌ FALTAM ${missingRequired.length} VARIÁVEIS ESSENCIAIS:`););
-  logger.info(missingRequired.forEach(key => `   - ${key}`)););
+  logger.info(`\n❌ FALTAM ${missingRequired.length} VARIÁVEIS ESSENCIAIS:`);
+  logger.info(missingRequired.forEach(key => `   - ${key}`));
   process.exit(1);
 } else {
-  logger.info('\n✅ Todas as variáveis essenciais estão configuradas!'););
+  logger.info('\n✅ Todas as variáveis essenciais estão configuradas!');
   process.exit(0);
 }

@@ -69,23 +69,23 @@ const getSSLConfig = () => {
               sslConfig.ca = fs.readFileSync(certPath.ca, 'utf8');
             }
             
-            logger.info('✅ Certificados SSL carregados:', certPath.cert););
+            logger.info('✅ Certificados SSL carregados:', certPath.cert);
             break;
           }
         } catch (error) {
-          logger.warn('⚠️ Erro ao carregar certificado:', certPath.cert, error.message););
+          logger.warn('⚠️ Erro ao carregar certificado:', certPath.cert, error.message);
           continue;
         }
       }
     }
 
     if (!sslConfig.cert || !sslConfig.key) {
-      logger.warn('⚠️ Certificados SSL não encontrados. HTTPS desabilitado.'););
+      logger.warn('⚠️ Certificados SSL não encontrados. HTTPS desabilitado.');
       return null;
     }
 
   } catch (error) {
-    logger.error('❌ Erro ao configurar SSL:', error.message););
+    logger.error('❌ Erro ao configurar SSL:', error.message);
     return null;
   }
 
@@ -112,7 +112,7 @@ const createHTTPSServer = (app) => {
 
     return httpsServer;
   } catch (error) {
-    logger.error('❌ Erro ao criar servidor HTTPS:', error.message););
+    logger.error('❌ Erro ao criar servidor HTTPS:', error.message);
     return null;
   }
 };
@@ -220,7 +220,7 @@ const generateSelfSignedCert = () => {
 
     // Verificar se já existem certificados
     if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
-      logger.info('✅ Certificados de desenvolvimento já existem'););
+      logger.info('✅ Certificados de desenvolvimento já existem');
       return { certPath, keyPath };
     }
 
@@ -229,14 +229,14 @@ const generateSelfSignedCert = () => {
     
     execSync(opensslCmd, { stdio: 'inherit' });
     
-    logger.info('✅ Certificado auto-assinado gerado para desenvolvimento'););
-    logger.info('📁 Certificado:', certPath););
-    logger.info('🔑 Chave privada:', keyPath););
+    logger.info('✅ Certificado auto-assinado gerado para desenvolvimento');
+    logger.info('📁 Certificado:', certPath);
+    logger.info('🔑 Chave privada:', keyPath);
     
     return { certPath, keyPath };
   } catch (error) {
-    logger.error('❌ Erro ao gerar certificado auto-assinado:', error.message););
-    logger.info('💡 Instale o OpenSSL para gerar certificados de desenvolvimento'););
+    logger.error('❌ Erro ao gerar certificado auto-assinado:', error.message);
+    logger.info('💡 Instale o OpenSSL para gerar certificados de desenvolvimento');
     return null;
   }
 };

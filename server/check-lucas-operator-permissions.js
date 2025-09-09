@@ -3,7 +3,7 @@ const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function checkLucasPermissions() {
-  logger.info('🔍 Verificando permissões do operador Lucas (ID: 2)...'););
+  logger.info('🔍 Verificando permissões do operador Lucas (ID: 2)...');
   
   try {
     // Verificar se o usuário existe
@@ -13,11 +13,11 @@ async function checkLucasPermissions() {
     });
     
     if (!user) {
-      logger.info('❌ Usuário com ID 2 não encontrado'););
+      logger.info('❌ Usuário com ID 2 não encontrado');
       return;
     }
     
-    logger.info('👤 Usuário encontrado:', user););
+    logger.info('👤 Usuário encontrado:', user);
     
     // Verificar permissões de máquina
     const permissions = await prisma.machinePermission.findMany({
@@ -32,20 +32,20 @@ async function checkLucasPermissions() {
       }
     });
     
-    logger.info(`\n📋 Permissões encontradas: ${permissions.length}`););
+    logger.info(`\n📋 Permissões encontradas: ${permissions.length}`);
     
     if (permissions.length === 0) {
-      logger.info('❌ PROBLEMA: Operador Lucas não tem permissões de máquina!'););
-      logger.info('💡 Solução: Criar permissões para o operador'););
+      logger.info('❌ PROBLEMA: Operador Lucas não tem permissões de máquina!');
+      logger.info('💡 Solução: Criar permissões para o operador');
     } else {
       permissions.forEach((p, index) => {
-        logger.info(`\n${index + 1}. Máquina: ${p.machine.name} (ID: ${p.machine.id})`););
-        logger.info(`   - canOperate: ${p.canOperate}`););
-        logger.info(`   - canMaintain: ${p.canMaintain}`););
-        logger.info(`   - Status da máquina: ${p.machine.status}`););
+        logger.info(`\n${index + 1}. Máquina: ${p.machine.name} (ID: ${p.machine.id})`);
+        logger.info(`   - canOperate: ${p.canOperate}`);
+        logger.info(`   - canMaintain: ${p.canMaintain}`);
+        logger.info(`   - Status da máquina: ${p.machine.status}`);
         
         if (!p.canOperate) {
-          logger.info('   ⚠️  PROBLEMA: canOperate é false!'););
+          logger.info('   ⚠️  PROBLEMA: canOperate é false!');
         }
       });
     }
@@ -55,13 +55,13 @@ async function checkLucasPermissions() {
       select: { id: true, name: true, status: true }
     });
     
-    logger.info(`\n🏭 Total de máquinas no sistema: ${allMachines.length}`););
+    logger.info(`\n🏭 Total de máquinas no sistema: ${allMachines.length}`);
     allMachines.forEach(m => {
-      logger.info(`   - ${m.name} (ID: ${m.id}) - Status: ${m.status}`););
+      logger.info(`   - ${m.name} (ID: ${m.id}) - Status: ${m.status}`);
     });
     
   } catch (error) {
-    logger.error('❌ Erro ao verificar permissões:', error););
+    logger.error('❌ Erro ao verificar permissões:', error);
   } finally {
     await prisma.$disconnect();
   }

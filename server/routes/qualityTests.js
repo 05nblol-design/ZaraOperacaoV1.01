@@ -26,8 +26,8 @@ router.get('/', [
 ], requireOperator, asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    logger.info('=== Erros de validação ==='););
-    logger.info('Errors:', JSON.stringify(errors.array(), null, 2)););
+    logger.info('=== Erros de validação ===');
+    logger.info('Errors:', JSON.stringify(errors.array(), null, 2));
     return res.status(400).json({
       success: false,
       message: 'Parâmetros inválidos',
@@ -107,14 +107,14 @@ router.get('/:id', [
   param('id').isInt({ min: 1 }).withMessage('ID do teste inválido')
 ], requireOperator, asyncHandler(async (req, res) => {
   // Debug: Log received data
-  logger.info('=== GET /api/quality-tests/:id - Dados recebidos ==='););
-  logger.info('req.params.id:', req.params.id););
+  logger.info('=== GET /api/quality-tests/:id - Dados recebidos ===');
+  logger.info('req.params.id:', req.params.id);
   
   // Validate input
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    logger.info('=== Erros de validação ==='););
-    logger.info('errors:', JSON.stringify(errors.array(), null, 2)););
+    logger.info('=== Erros de validação ===');
+    logger.info('errors:', JSON.stringify(errors.array(), null, 2));
     return res.status(400).json({
       success: false,
       message: 'Dados inválidos',
@@ -158,8 +158,8 @@ router.get('/:id', [
 router.post('/', [
   // Log dos dados recebidos para debug
   (req, res, next) => {
-    logger.info('=== POST /api/quality-tests - Dados recebidos ==='););
-    logger.info('Body:', JSON.stringify(req.body, null, 2)););
+    logger.info('=== POST /api/quality-tests - Dados recebidos ===');
+    logger.info('Body:', JSON.stringify(req.body, null, 2));
     next();
   },
   body('machineId')
@@ -252,8 +252,8 @@ router.post('/', [
 ], requireOperator, asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    logger.info('=== POST /api/quality-tests - Erros de validação ==='););
-    logger.info('Validation errors:', JSON.stringify(errors.array(), null, 2)););
+    logger.info('=== POST /api/quality-tests - Erros de validação ===');
+    logger.info('Validation errors:', JSON.stringify(errors.array(), null, 2));
     return res.status(400).json({
       success: false,
       message: 'Dados inválidos',
@@ -379,7 +379,7 @@ router.post('/', [
       });
     }
   } catch (notificationError) {
-    logger.error('Erro ao enviar notificação de teste de qualidade:', notificationError););
+    logger.error('Erro ao enviar notificação de teste de qualidade:', notificationError);
   }
 
   // Log da ação

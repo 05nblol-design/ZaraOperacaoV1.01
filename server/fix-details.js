@@ -33,8 +33,8 @@ files.forEach(filename => {
     });
     
     fs.writeFileSync(filePath, content, 'utf8');
-    logger.info(`Corrigido: ${filename}`););
+    logger.info(`Corrigido: ${filename}`);
   }
 });
 
-logger.info('Correção concluída!'););
+logger.info('Correção concluída!');

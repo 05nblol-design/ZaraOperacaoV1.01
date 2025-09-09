@@ -13,7 +13,7 @@ class PushNotificationService {
     try {
       // Verificar se as variáveis essenciais estão configuradas
       if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL) {
-        logger.info('⚠️ Firebase não configurado - variáveis de ambiente ausentes'););
+        logger.info('⚠️ Firebase não configurado - variáveis de ambiente ausentes');
         this.initialized = false;
         return;
       }
@@ -46,10 +46,10 @@ class PushNotificationService {
       }
 
       this.initialized = true;
-      logger.info('🔥 Firebase Admin SDK inicializado com sucesso'););
+      logger.info('🔥 Firebase Admin SDK inicializado com sucesso');
     } catch (error) {
-      logger.error('❌ Erro ao inicializar Firebase:', error.message););
-      logger.info('💡 Configure as variáveis: FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL'););
+      logger.error('❌ Erro ao inicializar Firebase:', error.message);
+      logger.info('💡 Configure as variáveis: FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL');
       this.initialized = false;
     }
   }
@@ -78,10 +78,10 @@ class PushNotificationService {
         }
       });
 
-      logger.info(`📱 Token de dispositivo registrado para usuário ${userId}`););
+      logger.info(`📱 Token de dispositivo registrado para usuário ${userId}`);
       return { success: true };
     } catch (error) {
-      logger.error('❌ Erro ao registrar token:', error););
+      logger.error('❌ Erro ao registrar token:', error);
       return { success: false, error: error.message };
     }
   }
@@ -101,14 +101,14 @@ class PushNotificationService {
       });
 
       if (userDevices.length === 0) {
-        logger.info(`📱 Nenhum dispositivo encontrado para usuário ${userId}`););
+        logger.info(`📱 Nenhum dispositivo encontrado para usuário ${userId}`);
         return { success: true, sent: 0 };
       }
 
       const tokens = userDevices.map(device => device.token);
       return await this.sendToTokens(tokens, notification, data);
     } catch (error) {
-      logger.error('❌ Erro ao enviar notificação para usuário:', error););
+      logger.error('❌ Erro ao enviar notificação para usuário:', error);
       return { success: false, error: error.message };
     }
   }
@@ -139,13 +139,13 @@ class PushNotificationService {
       );
 
       if (tokens.length === 0) {
-        logger.info(`📱 Nenhum dispositivo encontrado para role ${role}`););
+        logger.info(`📱 Nenhum dispositivo encontrado para role ${role}`);
         return { success: true, sent: 0 };
       }
 
       return await this.sendToTokens(tokens, notification, data);
     } catch (error) {
-      logger.error('❌ Erro ao enviar notificação para role:', error););
+      logger.error('❌ Erro ao enviar notificação para role:', error);
       return { success: false, error: error.message };
     }
   }
@@ -177,7 +177,7 @@ class PushNotificationService {
         response.responses.forEach((resp, idx) => {
           if (!resp.success) {
             failedTokens.push(tokens[idx]);
-            logger.info(`❌ Token inválido: ${tokens[idx]} - ${resp.error?.message}`););
+            logger.info(`❌ Token inválido: ${tokens[idx]} - ${resp.error?.message}`);
           }
         });
 
@@ -187,14 +187,14 @@ class PushNotificationService {
         }
       }
 
-      logger.info(`📱 Notificação enviada: ${response.successCount}/${tokens.length} dispositivos`););
+      logger.info(`📱 Notificação enviada: ${response.successCount}/${tokens.length} dispositivos`);
       return {
         success: true,
         sent: response.successCount,
         failed: response.failureCount
       };
     } catch (error) {
-      logger.error('❌ Erro ao enviar notificação:', error););
+      logger.error('❌ Erro ao enviar notificação:', error);
       return { success: false, error: error.message };
     }
   }
@@ -211,9 +211,9 @@ class PushNotificationService {
           active: false
         }
       });
-      logger.info(`🗑️ ${tokens.length} tokens inválidos removidos`););
+      logger.info(`🗑️ ${tokens.length} tokens inválidos removidos`);
     } catch (error) {
-      logger.error('❌ Erro ao remover tokens inválidos:', error););
+      logger.error('❌ Erro ao remover tokens inválidos:', error);
     }
   }
 

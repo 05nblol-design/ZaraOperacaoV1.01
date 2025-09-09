@@ -7,7 +7,7 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
 
   // Log do erro
-  logger.error('❌ Erro capturado:', err););
+  logger.error('❌ Erro capturado:', err);
 
   // Capturar no Sentry
   captureException(err, {

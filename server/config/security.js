@@ -29,7 +29,7 @@ const getCorsConfig = () => {
         if (allowedOrigins.includes('*') || allowedOrigins.length === 0) {
           return callback(null, true);
         }
-        logger.warn('⚠️ Requisição sem origin em produção - pode ser health check do Railway'););
+        logger.warn('⚠️ Requisição sem origin em produção - pode ser health check do Railway');
         return callback(null, true); // Permitir para health checks
       }
       
@@ -37,8 +37,8 @@ const getCorsConfig = () => {
       if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        logger.warn(`🚫 CORS blocked origin: ${origin}`););
-        logger.warn(`📋 Allowed origins: ${allowedOrigins.join(', ')}`););
+        logger.warn(`🚫 CORS blocked origin: ${origin}`);
+        logger.warn(`📋 Allowed origins: ${allowedOrigins.join(', ')}`);
         callback(new Error('Não permitido pelo CORS'));
       }
     },

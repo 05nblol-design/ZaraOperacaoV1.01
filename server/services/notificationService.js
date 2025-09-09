@@ -10,14 +10,14 @@ class NotificationService {
     this.pushEnabled = !!process.env.FIREBASE_PROJECT_ID;
     this.io = null; // Socket.IO instance
     
-    logger.info(`📧 Email notifications: ${this.emailEnabled ? 'Enabled' : 'Disabled'}`););
-    logger.info(`📱 Push notifications: ${this.pushEnabled ? 'Enabled' : 'Disabled'}`););
+    logger.info(`📧 Email notifications: ${this.emailEnabled ? 'Enabled' : 'Disabled'}`);
+    logger.info(`📱 Push notifications: ${this.pushEnabled ? 'Enabled' : 'Disabled'}`);
   }
 
   // Método para definir a instância do Socket.IO
   setSocketIO(io) {
     this.io = io;
-    logger.info('🔌 Socket.IO configurado no NotificationService'););
+    logger.info('🔌 Socket.IO configurado no NotificationService');
   }
 
   async getUserEmailsByRole(roles) {
@@ -41,14 +41,14 @@ class NotificationService {
 
       return users.map(user => user.email).filter(email => email);
     } catch (error) {
-      logger.error('❌ Erro ao buscar emails dos usuários:', error););
+      logger.error('❌ Erro ao buscar emails dos usuários:', error);
       return [];
     }
   }
 
   async getUsersByRole(roles) {
     try {
-      logger.info('👥 Buscando usuários por role:', roles););
+      logger.info('👥 Buscando usuários por role:', roles);
       
       const users = await prisma.user.findMany({
         where: {
@@ -65,23 +65,23 @@ class NotificationService {
         }
       });
 
-      logger.info(`📊 Usuários encontrados: ${users.length}`););
+      logger.info(`📊 Usuários encontrados: ${users.length}`);
       users.forEach(user => {
-        logger.info(`   - ${user.name} (${user.role}) - ID: ${user.id} - Email: ${user.email}`););
+        logger.info(`   - ${user.name} (${user.role}) - ID: ${user.id} - Email: ${user.email}`);
       });
       
       return users;
     } catch (error) {
-      logger.error('❌ Erro ao buscar usuários por papel:', error););
-      logger.error('❌ Stack trace:', error.stack););
+      logger.error('❌ Erro ao buscar usuários por papel:', error);
+      logger.error('❌ Stack trace:', error.stack);
       return [];
     }
   }
 
   async saveNotification(data) {
     try {
-      logger.info('💾 Salvando notificação no banco...'););
-      logger.info('📋 Dados recebidos:', JSON.stringify(data, null, 2)););
+      logger.info('💾 Salvando notificação no banco...');
+      logger.info('📋 Dados recebidos:', JSON.stringify(data, null, 2));
       
       const notificationData = {
         type: data.type,
@@ -97,17 +97,17 @@ class NotificationService {
         read: false
       };
       
-      logger.info('🔄 Dados preparados para o Prisma:', JSON.stringify(notificationData, null, 2)););
+      logger.info('🔄 Dados preparados para o Prisma:', JSON.stringify(notificationData, null, 2));
       
       const notification = await prisma.notification.create({
         data: notificationData
       });
 
-      logger.info('✅ Notificação salva com sucesso - ID:', notification.id););
+      logger.info('✅ Notificação salva com sucesso - ID:', notification.id);
       
       // Emitir evento WebSocket para notificação em tempo real
       if (this.io) {
-        logger.info('📡 Emitindo notificação via WebSocket...'););
+        logger.info('📡 Emitindo notificação via WebSocket...');
         
         // Emitir para usuário específico se houver userId
         if (data.userId) {
@@ -125,23 +125,23 @@ class NotificationService {
           }
         }
       } else {
-        logger.info('⚠️ Socket.IO não configurado - notificação não enviada em tempo real'););
+        logger.info('⚠️ Socket.IO não configurado - notificação não enviada em tempo real');
       }
       
       return notification;
     } catch (error) {
-      logger.error('❌ Erro ao salvar notificação:', error););
-      logger.error('❌ Código do erro:', error.code););
-      logger.error('❌ Mensagem do erro:', error.message););
-      logger.error('❌ Stack trace:', error.stack););
-      logger.error('❌ Dados da notificação:', JSON.stringify(data, null, 2)););
+      logger.error('❌ Erro ao salvar notificação:', error);
+      logger.error('❌ Código do erro:', error.code);
+      logger.error('❌ Mensagem do erro:', error.message);
+      logger.error('❌ Stack trace:', error.stack);
+      logger.error('❌ Dados da notificação:', JSON.stringify(data, null, 2));
       return null;
     }
   }
 
   async sendQualityTestNotification(testData) {
     try {
-      logger.info('📧 Enviando notificação de teste de qualidade...'););
+      logger.info('📧 Enviando notificação de teste de qualidade...');
       
       // Salvar notificação no banco
       await this.saveNotification({
@@ -174,17 +174,17 @@ class NotificationService {
         results.push = await pushService.sendQualityTestAlert(testData);
       }
 
-      logger.info('✅ Notificação de teste de qualidade enviada'););
+      logger.info('✅ Notificação de teste de qualidade enviada');
       return { success: true, results };
     } catch (error) {
-      logger.error('❌ Erro ao enviar notificação de teste:', error););
+      logger.error('❌ Erro ao enviar notificação de teste:', error);
       return { success: false, error: error.message };
     }
   }
 
   async sendTeflonChangeNotification(changeData) {
     try {
-      logger.info('📧 Enviando notificação de troca de teflon...'););
+      logger.info('📧 Enviando notificação de troca de teflon...');
       
       const daysUntilExpiry = Math.ceil((new Date(changeData.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
       const isExpired = daysUntilExpiry <= 0;
@@ -221,18 +221,18 @@ class NotificationService {
         results.push = await pushService.sendTeflonChangeAlert(changeData);
       }
 
-      logger.info('✅ Notificação de troca de teflon enviada'););
+      logger.info('✅ Notificação de troca de teflon enviada');
       return { success: true, results };
     } catch (error) {
-      logger.error('❌ Erro ao enviar notificação de teflon:', error););
+      logger.error('❌ Erro ao enviar notificação de teflon:', error);
       return { success: false, error: error.message };
     }
   }
 
   async sendMachineStatusNotification(machineId, status, previousStatus, operatorName, reason, notes) {
     try {
-      logger.info('📧 Enviando notificação de status de máquina...'););
-      logger.info('🏭 Parâmetros recebidos:', { machineId, status, previousStatus, operatorName, reason, notes }););
+      logger.info('📧 Enviando notificação de status de máquina...');
+      logger.info('🏭 Parâmetros recebidos:', { machineId, status, previousStatus, operatorName, reason, notes });
       
       // Buscar dados da máquina
       const machine = await prisma.machine.findUnique({
@@ -240,28 +240,28 @@ class NotificationService {
       });
       
       if (!machine) {
-        logger.info('❌ Máquina não encontrada'););
+        logger.info('❌ Máquina não encontrada');
         return { success: false, error: 'Máquina não encontrada' };
       }
       
-      logger.info('🏭 Dados da máquina encontrada:', JSON.stringify(machine, null, 2)););
+      logger.info('🏭 Dados da máquina encontrada:', JSON.stringify(machine, null, 2));
       
       // Buscar usuários que devem receber a notificação
       const targetUsers = await this.getUsersByRole(['LEADER', 'MANAGER', 'ADMIN']);
-      logger.info(`📋 Criando notificações para ${targetUsers.length} usuários`););
+      logger.info(`📋 Criando notificações para ${targetUsers.length} usuários`);
       targetUsers.forEach(user => {
-        logger.info(`   - ${user.name} (${user.role}) - ID: ${user.id}`););
+        logger.info(`   - ${user.name} (${user.role}) - ID: ${user.id}`);
       });
       
       if (targetUsers.length === 0) {
-        logger.info('⚠️ Nenhum usuário encontrado para enviar notificações'););
+        logger.info('⚠️ Nenhum usuário encontrado para enviar notificações');
         return { success: false, error: 'Nenhum usuário encontrado' };
       }
       
       // Criar notificação individual para cada usuário
       let createdNotifications = 0;
       for (const user of targetUsers) {
-        logger.info(`\n🔄 Criando notificação para: ${user.name} (ID: ${user.id})`););
+        logger.info(`\n🔄 Criando notificação para: ${user.name} (ID: ${user.id})`);
         
         const notificationData = {
           type: 'MACHINE_STATUS',
@@ -282,18 +282,18 @@ class NotificationService {
           }
         };
         
-        logger.info(`📋 Dados da notificação para ${user.name}:`, JSON.stringify(notificationData, null, 2)););
+        logger.info(`📋 Dados da notificação para ${user.name}:`, JSON.stringify(notificationData, null, 2));
         
         const notification = await this.saveNotification(notificationData);
         if (notification) {
-          logger.info(`✅ Notificação criada com sucesso para ${user.name} - ID: ${notification.id}`););
+          logger.info(`✅ Notificação criada com sucesso para ${user.name} - ID: ${notification.id}`);
           createdNotifications++;
         } else {
-          logger.info(`❌ Falha ao criar notificação para ${user.name}`););
+          logger.info(`❌ Falha ao criar notificação para ${user.name}`);
         }
       }
       
-      logger.info(`📊 Notificações criadas: ${createdNotifications}/${targetUsers.length}`););
+      logger.info(`📊 Notificações criadas: ${createdNotifications}/${targetUsers.length}`);
 
       const results = {};
 
@@ -310,18 +310,18 @@ class NotificationService {
         results.push = await pushService.sendMachineStatusAlert(machineData);
       }
 
-      logger.info('✅ Notificação de status de máquina enviada'););
+      logger.info('✅ Notificação de status de máquina enviada');
       return { success: true, results };
     } catch (error) {
-      logger.error('❌ Erro ao enviar notificação de máquina:', error););
-      logger.error('❌ Stack trace:', error.stack););
+      logger.error('❌ Erro ao enviar notificação de máquina:', error);
+      logger.error('❌ Stack trace:', error.stack);
       return { success: false, error: error.message };
     }
   }
 
   async sendDailyReport() {
     try {
-      logger.info('📊 Gerando e enviando relatório diário...'););
+      logger.info('📊 Gerando e enviando relatório diário...');
       
       // Calcular dados do relatório
       const today = new Date();
@@ -392,10 +392,10 @@ class NotificationService {
         results.push = await pushService.sendDailyReportNotification(reportData);
       }
 
-      logger.info('✅ Relatório diário enviado'););
+      logger.info('✅ Relatório diário enviado');
       return { success: true, results, reportData };
     } catch (error) {
-      logger.error('❌ Erro ao enviar relatório diário:', error););
+      logger.error('❌ Erro ao enviar relatório diário:', error);
       return { success: false, error: error.message };
     }
   }
@@ -460,7 +460,7 @@ class NotificationService {
         }
       };
     } catch (error) {
-      logger.error('❌ Erro ao buscar notificações:', error););
+      logger.error('❌ Erro ao buscar notificações:', error);
       return { success: false, error: error.message };
     }
   }
@@ -483,7 +483,7 @@ class NotificationService {
 
       return { success: true };
     } catch (error) {
-      logger.error('❌ Erro ao marcar notificação como lida:', error););
+      logger.error('❌ Erro ao marcar notificação como lida:', error);
       return { success: false, error: error.message };
     }
   }
@@ -506,7 +506,7 @@ class NotificationService {
 
       return { success: true };
     } catch (error) {
-      logger.error('❌ Erro ao marcar todas as notificações como lidas:', error););
+      logger.error('❌ Erro ao marcar todas as notificações como lidas:', error);
       return { success: false, error: error.message };
     }
   }
@@ -514,7 +514,7 @@ class NotificationService {
   // Método para notificações de vencimento de teflon
   async sendTeflonExpiryNotification(teflonData) {
     try {
-      logger.info('📧 Enviando notificação de vencimento de teflon...'););
+      logger.info('📧 Enviando notificação de vencimento de teflon...');
       
       const { machine, user, daysUntilExpiry, expiryDate } = teflonData;
       const isExpired = daysUntilExpiry <= 0;
@@ -574,10 +574,10 @@ class NotificationService {
         });
       }
 
-      logger.info('✅ Notificação de vencimento de teflon enviada'););
+      logger.info('✅ Notificação de vencimento de teflon enviada');
       return { success: true, results };
     } catch (error) {
-      logger.error('❌ Erro ao enviar notificação de teflon:', error););
+      logger.error('❌ Erro ao enviar notificação de teflon:', error);
       return { success: false, error: error.message };
     }
   }

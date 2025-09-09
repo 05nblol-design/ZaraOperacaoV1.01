@@ -28,16 +28,16 @@ async function createMachinePermissions() {
             canOperate: true
           }
         });
-        logger.info(`Permissão criada para máquina ${machine.name} (${machine.code})`););
+        logger.info(`Permissão criada para máquina ${machine.name} (${machine.code})`);
       } else {
-        logger.info(`Permissão já existe para máquina ${machine.name} (${machine.code})`););
+        logger.info(`Permissão já existe para máquina ${machine.name} (${machine.code})`);
       }
     }
     
-    logger.info('\nPermissões criadas com sucesso!'););
+    logger.info('\nPermissões criadas com sucesso!');
     
   } catch (error) {
-    logger.error('Erro:', error););
+    logger.error('Erro:', error);
   } finally {
     await prisma.$disconnect();
   }

@@ -674,12 +674,12 @@ router.put('/profile', [
     .normalizeEmail()
     .withMessage('Email inválido')
 ], asyncHandler(async (req, res) => {
-  logger.info('PUT /profile - req.body:', req.body););
-  logger.info('PUT /profile - req.user:', req.user););
+  logger.info('PUT /profile - req.body:', req.body);
+  logger.info('PUT /profile - req.user:', req.user);
   
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    logger.info('PUT /profile - Validation errors:', errors.array()););
+    logger.info('PUT /profile - Validation errors:', errors.array());
     return res.status(400).json({
       success: false,
       message: 'Dados inválidos',

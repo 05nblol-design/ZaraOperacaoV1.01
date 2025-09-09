@@ -121,7 +121,7 @@ const updateUserStatus = async (userId, isOnline) => {
     // Validar se o userId é válido
     const userIdInt = parseInt(userId);
     if (!userId || isNaN(userIdInt) || userIdInt <= 0) {
-      logger.warn('ID de usuário inválido:', userId););
+      logger.warn('ID de usuário inválido:', userId);
       return;
     }
     
@@ -133,7 +133,7 @@ const updateUserStatus = async (userId, isOnline) => {
     //   }
     // });
   } catch (error) {
-    logger.error('Erro ao atualizar status do usuário:', error););
+    logger.error('Erro ao atualizar status do usuário:', error);
   }
 };
 
@@ -144,7 +144,7 @@ const socketHandler = (io) => {
 
   io.on('connection', (socket) => {
     const { user } = socket;
-    logger.info(`Usuário conectado: ${user.name} (${user.email}) - Socket: ${socket.id}`););
+    logger.info(`Usuário conectado: ${user.name} (${user.email}) - Socket: ${socket.id}`);
 
     // Armazenar conexão
     activeConnections.set(socket.id, {
@@ -339,7 +339,7 @@ const socketHandler = (io) => {
         }
 
       } catch (error) {
-        logger.error('Erro ao processar teste de qualidade:', error););
+        logger.error('Erro ao processar teste de qualidade:', error);
       }
     });
 
@@ -385,7 +385,7 @@ const socketHandler = (io) => {
         }
 
       } catch (error) {
-        logger.error('Erro ao verificar teflon expirando:', error););
+        logger.error('Erro ao verificar teflon expirando:', error);
       }
     });
 
@@ -500,7 +500,7 @@ const socketHandler = (io) => {
     // === EVENTOS DE DESCONEXÃO ===
     
     socket.on('disconnect', (reason) => {
-      logger.info(`Usuário desconectado: ${user.name} - Motivo: ${reason}`););
+      logger.info(`Usuário desconectado: ${user.name} - Motivo: ${reason}`);
       
       // Remover da lista de conexões ativas
       activeConnections.delete(socket.id);
@@ -527,7 +527,7 @@ const socketHandler = (io) => {
 
     // Tratamento de erros
     socket.on('error', (error) => {
-      logger.error(`Erro no socket ${socket.id}:`, error););
+      logger.error(`Erro no socket ${socket.id}:`, error);
     });
   });
 

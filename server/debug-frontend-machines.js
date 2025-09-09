@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const logger = require('utils/logger');
 
 async function debugFrontendMachines() {
-  logger.info('🔍 Iniciando debug do frontend - máquinas não aparecem'););
+  logger.info('🔍 Iniciando debug do frontend - máquinas não aparecem');
   
   // Gerar token válido para operador Lucas
   const operatorToken = jwt.sign(
@@ -17,7 +17,7 @@ async function debugFrontendMachines() {
     { expiresIn: '24h' }
   );
   
-  logger.info('✅ Token gerado para operador Lucas'););
+  logger.info('✅ Token gerado para operador Lucas');
   
   const browser = await puppeteer.launch({ 
     headless: false,
@@ -39,7 +39,7 @@ async function debugFrontendMachines() {
         text.includes('API') ||
         text.includes('error') ||
         text.includes('Error')) {
-      logger.info(`🖥️  [${type.toUpperCase()}] ${text}`););
+      logger.info(`🖥️  [${type.toUpperCase()}] ${text}`);
     }
   });
   
@@ -47,12 +47,12 @@ async function debugFrontendMachines() {
   page.on('response', response => {
     const url = response.url();
     if (url.includes('/api/')) {
-      logger.info(`🌐 API Response: ${response.status()} - ${url}`););
+      logger.info(`🌐 API Response: ${response.status()} - ${url}`);
     }
   });
   
   try {
-    logger.info('🌐 Navegando para página de mudança de teflon...'););
+    logger.info('🌐 Navegando para página de mudança de teflon...');
     await page.goto('http://localhost:5173/teflon/change', { waitUntil: 'networkidle0' });
     
     // Configurar autenticação no localStorage
@@ -66,7 +66,7 @@ async function debugFrontendMachines() {
       }));
     }, operatorToken);
     
-    logger.info('🔑 Token e dados do usuário configurados no localStorage'););
+    logger.info('🔑 Token e dados do usuário configurados no localStorage');
     
     // Recarregar página para aplicar autenticação
     await page.reload({ waitUntil: 'networkidle0' });
@@ -80,9 +80,9 @@ async function debugFrontendMachines() {
       const options = await page.$$eval('select option', options => 
         options.map(option => ({ value: option.value, text: option.textContent }))
       );
-      logger.info('📋 Opções encontradas no select:', options););
+      logger.info('📋 Opções encontradas no select:', options);
     } else {
-      logger.info('❌ Select de máquinas não encontrado'););
+      logger.info('❌ Select de máquinas não encontrado');
     }
     
     // Verificar estado dos hooks
@@ -96,18 +96,18 @@ async function debugFrontendMachines() {
       };
     });
     
-    logger.info('🔍 Estado atual:', hookStates););
+    logger.info('🔍 Estado atual:', hookStates);
     
     // Aguardar mais um pouco para ver se algo muda
-    logger.info('⏳ Aguardando mais logs...'););
+    logger.info('⏳ Aguardando mais logs...');
     await new Promise(resolve => setTimeout(resolve, 10000));
     
   } catch (error) {
-    logger.error('❌ Erro durante debug:', error););
+    logger.error('❌ Erro durante debug:', error);
   } finally {
-    logger.info('🏁 Debug finalizado - verifique os logs acima'););
+    logger.info('🏁 Debug finalizado - verifique os logs acima');
     await browser.close();
   }
 }
 
-logger.error(debugFrontendMachines().catch(console.error););
+logger.error(debugFrontendMachines().catch(console.error);

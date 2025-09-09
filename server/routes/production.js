@@ -68,7 +68,7 @@ router.get('/aggregate', authenticateToken, async (req, res) => {
           }
         }
       } catch (error) {
-        logger.error(`Erro ao calcular produção da máquina ${machine.id}:`, error););
+        logger.error(`Erro ao calcular produção da máquina ${machine.id}:`, error);
         // Continuar com próxima máquina em caso de erro
       }
     }
@@ -89,7 +89,7 @@ router.get('/aggregate', authenticateToken, async (req, res) => {
     });
 
   } catch (error) {
-    logger.error('Erro ao buscar dados agregados de produção:', error););
+    logger.error('Erro ao buscar dados agregados de produção:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',
@@ -237,7 +237,7 @@ router.get('/reports/production-summary', authenticateToken, async (req, res) =>
     });
 
   } catch (error) {
-    logger.error('Erro ao buscar dados de relatório de produção:', error););
+    logger.error('Erro ao buscar dados de relatório de produção:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor',

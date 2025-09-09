@@ -13,9 +13,9 @@ async function checkMachines() {
       }
     });
     
-    logger.info('Máquinas no sistema:'););
+    logger.info('Máquinas no sistema:');
     machines.forEach(m => {
-      logger.info(`- ${m.name} (ID: ${m.id}): ${m.status} - ${m.productionSpeed}pcs/min`););
+      logger.info(`- ${m.name} (ID: ${m.id}): ${m.status} - ${m.productionSpeed}pcs/min`);
     });
     
     const operations = await prisma.machineOperation.findMany({
@@ -29,14 +29,14 @@ async function checkMachines() {
       }
     });
     
-    logger.info('\nOperações ativas:'););
+    logger.info('\nOperações ativas:');
     operations.forEach(op => {
       const duration = Math.floor((new Date() - new Date(op.startTime)) / (1000 * 60));
-      logger.info(`- ${op.machine.name}: ${op.user.name} (${duration} min)`););
+      logger.info(`- ${op.machine.name}: ${op.user.name} (${duration} min)`);
     });
     
   } catch (error) {
-    logger.error('Erro:', error););
+    logger.error('Erro:', error);
   } finally {
     await prisma.$disconnect();
   }
