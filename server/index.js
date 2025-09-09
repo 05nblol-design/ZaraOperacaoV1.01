@@ -99,7 +99,7 @@ app.use(securityLogger);
 app.use(addSecurityHeaders);
 app.use(httpsRedirect);
 app.use(httpsSecurityHeaders);
-app.use(limiter);
+// app.use(limiter); // RATE LIMITING GERAL DESABILITADO
 app.use(cors(corsOptions));
 // app.use(validateSecurityHeaders); // DESABILITADO TEMPORARIAMENTE
 app.use(express.json({ limit: '10mb' }));
