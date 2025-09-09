@@ -143,19 +143,8 @@ router.post('/login', [
   // Gerar token
   const token = generateToken(user.id);
 
-  // Log de acesso
-  await prisma.systemLog.create({
-    data: {
-      action: 'LOGIN',
-      userId: user.id,
-      details: JSON.stringify({
-        email: user.email,
-        role: user.role
-      }),
-      ipAddress: req.ip,
-      userAgent: req.get('User-Agent')
-    }
-  });
+  // Log de acesso (temporariamente desabilitado - tabela SystemLog não existe)
+  console.log(`✅ Login realizado: ${user.email} (${user.role})`);
 
   res.json({
     success: true,
