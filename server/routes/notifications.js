@@ -14,6 +14,10 @@ const prisma = new PrismaClient();
 // @route   GET /api/notifications
 // @access  Private (Operator+)
 router.get('/', requireOperator, asyncHandler(async (req, res) => {
+  console.log('🚀 ROTA NOTIFICATIONS CHAMADA!');
+  console.log('🚀 req.method:', req.method);
+  console.log('🚀 req.url:', req.url);
+  console.log('🚀 req.query:', req.query);
   logger.info('=== DEBUG NOTIFICAÇÕES ===');
   logger.info('Query params recebidos:', JSON.stringify(req.query, null, 2));
   logger.info('Headers:', JSON.stringify(req.headers, null, 2));
@@ -36,14 +40,27 @@ router.get('/', requireOperator, asyncHandler(async (req, res) => {
   const limitNum = Math.max(1, Math.min(100, parseInt(limit) || 50));
   const skip = (pageNum - 1) * limitNum;
   // Garantir que userId seja um número
+  console.log('🔍 DEBUG - req.user:', req.user);
+  console.log('🔍 DEBUG - req.user.id:', req.user.id, 'type:', typeof req.user.id);
+  
   const userId = typeof req.user.id === 'string' ? parseInt(req.user.id) : req.user.id;
+  console.log('🔍 DEBUG - userId final:', userId, 'type:', typeof userId);
+  
+  if (!userId || isNaN(userId)) {
+    console.error('❌ userId inválido:', userId);
+    return res.status(400).json({
+      success: false,
+      message: 'ID do usuário inválido',
+      code: 'INVALID_USER_ID'
+    });
+  }
   
   const where = {
     userId
   };
 
-  // Filtros
-  if (read !== undefined) where.read = read === 'true';
+  // Filtros (removendo 'read' pois não existe no schema)
+  // if (read !== undefined) where.read = read === 'true';
   if (type) where.type = type;
   if (priority) where.priority = priority;
 
@@ -60,13 +77,15 @@ router.get('/', requireOperator, asyncHandler(async (req, res) => {
   // Contar total
   const total = await prisma.notification.count({ where });
 
-  // Contar não lidas
-   const unreadCount = await prisma.notification.count({
-     where: {
-       userId,
-       read: false
-     }
-   });
+  // Contar não lidas (removendo 'read' pois não existe no schema)
+  // Como não temos campo 'read', vamos retornar 0 por enquanto
+  const unreadCount = 0;
+  // const unreadCount = await prisma.notification.count({
+  //   where: {
+  //     userId,
+  //     read: false
+  //   }
+  // });
 
   const totalPages = Math.ceil(total / limitNum);
 

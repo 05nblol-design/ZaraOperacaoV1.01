@@ -8,11 +8,14 @@ const prisma = new PrismaClient();
 // Middleware para verificar token JWT
 const authenticateToken = async (req, res, next) => {
   try {
+    console.log('🔍 AUTH DEBUG - Headers:', req.headers);
     logger.info('🔐 AuthenticateToken middleware iniciado');
     logger.info('🔐 URL:', req.method, req.originalUrl);
     
     const authHeader = req.headers['authorization'];
+    console.log('🔍 AUTH DEBUG - Auth header:', authHeader);
     const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+    console.log('🔍 AUTH DEBUG - Token:', token ? 'Token presente' : 'Token ausente');
     
     logger.info('🔐 AuthHeader:', authHeader ? 'Presente' : 'Ausente');
     logger.info('🔐 Token:', token ? 'Presente' : 'Ausente');
