@@ -4,7 +4,6 @@ const { PrismaClient } = require('@prisma/client');
 const { requireLeader, requireManager } = require('../middleware/auth');
 const { asyncHandler } = require('../middleware/errorHandler');
 const { setCache, getCache } = require('../config/redis');
-const logger = require('../utils/logger');
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -1238,7 +1237,7 @@ router.get('/dashboard', asyncHandler(async (req, res) => {
       data: executiveData
     });
   } catch (error) {
-    logger.error('Erro no dashboard:', error);
+    console.error('Erro no dashboard:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'
@@ -1309,7 +1308,7 @@ router.get('/aggregated', asyncHandler(async (req, res) => {
       data: aggregatedData
     });
   } catch (error) {
-    logger.error('Erro nos dados agregados:', error);
+    console.error('Erro nos dados agregados:', error);
     res.status(500).json({
       success: false,
       message: 'Erro interno do servidor'

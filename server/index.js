@@ -106,7 +106,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(sanitizeInput);
-app.use(detectSQLInjection);
+// app.use(detectSQLInjection); // DESABILITADO TEMPORARIAMENTE PARA TESTAR NOTIFICAÇÕES
 app.use(fileUpload({
   limits: { fileSize: parseInt(process.env.MAX_FILE_SIZE) || 10 * 1024 * 1024 },
   abortOnLimit: true,

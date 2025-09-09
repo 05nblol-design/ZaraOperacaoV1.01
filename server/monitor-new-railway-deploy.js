@@ -1,5 +1,4 @@
 const axios = require('axios');
-const logger = require('utils/logger');
 
 // Configurações
 const BACKEND_URL = 'https://zaraoperacaov101-production.up.railway.app';
@@ -64,66 +63,66 @@ async function testLogin() {
 
 async function runVerification() {
   attempt++;
-  logger.info(`\n🔍 VERIFICAÇÃO ${attempt}/${MAX_ATTEMPTS} - ${new Date().toLocaleTimeString()}`);
-  logger.info('=' .repeat(60));
+  console.log(`\n🔍 VERIFICAÇÃO ${attempt}/${MAX_ATTEMPTS} - ${new Date().toLocaleTimeString()}`);
+  console.log('=' .repeat(60));
   
   // 1. Testar saúde do backend
-  logger.info('1️⃣ Testando saúde do backend...');
+  console.log('1️⃣ Testando saúde do backend...');
   const healthResult = await testBackendHealth();
   
   if (healthResult.success) {
-    logger.info(`✅ Backend OK (Status: ${healthResult.status})`);
+    console.log(`✅ Backend OK (Status: ${healthResult.status})`);
     
     // Detectar redeploy pelo uptime
     if (healthResult.uptime && lastUptime && healthResult.uptime < lastUptime) {
-      logger.info('🚀 REDEPLOY DETECTADO! (Uptime resetado)');
+      console.log('🚀 REDEPLOY DETECTADO! (Uptime resetado)');
     }
     lastUptime = healthResult.uptime;
   } else {
-    logger.info(`❌ Backend com problemas: ${healthResult.error}`);
+    console.log(`❌ Backend com problemas: ${healthResult.error}`);
     return false;
   }
   
   // 2. Testar login (verificar rate limiting)
-  logger.info('\n2️⃣ Testando login...');
+  console.log('\n2️⃣ Testando login...');
   const loginResult = await testLogin();
   
   if (loginResult.success) {
-    logger.info('🎉 LOGIN FUNCIONANDO!');
-    logger.info(`✅ Status: ${loginResult.status}`);
-    logger.info(`✅ Token recebido: ${loginResult.hasToken ? 'Sim' : 'Não'}`);
+    console.log('🎉 LOGIN FUNCIONANDO!');
+    console.log(`✅ Status: ${loginResult.status}`);
+    console.log(`✅ Token recebido: ${loginResult.hasToken ? 'Sim' : 'Não'}`);
     return true; // Sucesso!
   } else {
     if (loginResult.isRateLimit) {
-      logger.info(`⏳ Rate limiting ainda ativo (Status: ${loginResult.status})`);
-      logger.info(`📝 Erro: ${loginResult.error}`);
+      console.log(`⏳ Rate limiting ainda ativo (Status: ${loginResult.status})`);
+      console.log(`📝 Erro: ${loginResult.error}`);
     } else if (loginResult.isServerError) {
-      logger.info(`🔥 Erro interno do servidor (Status: ${loginResult.status})`);
-      logger.info(`📝 Erro: ${loginResult.error}`);
+      console.log(`🔥 Erro interno do servidor (Status: ${loginResult.status})`);
+      console.log(`📝 Erro: ${loginResult.error}`);
     } else {
-      logger.info(`❌ Erro de login (Status: ${loginResult.status})`);
-      logger.info(`📝 Erro: ${loginResult.error}`);
+      console.log(`❌ Erro de login (Status: ${loginResult.status})`);
+      console.log(`📝 Erro: ${loginResult.error}`);
     }
     return false;
   }
 }
 
 async function runFinalTest() {
-  logger.info('\n🎯 EXECUTANDO TESTE FINAL...');
-  logger.info('=' .repeat(60));
+  console.log('\n🎯 EXECUTANDO TESTE FINAL...');
+  console.log('=' .repeat(60));
   
   let successCount = 0;
   const totalTests = 5;
   
   for (let i = 1; i <= totalTests; i++) {
-    logger.info(`\nTeste ${i}/${totalTests}:`);
+    console.log(`\nTeste ${i}/${totalTests}:`);
     const result = await testLogin();
     
     if (result.success) {
       successCount++;
-      logger.info(`✅ Sucesso (${result.status})`);
+      console.log(`✅ Sucesso (${result.status})`);
     } else {
-      logger.info(`❌ Falha (${result.status}): ${result.error}`);
+      console.log(`❌ Falha (${result.status}): ${result.error}`);
     }
     
     if (i < totalTests) {
@@ -131,27 +130,27 @@ async function runFinalTest() {
     }
   }
   
-  logger.info(`\n📊 RESULTADO FINAL: ${successCount}/${totalTests} sucessos`);
+  console.log(`\n📊 RESULTADO FINAL: ${successCount}/${totalTests} sucessos`);
   
   if (successCount === totalTests) {
-    logger.info('🎉 RATE LIMITING REMOVIDO COM SUCESSO!');
-    logger.info('✅ Sistema pronto para uso!');
+    console.log('🎉 RATE LIMITING REMOVIDO COM SUCESSO!');
+    console.log('✅ Sistema pronto para uso!');
   } else if (successCount > 0) {
-    logger.info('⚠️ Rate limiting parcialmente removido');
-    logger.info('🔄 Pode precisar de mais tempo...');
+    console.log('⚠️ Rate limiting parcialmente removido');
+    console.log('🔄 Pode precisar de mais tempo...');
   } else {
-    logger.info('❌ Rate limiting ainda ativo');
-    logger.info('🔧 Verificar configurações do Railway');
+    console.log('❌ Rate limiting ainda ativo');
+    console.log('🔧 Verificar configurações do Railway');
   }
 }
 
 async function main() {
-  logger.info('🚀 MONITOR DE DEPLOY RAILWAY - REMOÇÃO DE RATE LIMITING');
-  logger.info('=' .repeat(60));
-  logger.info(`📡 Backend: ${BACKEND_URL}`);
-  logger.info(`⏱️ Intervalo: ${INTERVAL/1000}s`);
-  logger.info(`🔄 Máximo: ${MAX_ATTEMPTS} tentativas (${(MAX_ATTEMPTS * INTERVAL/1000/60).toFixed(1)} min)`);
-  logger.info('=' .repeat(60));
+  console.log('🚀 MONITOR DE DEPLOY RAILWAY - REMOÇÃO DE RATE LIMITING');
+  console.log('=' .repeat(60));
+  console.log(`📡 Backend: ${BACKEND_URL}`);
+  console.log(`⏱️ Intervalo: ${INTERVAL/1000}s`);
+  console.log(`🔄 Máximo: ${MAX_ATTEMPTS} tentativas (${(MAX_ATTEMPTS * INTERVAL/1000/60).toFixed(1)} min)`);
+  console.log('=' .repeat(60));
   
   while (attempt < MAX_ATTEMPTS) {
     const success = await runVerification();
@@ -162,25 +161,25 @@ async function main() {
     }
     
     if (attempt < MAX_ATTEMPTS) {
-      logger.info(`\n⏳ Aguardando ${INTERVAL/1000}s para próxima verificação...`);
+      console.log(`\n⏳ Aguardando ${INTERVAL/1000}s para próxima verificação...`);
       await new Promise(resolve => setTimeout(resolve, INTERVAL));
     }
   }
   
-  logger.info('\n⏰ TEMPO LIMITE ATINGIDO');
-  logger.info('❌ Rate limiting ainda não foi removido');
-  logger.info('🔧 Verificar manualmente o Railway Dashboard');
+  console.log('\n⏰ TEMPO LIMITE ATINGIDO');
+  console.log('❌ Rate limiting ainda não foi removido');
+  console.log('🔧 Verificar manualmente o Railway Dashboard');
   process.exit(1);
 }
 
 // Capturar Ctrl+C
 process.on('SIGINT', () => {
-  logger.info('\n\n🛑 Monitor interrompido pelo usuário');
+  console.log('\n\n🛑 Monitor interrompido pelo usuário');
   process.exit(0);
 });
 
 // Executar
 main().catch(error => {
-  logger.error('💥 Erro fatal:', error.message);
+  console.error('💥 Erro fatal:', error.message);
   process.exit(1);
 });

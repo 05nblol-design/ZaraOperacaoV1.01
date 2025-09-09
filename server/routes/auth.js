@@ -5,7 +5,6 @@ const { PrismaClient } = require('@prisma/client');
 const { generateToken, verifyToken } = require('../middleware/auth');
 const { asyncHandler, AppError } = require('../middleware/errorHandler');
 const { captureException } = require('../config/sentry');
-const logger = require('../utils/logger');
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -145,7 +144,7 @@ router.post('/login', [
   const token = generateToken(user.id);
 
   // Log de acesso (temporariamente desabilitado - tabela SystemLog não existe)
-  logger.info(`✅ Login realizado: ${user.email} (${user.role})`);
+  console.log(`✅ Login realizado: ${user.email} (${user.role})`);
 
   res.json({
     success: true,

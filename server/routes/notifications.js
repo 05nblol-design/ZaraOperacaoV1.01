@@ -13,43 +13,28 @@ const prisma = new PrismaClient();
 // @desc    Listar notificações do usuário
 // @route   GET /api/notifications
 // @access  Private (Operator+)
-router.get('/', [
-  query('page').optional().isInt({ min: 1 }).withMessage('Página deve ser um número positivo'),
-  query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit deve ser entre 1 e 100'),
-  query('read').optional().isIn(['true', 'false']).withMessage('Read deve ser true ou false'),
-  query('type').optional().isIn(['QUALITY_TEST_MISSING', 'TEFLON_EXPIRING', 'TEFLON_EXPIRED', 'MACHINE_ALERT', 'MACHINE_STATUS', 'SYSTEM_ALERT']).withMessage('Tipo de notificação inválido'),
-  query('priority').optional().isIn(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).withMessage('Prioridade inválida')
-], requireOperator, asyncHandler(async (req, res) => {
+router.get('/', requireOperator, asyncHandler(async (req, res) => {
   logger.info('=== DEBUG NOTIFICAÇÕES ===');
   logger.info('Query params recebidos:', JSON.stringify(req.query, null, 2));
   logger.info('Headers:', JSON.stringify(req.headers, null, 2));
   logger.info('User:', JSON.stringify(req.user, null, 2));
   
-  const errors = validationResult(req);
-  logger.info('Validation errors:', JSON.stringify(errors.array(), null, 2));
-  
-  if (!errors.isEmpty()) {
-    logger.info('❌ Erro de validação nas notificações:', errors.array());
-    logger.info('❌ Query params recebidos:', req.query);
-    return res.status(400).json({
-      success: false,
-      message: 'Dados de entrada inválidos',
-      code: 'VALIDATION_ERROR',
-      errors: errors.array()
-    });
-  }
+  // Validação removida - permitindo todos os parâmetros opcionais
   
   logger.info('✅ Validação passou, continuando...');
 
   const {
     page = 1,
-    limit = 20,
+    limit = 50,
     read,
     type,
     priority
   } = req.query;
 
-  const skip = (parseInt(page) - 1) * parseInt(limit);
+  // Garantir que page e limit sejam números válidos
+  const pageNum = Math.max(1, parseInt(page) || 1);
+  const limitNum = Math.max(1, Math.min(100, parseInt(limit) || 50));
+  const skip = (pageNum - 1) * limitNum;
   // Garantir que userId seja um número
   const userId = typeof req.user.id === 'string' ? parseInt(req.user.id) : req.user.id;
   
@@ -69,7 +54,7 @@ router.get('/', [
       createdAt: 'desc'
     },
     skip,
-    take: parseInt(limit)
+    take: limitNum
   });
 
   // Contar total
@@ -83,7 +68,7 @@ router.get('/', [
      }
    });
 
-  const totalPages = Math.ceil(total / parseInt(limit));
+  const totalPages = Math.ceil(total / limitNum);
 
   res.json({
     success: true,
@@ -92,8 +77,8 @@ router.get('/', [
       unreadCount
     },
     pagination: {
-      page: parseInt(page),
-      limit: parseInt(limit),
+      page: pageNum,
+      limit: limitNum,
       total,
       totalPages,
       hasNext: parseInt(page) < totalPages,
