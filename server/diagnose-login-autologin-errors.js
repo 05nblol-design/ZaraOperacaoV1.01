@@ -7,7 +7,7 @@ const FRONTEND_URL = 'https://sistema-zara-frontend.vercel.app';
 // Credenciais de teste do auto-login
 const AUTO_LOGIN_CREDENTIALS = {
   email: 'admin@zara.com',
-  password: '123456'
+  password: 'admin123'
 };
 
 // Credenciais de teste válidas

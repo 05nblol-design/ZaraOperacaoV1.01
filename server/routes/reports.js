@@ -1247,6 +1247,75 @@ router.get('/dashboard', asyncHandler(async (req, res) => {
 
 
 
+// @desc    Dados agregados para relatórios
+// @route   GET /api/reports/aggregated
+// @access  Private
+router.get('/aggregated', asyncHandler(async (req, res) => {
+  try {
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    // Buscar dados agregados
+    const todayTests = await prisma.qualityTest.count({
+      where: {
+        testDate: {
+          gte: startOfDay
+        }
+      }
+    });
+
+    const weekTests = await prisma.qualityTest.count({
+      where: {
+        testDate: {
+          gte: startOfWeek
+        }
+      }
+    });
+
+    const monthTests = await prisma.qualityTest.count({
+      where: {
+        testDate: {
+          gte: startOfMonth
+        }
+      }
+    });
+
+    const totalMachines = await prisma.machine.count();
+    const activeMachines = await prisma.machine.count({
+      where: {
+        status: 'RUNNING'
+      }
+    });
+
+    const aggregatedData = {
+      tests: {
+        today: todayTests,
+        week: weekTests,
+        month: monthTests
+      },
+      machines: {
+        total: totalMachines,
+        active: activeMachines,
+        efficiency: totalMachines > 0 ? Math.round((activeMachines / totalMachines) * 100) : 0
+      },
+      timestamp: now
+    };
+
+    res.json({
+      success: true,
+      data: aggregatedData
+    });
+  } catch (error) {
+    console.error('Erro nos dados agregados:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
+  }
+}));
+
 // Endpoint para dados do dashboard do líder
 router.get('/leader-dashboard', requireLeader, asyncHandler(async (req, res) => {
   const { timeRange = 'today' } = req.query;

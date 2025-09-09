@@ -15,15 +15,18 @@ const prisma = new PrismaClient();
 router.get('/', [
   query('page').optional().isInt({ min: 1 }).withMessage('Página deve ser um número positivo'),
   query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit deve ser entre 1 e 100'),
-  query('read').optional().isBoolean().withMessage('Read deve ser boolean'),
+  query('read').optional().isIn(['true', 'false']).withMessage('Read deve ser true ou false'),
   query('type').optional().isIn(['QUALITY_TEST_MISSING', 'TEFLON_EXPIRING', 'TEFLON_EXPIRED', 'MACHINE_ALERT', 'MACHINE_STATUS', 'SYSTEM_ALERT']).withMessage('Tipo de notificação inválido'),
   query('priority').optional().isIn(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).withMessage('Prioridade inválida')
 ], requireOperator, asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Erro de validação nas notificações:', errors.array());
+    console.log('Query params recebidos:', req.query);
     return res.status(400).json({
       success: false,
-      message: 'Parâmetros inválidos',
+      message: 'Dados de entrada inválidos',
+      code: 'VALIDATION_ERROR',
       errors: errors.array()
     });
   }
