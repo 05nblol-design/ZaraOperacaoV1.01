@@ -164,4 +164,4 @@ async function main() {
 }
 
 // Executar
-logger.error(main().catch(console.error););
+// REMOVED: logger.error(main().catch(console.error);); // Console log removido

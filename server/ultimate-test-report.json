@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-09-09T04:08:00.975Z",
+  "connectivity": {
+    "status": "FAILED",
+    "details": {
+      "error": "Request failed with status code 404",
+      "status": 404
+    }
+  },
+  "authentication": {
+    "status": "FAILED",
+    "details": {
+      "error": "Request failed with status code 404",
+      "status": 404
+    }
+  },
+  "endpoints": {
+    "status": "PARTIAL",
+    "details": {
+      "working": 0,
+      "total": 3,
+      "results": {
+        "/api/products": "FAILED",
+        "/api/categories": "FAILED",
+        "/api/users/profile": "FAILED"
+      }
+    }
+  },
+  "consoleLogs": {
+    "status": "SUCCESS",
+    "details": {
+      "totalFound": 0,
+      "locations": []
+    }
+  },
+  "logging": {
+    "status": "SUCCESS",
+    "details": {
+      "logFilesFound": 0,
+      "totalLogFiles": 3
+    }
+  },
+  "overall": {
+    "status": "CRITICAL",
+    "score": 40
+  }
+}

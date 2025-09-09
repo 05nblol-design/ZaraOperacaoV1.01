@@ -72,4 +72,4 @@ async function updateCorsConfiguration() {
     }
 }
 
-logger.error(updateCorsConfiguration().catch(console.error););
+// REMOVED: logger.error(updateCorsConfiguration().catch(console.error);); // Console log removido
