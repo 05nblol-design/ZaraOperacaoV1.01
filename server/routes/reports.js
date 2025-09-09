@@ -1131,7 +1131,7 @@ router.get('/dashboard', asyncHandler(async (req, res) => {
     // Buscar testes de qualidade
     const todayTests = await prisma.qualityTest.findMany({
       where: {
-        testDate: {
+        createdAt: {
           gte: startOfDay
         }
       },
@@ -1143,7 +1143,7 @@ router.get('/dashboard', asyncHandler(async (req, res) => {
 
     const weekTests = await prisma.qualityTest.findMany({
       where: {
-        testDate: {
+        createdAt: {
           gte: startOfWeek
         }
       }
@@ -1170,7 +1170,7 @@ router.get('/dashboard', asyncHandler(async (req, res) => {
     const previousWeekStart = new Date(startOfWeek.getTime() - 7 * 24 * 60 * 60 * 1000);
     const previousWeekTests = await prisma.qualityTest.findMany({
       where: {
-        testDate: {
+        createdAt: {
           gte: previousWeekStart,
           lt: startOfWeek
         }
@@ -1196,10 +1196,10 @@ router.get('/dashboard', asyncHandler(async (req, res) => {
       .map(test => ({
         id: test.id.toString(),
         type: 'quality_test',
-        message: `Teste de qualidade ${test.approved ? 'aprovado' : 'reprovado'} na ${test.machine.name}`,
+        message: `Teste de qualidade realizado na ${test.machine.name}`,
         user: test.user.name,
-        timestamp: test.testDate,
-        status: test.approved ? 'success' : 'error'
+        timestamp: test.createdAt,
+        status: 'success'
       }))
       .reverse();
 
@@ -1260,7 +1260,7 @@ router.get('/aggregated', asyncHandler(async (req, res) => {
     // Buscar dados agregados
     const todayTests = await prisma.qualityTest.count({
       where: {
-        testDate: {
+        createdAt: {
           gte: startOfDay
         }
       }
@@ -1268,7 +1268,7 @@ router.get('/aggregated', asyncHandler(async (req, res) => {
 
     const weekTests = await prisma.qualityTest.count({
       where: {
-        testDate: {
+        createdAt: {
           gte: startOfWeek
         }
       }
@@ -1276,7 +1276,7 @@ router.get('/aggregated', asyncHandler(async (req, res) => {
 
     const monthTests = await prisma.qualityTest.count({
       where: {
-        testDate: {
+        createdAt: {
           gte: startOfMonth
         }
       }
