@@ -148,10 +148,10 @@ const getRateLimitConfig = () => {
       }
     },
     
-    // Rate limit para autenticação
+    // Rate limit para autenticação - DESABILITADO
     auth: {
       windowMs: 15 * 60 * 1000, // 15 minutos
-      max: isProduction ? 5 : 50, // produção: 5, desenvolvimento: 50
+      max: 10000, // DESABILITADO - permitir muitas tentativas
       message: {
         error: 'Muitas tentativas de login',
         message: 'Tente novamente em 15 minutos',

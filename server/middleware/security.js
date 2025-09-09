@@ -1,10 +1,10 @@
 const rateLimit = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
 
-// Rate limiting específico para autenticação
+// Rate limiting específico para autenticação - DESABILITADO
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 5, // máximo 5 tentativas de login por IP
+  max: 10000, // DESABILITADO - permitir muitas tentativas
   message: {
     error: 'Muitas tentativas de login',
     message: 'Tente novamente em 15 minutos',
