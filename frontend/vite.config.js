@@ -4,6 +4,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 
 // https://vitejs.dev/config/
+// Railway Backend Configuration
+const RAILWAY_BACKEND_URL = 'https://zara-backend-production-aab3.up.railway.app';
+const RAILWAY_API_URL = 'https://zara-backend-production-aab3.up.railway.app/api';
+
 export default defineConfig({
   plugins: [
     react(),

@@ -1,7 +1,28 @@
 {
+  "name": "zara-frontend",
+  "version": 2,
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "framework": "vite",
+  "regions": [
+    "gru1"
+  ],
+  "env": {
+    "VITE_API_URL": "https://zara-backend-production-aab3.up.railway.app/api",
+    "VITE_SOCKET_URL": "https://zara-backend-production-aab3.up.railway.app",
+    "VITE_BACKEND_URL": "https://zara-backend-production-aab3.up.railway.app",
+    "VITE_APP_NAME": "Sistema ZARA",
+    "VITE_APP_VERSION": "1.0.1",
+    "VITE_NODE_ENV": "production",
+    "VITE_ENVIRONMENT": "production",
+    "VITE_BUILD_SOURCEMAP": "false",
+    "VITE_BUILD_MINIFY": "true",
+    "VITE_SECURE_COOKIES": "true",
+    "VITE_HTTPS_ONLY": "true",
+    "VITE_API_TIMEOUT": "30000",
+    "VITE_MAX_RETRIES": "3"
+  },
   "rewrites": [
     {
       "source": "/(.*)",
@@ -31,6 +52,10 @@
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; connect-src 'self' https://zara-backend-production-aab3.up.railway.app https://zara-backend-production-aab3.up.railway.app/api wss://*.railway.app ws://*.railway.app; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
         }
       ]
     },
@@ -44,5 +69,9 @@
       ]
     }
   ],
-  "regions": ["gru1"]
+  "functions": {
+    "app/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
