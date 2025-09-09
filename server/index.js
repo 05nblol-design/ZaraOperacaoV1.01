@@ -101,7 +101,7 @@ app.use(httpsRedirect);
 app.use(httpsSecurityHeaders);
 app.use(limiter);
 app.use(cors(corsOptions));
-app.use(validateSecurityHeaders);
+// app.use(validateSecurityHeaders); // DESABILITADO TEMPORARIAMENTE
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(sanitizeInput);
@@ -146,8 +146,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Rotas públicas
-app.use('/api/auth', authLimiter, authRoutes);
+// Rotas públicas - RATE LIMITING REMOVIDO
+app.use('/api/auth', authRoutes);
 
 // Rotas protegidas
 app.use('/api/users', authenticateToken, userRoutes);

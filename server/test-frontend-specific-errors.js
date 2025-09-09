@@ -53,7 +53,7 @@ async function testFrontendSpecificErrors() {
   // 2. Testar endpoint de notificações
   console.log('\n2️⃣ Testando endpoint de notificações...');
   try {
-    const response = await axios.get(`${BACKEND_URL}/api/notifications?limit=20`, {
+    const response = await axios.get(`${BACKEND_URL}/api/notifications?page=1&limit=10`, {
       timeout: 10000,
       headers: {
         'Authorization': `Bearer ${authToken}`,
