@@ -15,8 +15,10 @@
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
+    "build": "npm install && npx prisma generate && npx prisma db push",
     "railway:build": "npm install && prisma generate",
-    "railway:start": "prisma migrate deploy && npm start"
+    "railway:start": "prisma migrate deploy && npm start",
+    "railway:deploy": "npx prisma db push && npm start"
   },
   "prisma": {
     "seed": "node prisma/seed.js"

@@ -54,6 +54,9 @@ const RealTimeProductionService = require('./services/realTimeProductionService'
 
 const app = express();
 
+// Configurar trust proxy para Railway (corrige ERR_ERL_UNEXPECTED_X_FORWARDED_FOR)
+app.set('trust proxy', 1);
+
 // Criar servidor HTTP
 const server = createServer(app);
 
