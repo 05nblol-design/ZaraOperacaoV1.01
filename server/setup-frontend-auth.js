@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 
 const prisma = new PrismaClient();
 const JWT_SECRET = 'zara-jwt-secret-key-2024';
@@ -12,11 +13,11 @@ async function setupFrontendAuth() {
     });
     
     if (!user) {
-      console.log('❌ Usuário Lucas não encontrado');
+      logger.info('❌ Usuário Lucas não encontrado'););
       return;
     }
     
-    console.log('👤 Usuário encontrado:', {
+    logger.info('👤 Usuário encontrado:', {);
       id: user.id,
       name: user.name,
       email: user.email,
@@ -31,29 +32,29 @@ async function setupFrontendAuth() {
       { expiresIn: '7d' }
     );
     
-    console.log('\n🔑 Token gerado:');
-    console.log(token);
+    logger.info('\n🔑 Token gerado:'););
+    logger.info(token););
     
-    console.log('\n📋 Instruções para configurar no frontend:');
-    console.log('1. Abra o DevTools do navegador (F12)');
-    console.log('2. Vá para a aba Console');
-    console.log('3. Execute os seguintes comandos:');
-    console.log('');
-    console.log(`localStorage.setItem('token', '${token}');`);
-    console.log(`localStorage.setItem('user', '${JSON.stringify({
+    logger.info('\n📋 Instruções para configurar no frontend:'););
+    logger.info('1. Abra o DevTools do navegador (F12)'););
+    logger.info('2. Vá para a aba Console'););
+    logger.info('3. Execute os seguintes comandos:'););
+    logger.info(''););
+    logger.info(`localStorage.setItem('token', '${token}');`););
+    logger.info(`localStorage.setItem('user', '${JSON.stringify({);
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
       isActive: user.isActive
     })}');`);
-    console.log('');
-    console.log('4. Recarregue a página (F5)');
-    console.log('');
-    console.log('✅ Após isso, todos os erros de autenticação devem ser resolvidos!');
+    logger.info(''););
+    logger.info('4. Recarregue a página (F5)'););
+    logger.info(''););
+    logger.info('✅ Após isso, todos os erros de autenticação devem ser resolvidos!'););
     
   } catch (error) {
-    console.error('❌ Erro:', error);
+    logger.error('❌ Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

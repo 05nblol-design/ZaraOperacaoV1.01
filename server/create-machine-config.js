@@ -1,12 +1,13 @@
 const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
+const logger = require('utils/logger');
 
 async function createMachineConfig() {
   const client = new MongoClient(process.env.DATABASE_URL);
   
   try {
     await client.connect();
-    console.log('✅ Conectado ao MongoDB');
+    logger.info('✅ Conectado ao MongoDB'););
     
     const db = client.db();
     const machineConfigsCollection = db.collection('machine_configs');
@@ -20,7 +21,7 @@ async function createMachineConfig() {
       const existingConfig = await machineConfigsCollection.findOne({ machineId: machine._id });
       
       if (existingConfig) {
-        console.log(`⚠️  Configuração já existe para máquina ${machine.name}`);
+        logger.info(`⚠️  Configuração já existe para máquina ${machine.name}`););
         continue;
       }
       
@@ -69,13 +70,13 @@ async function createMachineConfig() {
       };
       
       const result = await machineConfigsCollection.insertOne(config);
-      console.log(`✅ Configuração criada para máquina ${machine.name} - ID: ${result.insertedId}`);
+      logger.info(`✅ Configuração criada para máquina ${machine.name} - ID: ${result.insertedId}`););
     }
     
-    console.log('\n📋 Configurações criadas com sucesso!');
+    logger.info('\n📋 Configurações criadas com sucesso!'););
     
   } catch (error) {
-    console.error('❌ Erro ao criar configurações:', error);
+    logger.error('❌ Erro ao criar configurações:', error););
   } finally {
     await client.close();
   }

@@ -1,10 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
 const RealTimeProductionService = require('./services/realTimeProductionService');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function forceProductionUpdate() {
   try {
-    console.log('🔄 Forçando atualização de produção...');
+    logger.info('🔄 Forçando atualização de produção...'););
     
     // Criar uma instância do serviço (sem WebSocket para teste)
     const productionService = new RealTimeProductionService(null);
@@ -12,7 +13,7 @@ async function forceProductionUpdate() {
     // Executar atualização manual
     await productionService.updateProduction();
     
-    console.log('✅ Atualização de produção concluída');
+    logger.info('✅ Atualização de produção concluída'););
     
     // Verificar dados atualizados
     const today = new Date();
@@ -30,15 +31,15 @@ async function forceProductionUpdate() {
       }
     });
     
-    console.log('\n📊 Dados de produção após atualização:');
+    logger.info('\n📊 Dados de produção após atualização:'););
     shiftData.forEach(shift => {
-      console.log(`- ${shift.machine.name}: ${shift.totalProduction} peças (${shift.operator.name})`);
-      console.log(`  Última atualização: ${shift.lastUpdate}`);
+      logger.info(`- ${shift.machine.name}: ${shift.totalProduction} peças (${shift.operator.name})`););
+      logger.info(`  Última atualização: ${shift.lastUpdate}`););
     });
     
   } catch (error) {
-    console.error('❌ Erro ao forçar atualização:', error.message);
-    console.error(error.stack);
+    logger.error('❌ Erro ao forçar atualização:', error.message););
+    logger.error(error.stack););
   } finally {
     await prisma.$disconnect();
   }

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const logger = require('utils/logger');
 
 // Gerar token para o operador Lucas
 const token = jwt.sign(
@@ -15,13 +16,13 @@ const user = {
   isActive: true
 };
 
-console.log('🔑 Token gerado para o navegador:');
-console.log(token);
-console.log('\n📋 Execute estes comandos no console do navegador (F12):');
-console.log('');
-console.log(`localStorage.setItem('token', '${token}');`);
-console.log(`localStorage.setItem('user', '${JSON.stringify(user)}');`);
-console.log('');
-console.log('✅ Depois recarregue a página (F5)');
-console.log('');
-console.log('👤 Usuário configurado:', user);
+logger.info('🔑 Token gerado para o navegador:'););
+logger.info(token););
+logger.info('\n📋 Execute estes comandos no console do navegador (F12):'););
+logger.info(''););
+logger.info(`localStorage.setItem('token', '${token}');`););
+logger.info(`localStorage.setItem('user', '${JSON.stringify(user)}');`););
+logger.info(''););
+logger.info('✅ Depois recarregue a página (F5)'););
+logger.info(''););
+logger.info('👤 Usuário configurado:', user););

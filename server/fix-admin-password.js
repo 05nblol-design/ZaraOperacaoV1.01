@@ -1,10 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function fixAdminPassword() {
   try {
-    console.log('🔧 Corrigindo senha do admin...');
+    logger.info('🔧 Corrigindo senha do admin...'););
     
     // Gerar novo hash para a senha admin123
     const newPassword = await bcrypt.hash('admin123', 12);
@@ -15,17 +16,17 @@ async function fixAdminPassword() {
       data: { password: newPassword }
     });
     
-    console.log('✅ Senha do admin atualizada com sucesso!');
-    console.log('Email:', updatedAdmin.email);
-    console.log('Novo hash:', newPassword);
+    logger.info('✅ Senha do admin atualizada com sucesso!'););
+    logger.info('Email:', updatedAdmin.email););
+    logger.info('Novo hash:', newPassword););
     
     // Testar a nova senha
     const isValid = await bcrypt.compare('admin123', newPassword);
-    console.log('\n🔍 Teste da nova senha:');
-    console.log('Senha válida:', isValid);
+    logger.info('\n🔍 Teste da nova senha:'););
+    logger.info('Senha válida:', isValid););
     
   } catch (error) {
-    console.error('❌ Erro ao corrigir senha:', error);
+    logger.error('❌ Erro ao corrigir senha:', error););
   } finally {
     await prisma.$disconnect();
   }

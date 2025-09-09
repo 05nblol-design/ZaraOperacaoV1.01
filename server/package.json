@@ -52,7 +52,8 @@
     "sharp": "^0.33.1",
     "socket.io": "^4.7.4",
     "socket.io-client": "^4.8.1",
-    "sonner": "^2.0.7"
+    "sonner": "^2.0.7",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.8",

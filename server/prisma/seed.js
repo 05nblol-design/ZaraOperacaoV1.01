@@ -1,10 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
+const logger = require('../utils/logger');
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Iniciando seed do banco de dados...');
+  logger.info('🌱 Iniciando seed do banco de dados...'););
 
   try {
     // Verificar se já existem usuários
@@ -12,18 +13,18 @@ async function main() {
     const existingMachines = await prisma.machine.count();
     
     if (existingUsers > 0 && existingMachines > 0) {
-      console.log('✅ Dados já existem no banco de dados');
-      console.log('📋 Credenciais de acesso:');
-      console.log('Admin: admin@zara.com / admin123');
-      console.log('Gestor: manager@zara.com / manager123');
-      console.log('Líder: leader@zara.com / leader123');
-      console.log('Operador: operator@zara.com / operator123');
+      logger.info('✅ Dados já existem no banco de dados'););
+      logger.info('📋 Credenciais de acesso:'););
+      logger.info('Admin: admin@zara.com / admin123'););
+      logger.info('Gestor: manager@zara.com / manager123'););
+      logger.info('Líder: leader@zara.com / leader123'););
+      logger.info('Operador: operator@zara.com / operator123'););
       return;
     }
     
     // Criar apenas máquinas se não existirem
     if (existingMachines === 0) {
-      console.log('🏭 Criando máquinas...');
+      logger.info('🏭 Criando máquinas...'););
       
       for (let i = 1; i <= 10; i++) {
          await prisma.machine.create({
@@ -37,17 +38,17 @@ async function main() {
            }
          });
       }
-      console.log('✅ Máquinas criadas com sucesso!');
+      logger.info('✅ Máquinas criadas com sucesso!'););
       return;
     }
     
     if (existingUsers > 0) {
-      console.log('✅ Usuários já existem no banco de dados');
+      logger.info('✅ Usuários já existem no banco de dados'););
       return;
     }
 
     // Criar usuários
-    console.log('👥 Criando usuários...');
+    logger.info('👥 Criando usuários...'););
     
     const adminPassword = await bcrypt.hash('admin123', 12);
     const managerPassword = await bcrypt.hash('manager123', 12);
@@ -138,10 +139,10 @@ async function main() {
       }
     });
 
-    console.log('✅ Usuários criados com sucesso!');
+    logger.info('✅ Usuários criados com sucesso!'););
 
     // Criar máquinas
-    console.log('🏭 Criando máquinas...');
+    logger.info('🏭 Criando máquinas...'););
     
     const machines = [];
     for (let i = 1; i <= 10; i++) {
@@ -161,10 +162,10 @@ async function main() {
       machines.push(machine);
     }
 
-    console.log('✅ Máquinas criadas com sucesso!');
+    logger.info('✅ Máquinas criadas com sucesso!'););
 
     // Criar operações de máquina
-    console.log('⚙️ Criando operações de máquina...');
+    logger.info('⚙️ Criando operações de máquina...'););
     
     const operations = [];
     for (let i = 0; i < 5; i++) {
@@ -187,10 +188,10 @@ async function main() {
       operations.push(operation);
     }
 
-    console.log('✅ Operações criadas com sucesso!');
+    logger.info('✅ Operações criadas com sucesso!'););
 
     // Criar trocas de teflon
-    console.log('🔧 Criando registros de teflon...');
+    logger.info('🔧 Criando registros de teflon...'););
     
     for (let i = 0; i < machines.length; i++) {
       const machine = machines[i];
@@ -215,10 +216,10 @@ async function main() {
       });
     }
 
-    console.log('✅ Registros de teflon criados com sucesso!');
+    logger.info('✅ Registros de teflon criados com sucesso!'););
 
     // Criar testes de qualidade
-    console.log('🔍 Criando testes de qualidade...');
+    logger.info('🔍 Criando testes de qualidade...'););
     
     const products = ['Produto A', 'Produto B', 'Produto C', 'Produto D'];
     const packageSizes = ['P', 'M', 'G', 'GG'];
@@ -255,10 +256,10 @@ async function main() {
       });
     }
 
-    console.log('✅ Testes de qualidade criados com sucesso!');
+    logger.info('✅ Testes de qualidade criados com sucesso!'););
 
     // Criar notificações
-    console.log('🔔 Criando notificações...');
+    logger.info('🔔 Criando notificações...'););
     
     const notifications = [
       {
@@ -313,10 +314,10 @@ async function main() {
       });
     }
 
-    console.log('✅ Notificações criadas com sucesso!');
+    logger.info('✅ Notificações criadas com sucesso!'););
 
     // Criar logs do sistema
-    console.log('📝 Criando logs do sistema...');
+    logger.info('📝 Criando logs do sistema...'););
     
     const logActions = [
       'USER_LOGIN',
@@ -350,7 +351,7 @@ async function main() {
       });
     }
 
-    console.log('✅ Logs do sistema criados com sucesso!');
+    logger.info('✅ Logs do sistema criados com sucesso!'););
 
     // Estatísticas finais
     const stats = {
@@ -363,31 +364,31 @@ async function main() {
       systemLogs: await prisma.systemLog.count()
     };
 
-    console.log('\n📊 Estatísticas do seed:');
-    console.log(`👥 Usuários: ${stats.users}`);
-    console.log(`🏭 Máquinas: ${stats.machines}`);
-    console.log(`⚙️ Operações: ${stats.operations}`);
-    console.log(`🔍 Testes de Qualidade: ${stats.qualityTests}`);
-    console.log(`🔧 Trocas de Teflon: ${stats.teflonChanges}`);
-    console.log(`🔔 Notificações: ${stats.notifications}`);
-    console.log(`📝 Logs do Sistema: ${stats.systemLogs}`);
+    logger.info('\n📊 Estatísticas do seed:'););
+    logger.info(`👥 Usuários: ${stats.users}`););
+    logger.info(`🏭 Máquinas: ${stats.machines}`););
+    logger.info(`⚙️ Operações: ${stats.operations}`););
+    logger.info(`🔍 Testes de Qualidade: ${stats.qualityTests}`););
+    logger.info(`🔧 Trocas de Teflon: ${stats.teflonChanges}`););
+    logger.info(`🔔 Notificações: ${stats.notifications}`););
+    logger.info(`📝 Logs do Sistema: ${stats.systemLogs}`););
 
-    console.log('\n🎉 Seed concluído com sucesso!');
-    console.log('\n📋 Credenciais de acesso:');
-    console.log('Admin: admin@zara.com / admin123');
-    console.log('Gestor: joao.silva@zara.com / manager123');
-    console.log('Líder: maria.santos@zara.com / leader123');
-    console.log('Operador: ana.costa@zara.com / operator123');
+    logger.info('\n🎉 Seed concluído com sucesso!'););
+    logger.info('\n📋 Credenciais de acesso:'););
+    logger.info('Admin: admin@zara.com / admin123'););
+    logger.info('Gestor: joao.silva@zara.com / manager123'););
+    logger.info('Líder: maria.santos@zara.com / leader123'););
+    logger.info('Operador: ana.costa@zara.com / operator123'););
 
   } catch (error) {
-    console.error('❌ Erro durante o seed:', error);
+    logger.error('❌ Erro durante o seed:', error););
     throw error;
   }
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Erro fatal no seed:', e);
+    logger.error('❌ Erro fatal no seed:', e););
     process.exit(1);
   })
   .finally(async () => {

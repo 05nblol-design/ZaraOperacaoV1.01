@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const logger = require('utils/logger');
 
 const schemaPath = path.join(__dirname, 'prisma', 'schema.prisma');
 
@@ -19,7 +20,7 @@ function log(message, color = 'reset') {
     reset: '\x1b[0m',
     bold: '\x1b[1m'
   };
-  console.log(`${colors[color]}${message}${colors.reset}`);
+  logger.info(`${colors[color]}${message}${colors.reset}`););
 }
 
 function fixSchema() {

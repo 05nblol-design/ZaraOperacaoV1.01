@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function checkUser() {
@@ -14,16 +15,16 @@ async function checkUser() {
       }
     });
     
-    console.log('User found:', JSON.stringify(user, null, 2));
+    logger.info('User found:', JSON.stringify(user, null, 2)););
     
     if (user) {
-      console.log('\nUser role:', user.role);
-      console.log('Machine permissions count:', user.machinePermissions.length);
+      logger.info('\nUser role:', user.role););
+      logger.info('Machine permissions count:', user.machinePermissions.length););
     } else {
-      console.log('User not found!');
+      logger.info('User not found!'););
     }
   } catch (error) {
-    console.error('Error:', error);
+    logger.error('Error:', error););
   } finally {
     await prisma.$disconnect();
   }

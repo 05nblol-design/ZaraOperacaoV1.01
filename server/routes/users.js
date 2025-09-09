@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const { requireLeader, requireManager, authenticateToken } = require('../middleware/auth');
 const { asyncHandler, AppError } = require('../middleware/errorHandler');
 const { setCache, getCache, deleteCache } = require('../config/redis');
+const logger = require('../utils/logger');
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -673,12 +674,12 @@ router.put('/profile', [
     .normalizeEmail()
     .withMessage('Email inválido')
 ], asyncHandler(async (req, res) => {
-  console.log('PUT /profile - req.body:', req.body);
-  console.log('PUT /profile - req.user:', req.user);
+  logger.info('PUT /profile - req.body:', req.body););
+  logger.info('PUT /profile - req.user:', req.user););
   
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log('PUT /profile - Validation errors:', errors.array());
+    logger.info('PUT /profile - Validation errors:', errors.array()););
     return res.status(400).json({
       success: false,
       message: 'Dados inválidos',

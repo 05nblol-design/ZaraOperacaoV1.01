@@ -11,6 +11,7 @@ const {
   calculateDailyProduction
 } = require('../services/productionService');
 const notificationService = require('../services/notificationService');
+const logger = require('../utils/logger');
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -409,12 +410,12 @@ router.post('/:id/start-operation', [
   ShiftMiddleware.trackMachineOperation,
   ShiftMiddleware.updateShiftData,
   asyncHandler(async (req, res) => {
-  console.log('🚀 INÍCIO DO ENDPOINT START-OPERATION');
-  console.log('📋 Parâmetros recebidos:', req.params);
-  console.log('📋 Body recebido:', req.body);
-  console.log('👤 Usuário completo:', JSON.stringify(req.user, null, 2));
-  console.log('👤 Nome do usuário:', req.user?.name);
-  console.log('👤 ID do usuário:', req.user?.id);
+  logger.info('🚀 INÍCIO DO ENDPOINT START-OPERATION'););
+  logger.info('📋 Parâmetros recebidos:', req.params););
+  logger.info('📋 Body recebido:', req.body););
+  logger.info('👤 Usuário completo:', JSON.stringify(req.user, null, 2)););
+  logger.info('👤 Nome do usuário:', req.user?.name););
+  logger.info('👤 ID do usuário:', req.user?.id););
   
   const { id } = req.params;
   const { notes } = req.body;
@@ -423,11 +424,11 @@ router.post('/:id/start-operation', [
   const isNumericId = /^\d+$/.test(id);
   let machine;
   
-  console.log(`🔍 Buscando máquina - ID: ${id}, É numérico: ${isNumericId}`);
+  logger.info(`🔍 Buscando máquina - ID: ${id}, É numérico: ${isNumericId}`););
   
   if (isNumericId) {
     const numericId = parseInt(id);
-    console.log(`🔍 Buscando por ID numérico: ${numericId}`);
+    logger.info(`🔍 Buscando por ID numérico: ${numericId}`););
     machine = await prisma.machine.findUnique({
       where: { id: numericId },
       include: {
@@ -437,7 +438,7 @@ router.post('/:id/start-operation', [
       }
     });
   } else {
-    console.log(`🔍 Buscando por código: ${id}`);
+    logger.info(`🔍 Buscando por código: ${id}`););
     machine = await prisma.machine.findUnique({
       where: { code: id },
       include: {
@@ -448,30 +449,30 @@ router.post('/:id/start-operation', [
     });
   }
 
-  console.log(`🔍 Máquina encontrada:`, machine ? `Sim - ${machine.name}` : 'Não');
+  logger.info(`🔍 Máquina encontrada:`, machine ? `Sim - ${machine.name}` : 'Não'););
   if (machine) {
-    console.log(`📊 Dados completos da máquina:`, JSON.stringify(machine, null, 2));
-    console.log(`📊 Nome da máquina: ${machine.name}`);
-    console.log(`📊 Status da máquina: ${machine.status}`);
-    console.log(`📊 isActive: ${machine.isActive}`);
-    console.log(`📊 Operações ativas: ${machine.operations.length}`);
+    logger.info(`📊 Dados completos da máquina:`, JSON.stringify(machine, null, 2)););
+    logger.info(`📊 Nome da máquina: ${machine.name}`););
+    logger.info(`📊 Status da máquina: ${machine.status}`););
+    logger.info(`📊 isActive: ${machine.isActive}`););
+    logger.info(`📊 Operações ativas: ${machine.operations.length}`););
   }
 
   if (!machine) {
-    console.log(`❌ Máquina não encontrada - ID: ${id}, isNumericId: ${isNumericId}`);
+    logger.info(`❌ Máquina não encontrada - ID: ${id}, isNumericId: ${isNumericId}`););
     throw new AppError('Máquina não encontrada', 404, 'MACHINE_NOT_FOUND');
   }
 
   // Continuar verificações de disponibilidade
-  console.log('🔍 Verificando se máquina está ativa...');
+  logger.info('🔍 Verificando se máquina está ativa...'););
   if (!machine.isActive) {
-    console.log('❌ Máquina inativa');
+    logger.info('❌ Máquina inativa'););
     throw new AppError('Máquina inativa', 400, 'MACHINE_INACTIVE');
   }
 
-  console.log('🔍 Verificando se máquina já está em operação...');
+  logger.info('🔍 Verificando se máquina já está em operação...'););
   if (machine.operations.length > 0) {
-    console.log('❌ Máquina já está em operação');
+    logger.info('❌ Máquina já está em operação'););
     throw new AppError('Máquina já está em operação', 400, 'MACHINE_IN_USE');
   }
 
@@ -558,12 +559,12 @@ router.post('/:id/start-operation', [
         }
       });
       
-      console.log(`✅ Dados de turno inicializados - Máquina: ${machine.name}, Operador: ${req.user.name}, Turno: ${shiftType}`);
+      logger.info(`✅ Dados de turno inicializados - Máquina: ${machine.name}, Operador: ${req.user.name}, Turno: ${shiftType}`););
     } else {
-      console.log(`ℹ️ Dados de turno já existem para hoje - Máquina: ${machine.name}, Operador: ${req.user.name}`);
+      logger.info(`ℹ️ Dados de turno já existem para hoje - Máquina: ${machine.name}, Operador: ${req.user.name}`););
     }
   } catch (shiftError) {
-    console.error('Erro ao inicializar dados de turno:', shiftError);
+    logger.error('Erro ao inicializar dados de turno:', shiftError););
     // Não falhar a operação por causa disso
   }
 
@@ -581,7 +582,7 @@ router.post('/:id/start-operation', [
     timestamp: new Date()
   };
   
-  console.log('🚀 Enviando evento machine:operation-started:', eventData);
+  logger.info('🚀 Enviando evento machine:operation-started:', eventData););
   req.io.emit('machine:operation-started', eventData);
   
   // Emitir evento de atualização de produção para sincronização em tempo real
@@ -618,7 +619,7 @@ router.post('/:id/start-operation', [
       data: notifications
     });
   } catch (notificationError) {
-    console.error('Erro ao enviar notificação de início de operação:', notificationError);
+    logger.error('Erro ao enviar notificação de início de operação:', notificationError););
   }
 
   res.status(201).json({
@@ -637,12 +638,12 @@ router.post('/:id/end-operation', [
   ShiftMiddleware.trackMachineOperation,
   ShiftMiddleware.updateShiftData,
   asyncHandler(async (req, res) => {
-  console.log('🛑 INÍCIO DO ENDPOINT END-OPERATION');
-  console.log('📋 Parâmetros recebidos:', req.params);
-  console.log('📋 Body recebido:', req.body);
-  console.log('👤 Usuário completo:', JSON.stringify(req.user, null, 2));
-  console.log('👤 Nome do usuário:', req.user?.name);
-  console.log('👤 ID do usuário:', req.user?.id);
+  logger.info('🛑 INÍCIO DO ENDPOINT END-OPERATION'););
+  logger.info('📋 Parâmetros recebidos:', req.params););
+  logger.info('📋 Body recebido:', req.body););
+  logger.info('👤 Usuário completo:', JSON.stringify(req.user, null, 2)););
+  logger.info('👤 Nome do usuário:', req.user?.name););
+  logger.info('👤 ID do usuário:', req.user?.id););
   
   const { id } = req.params;
   const { notes } = req.body;
@@ -651,11 +652,11 @@ router.post('/:id/end-operation', [
   const isNumericId = /^\d+$/.test(id);
   let machine;
   
-  console.log(`🔍 Finalizando operação - ID: ${id}, É numérico: ${isNumericId}`);
+  logger.info(`🔍 Finalizando operação - ID: ${id}, É numérico: ${isNumericId}`););
   
   if (isNumericId) {
     const numericId = parseInt(id);
-    console.log(`🔍 Buscando por ID numérico: ${numericId}`);
+    logger.info(`🔍 Buscando por ID numérico: ${numericId}`););
     machine = await prisma.machine.findUnique({
       where: { id: numericId },
       include: {
@@ -665,7 +666,7 @@ router.post('/:id/end-operation', [
       }
     });
   } else {
-    console.log(`🔍 Buscando por código: ${id}`);
+    logger.info(`🔍 Buscando por código: ${id}`););
     machine = await prisma.machine.findUnique({
       where: { code: id },
       include: {
@@ -741,7 +742,7 @@ router.post('/:id/end-operation', [
     timestamp: new Date()
   };
   
-  console.log('🛑 Enviando evento machine:operation-ended:', eventData);
+  logger.info('🛑 Enviando evento machine:operation-ended:', eventData););
   req.io.emit('machine:operation-ended', eventData);
 
   // Enviar notificação para líderes e gestores
@@ -771,7 +772,7 @@ router.post('/:id/end-operation', [
       data: notifications
     });
   } catch (notificationError) {
-    console.error('Erro ao enviar notificação de fim de operação:', notificationError);
+    logger.error('Erro ao enviar notificação de fim de operação:', notificationError););
   }
 
   res.json({
@@ -1007,7 +1008,7 @@ router.put('/:id/config', [
       }
     });
   } catch (logError) {
-    console.error('Erro ao criar log:', logError);
+    logger.error('Erro ao criar log:', logError););
     // Não falhar a operação por causa do log
   }
 
@@ -1046,7 +1047,7 @@ router.put('/:id/status', [
   ShiftMiddleware.trackMachineOperation,
   ShiftMiddleware.updateShiftData,
   asyncHandler(async (req, res) => {
-  console.log('🚀 Iniciando PUT /:id/status - req.user:', req.user);
+  logger.info('🚀 Iniciando PUT /:id/status - req.user:', req.user););
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new AppError('Dados inválidos', 400, errors.array());
@@ -1064,18 +1065,18 @@ router.put('/:id/status', [
   };
   
   let userId = req.user.id;
-  console.log('🔍 Debug - userId original:', req.user.id, 'tipo:', typeof req.user.id);
-  console.log('🔍 Debug - testUserIdMap[userId]:', testUserIdMap[userId]);
+  logger.info('🔍 Debug - userId original:', req.user.id, 'tipo:', typeof req.user.id););
+  logger.info('🔍 Debug - testUserIdMap[userId]:', testUserIdMap[userId]););
   
   if (typeof userId === 'string' && testUserIdMap[userId]) {
     userId = testUserIdMap[userId];
-    console.log('🔍 Debug - userId mapeado para:', userId);
+    logger.info('🔍 Debug - userId mapeado para:', userId););
   } else if (typeof userId === 'string') {
     userId = parseInt(userId);
-    console.log('🔍 Debug - userId convertido com parseInt:', userId);
+    logger.info('🔍 Debug - userId convertido com parseInt:', userId););
   }
   
-  console.log('🔍 Debug - userId final:', userId, 'tipo:', typeof userId);
+  logger.info('🔍 Debug - userId final:', userId, 'tipo:', typeof userId););
 
   // Verificar se a máquina existe
   const machine = await prisma.machine.findUnique({
@@ -1130,11 +1131,11 @@ router.put('/:id/status', [
   });
 
   // Enviar notificação para líderes e gestores
-  console.log('🔔 Iniciando envio de notificação de status...');
-  console.log('📋 Parâmetros:', { id: parseInt(id), status, previousStatus, operatorName: req.user.name, reason, notes });
+  logger.info('🔔 Iniciando envio de notificação de status...'););
+  logger.info('📋 Parâmetros:', { id: parseInt(id), status, previousStatus, operatorName: req.user.name, reason, notes }););
   
   try {
-    console.log('🚀 Chamando sendMachineStatusNotification...');
+    logger.info('🚀 Chamando sendMachineStatusNotification...'););
     const result = await notificationService.sendMachineStatusNotification(
       parseInt(id),
       status,
@@ -1143,14 +1144,14 @@ router.put('/:id/status', [
       reason,
       notes
     );
-    console.log('✅ Resultado da notificação:', result);
+    logger.info('✅ Resultado da notificação:', result););
   } catch (notificationError) {
-    console.error('❌ Erro ao enviar notificação de status:', notificationError);
-    console.error('❌ Stack trace:', notificationError.stack);
+    logger.error('❌ Erro ao enviar notificação de status:', notificationError););
+    logger.error('❌ Stack trace:', notificationError.stack););
     // Não falhar a operação por causa da notificação
   }
   
-  console.log('🏁 Finalizando processamento de notificação...');
+  logger.info('🏁 Finalizando processamento de notificação...'););
 
   res.json({
     success: true,

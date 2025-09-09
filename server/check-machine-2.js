@@ -1,9 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function checkMachine2() {
   try {
-    console.log('🔍 Verificando Máquina 02...');
+    logger.info('🔍 Verificando Máquina 02...'););
     
     // Verificar operação ativa na Máquina 02
     const activeOp = await prisma.machineOperation.findFirst({
@@ -17,16 +18,16 @@ async function checkMachine2() {
       }
     });
     
-    console.log('\n📊 Operação ativa na Máquina 02:');
+    logger.info('\n📊 Operação ativa na Máquina 02:'););
     if (activeOp) {
       const duration = Math.floor((new Date() - new Date(activeOp.startTime)) / (1000 * 60));
-      console.log(`   ID: ${activeOp.id}`);
-      console.log(`   Usuário: ${activeOp.user.name} (${activeOp.user.email})`);
-      console.log(`   Início: ${activeOp.startTime}`);
-      console.log(`   Duração: ${duration} minutos`);
-      console.log(`   Status: ${activeOp.status}`);
+      logger.info(`   ID: ${activeOp.id}`););
+      logger.info(`   Usuário: ${activeOp.user.name} (${activeOp.user.email})`););
+      logger.info(`   Início: ${activeOp.startTime}`););
+      logger.info(`   Duração: ${duration} minutos`););
+      logger.info(`   Status: ${activeOp.status}`););
     } else {
-      console.log('   ❌ Nenhuma operação ativa encontrada');
+      logger.info('   ❌ Nenhuma operação ativa encontrada'););
     }
     
     // Verificar status da máquina
@@ -34,19 +35,19 @@ async function checkMachine2() {
       where: { id: 2 }
     });
     
-    console.log('\n🏭 Status da Máquina 02:');
+    logger.info('\n🏭 Status da Máquina 02:'););
     if (machine) {
-      console.log(`   ID: ${machine.id}`);
-      console.log(`   Nome: ${machine.name}`);
-      console.log(`   Status: ${machine.status}`);
-      console.log(`   Velocidade: ${machine.productionSpeed} pcs/min`);
-      console.log(`   Ativa: ${machine.isActive}`);
+      logger.info(`   ID: ${machine.id}`););
+      logger.info(`   Nome: ${machine.name}`););
+      logger.info(`   Status: ${machine.status}`););
+      logger.info(`   Velocidade: ${machine.productionSpeed} pcs/min`););
+      logger.info(`   Ativa: ${machine.isActive}`););
     } else {
-      console.log('   ❌ Máquina não encontrada');
+      logger.info('   ❌ Máquina não encontrada'););
     }
     
   } catch (error) {
-    console.error('❌ Erro:', error);
+    logger.error('❌ Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

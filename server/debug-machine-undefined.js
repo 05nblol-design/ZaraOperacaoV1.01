@@ -1,9 +1,10 @@
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const logger = require('utils/logger');
 
 async function debugMachineUndefined() {
   try {
-    console.log('🔍 Debugando problema "Máquina undefined: undefined"\n');
+    logger.info('🔍 Debugando problema "Máquina undefined: undefined"\n'););
     
     // Gerar token de admin
     const adminToken = jwt.sign(
@@ -11,58 +12,58 @@ async function debugMachineUndefined() {
       'zara-jwt-secret-key-2024'
     );
     
-    console.log('1. Testando API /api/machines...');
+    logger.info('1. Testando API /api/machines...'););
     const machinesResponse = await axios.get('http://localhost:3001/api/machines', {
       headers: {
         'Authorization': `Bearer ${adminToken}`
       }
     });
     
-    console.log('✅ Status:', machinesResponse.status);
-    console.log('📊 Total de máquinas:', machinesResponse.data.data?.length || 0);
+    logger.info('✅ Status:', machinesResponse.status););
+    logger.info('📊 Total de máquinas:', machinesResponse.data.data?.length || 0););
     
     if (machinesResponse.data.data && machinesResponse.data.data.length > 0) {
-      console.log('\n📋 Estrutura das máquinas:');
+      logger.info('\n📋 Estrutura das máquinas:'););
       machinesResponse.data.data.forEach((machine, index) => {
-        console.log(`\n${index + 1}. Máquina ID: ${machine.id}`);
-        console.log(`   - name: ${machine.name || 'UNDEFINED'}`);
-        console.log(`   - code: ${machine.code || 'UNDEFINED'}`);
-        console.log(`   - status: ${machine.status || 'UNDEFINED'}`);
-        console.log(`   - location: ${machine.location || 'UNDEFINED'}`);
-        console.log(`   - isActive: ${machine.isActive}`);
-        console.log(`   - operator: ${machine.operator || 'UNDEFINED'}`);
+        logger.info(`\n${index + 1}. Máquina ID: ${machine.id}`););
+        logger.info(`   - name: ${machine.name || 'UNDEFINED'}`););
+        logger.info(`   - code: ${machine.code || 'UNDEFINED'}`););
+        logger.info(`   - status: ${machine.status || 'UNDEFINED'}`););
+        logger.info(`   - location: ${machine.location || 'UNDEFINED'}`););
+        logger.info(`   - isActive: ${machine.isActive}`););
+        logger.info(`   - operator: ${machine.operator || 'UNDEFINED'}`););
         
         // Verificar se algum campo essencial está undefined
         if (!machine.name || !machine.code) {
-          console.log('   ⚠️  PROBLEMA ENCONTRADO: name ou code está undefined!');
+          logger.info('   ⚠️  PROBLEMA ENCONTRADO: name ou code está undefined!'););
         }
       });
     }
     
-    console.log('\n2. Testando API /api/machines/1 (máquina específica)...');
+    logger.info('\n2. Testando API /api/machines/1 (máquina específica)...'););
     const machine1Response = await axios.get('http://localhost:3001/api/machines/1', {
       headers: {
         'Authorization': `Bearer ${adminToken}`
       }
     });
     
-    console.log('✅ Status:', machine1Response.status);
+    logger.info('✅ Status:', machine1Response.status););
     const machine1 = machine1Response.data.data;
     
     if (machine1) {
-      console.log('\n📋 Dados da máquina ID 1:');
-      console.log(`   - name: ${machine1.name || 'UNDEFINED'}`);
-      console.log(`   - code: ${machine1.code || 'UNDEFINED'}`);
-      console.log(`   - status: ${machine1.status || 'UNDEFINED'}`);
-      console.log(`   - location: ${machine1.location || 'UNDEFINED'}`);
-      console.log(`   - isActive: ${machine1.isActive}`);
+      logger.info('\n📋 Dados da máquina ID 1:'););
+      logger.info(`   - name: ${machine1.name || 'UNDEFINED'}`););
+      logger.info(`   - code: ${machine1.code || 'UNDEFINED'}`););
+      logger.info(`   - status: ${machine1.status || 'UNDEFINED'}`););
+      logger.info(`   - location: ${machine1.location || 'UNDEFINED'}`););
+      logger.info(`   - isActive: ${machine1.isActive}`););
       
       if (!machine1.name || !machine1.code) {
-        console.log('   ⚠️  PROBLEMA ENCONTRADO: name ou code está undefined!');
+        logger.info('   ⚠️  PROBLEMA ENCONTRADO: name ou code está undefined!'););
       }
     }
     
-    console.log('\n3. Verificando banco de dados diretamente...');
+    logger.info('\n3. Verificando banco de dados diretamente...'););
     const { PrismaClient } = require('@prisma/client');
     const prisma = new PrismaClient();
     
@@ -78,27 +79,27 @@ async function debugMachineUndefined() {
       take: 5
     });
     
-    console.log('\n📊 Dados diretos do banco:');
+    logger.info('\n📊 Dados diretos do banco:'););
     dbMachines.forEach((machine, index) => {
-      console.log(`\n${index + 1}. Máquina ID: ${machine.id}`);
-      console.log(`   - name: ${machine.name || 'NULL/UNDEFINED'}`);
-      console.log(`   - code: ${machine.code || 'NULL/UNDEFINED'}`);
-      console.log(`   - status: ${machine.status || 'NULL/UNDEFINED'}`);
-      console.log(`   - location: ${machine.location || 'NULL/UNDEFINED'}`);
-      console.log(`   - isActive: ${machine.isActive}`);
+      logger.info(`\n${index + 1}. Máquina ID: ${machine.id}`););
+      logger.info(`   - name: ${machine.name || 'NULL/UNDEFINED'}`););
+      logger.info(`   - code: ${machine.code || 'NULL/UNDEFINED'}`););
+      logger.info(`   - status: ${machine.status || 'NULL/UNDEFINED'}`););
+      logger.info(`   - location: ${machine.location || 'NULL/UNDEFINED'}`););
+      logger.info(`   - isActive: ${machine.isActive}`););
       
       if (!machine.name || !machine.code) {
-        console.log('   🚨 PROBLEMA NO BANCO: name ou code está null/undefined!');
+        logger.info('   🚨 PROBLEMA NO BANCO: name ou code está null/undefined!'););
       }
     });
     
     await prisma.$disconnect();
     
   } catch (error) {
-    console.error('❌ Erro durante o debug:', error.message);
+    logger.error('❌ Erro durante o debug:', error.message););
     if (error.response) {
-      console.error('📄 Response data:', error.response.data);
-      console.error('📊 Response status:', error.response.status);
+      logger.error('📄 Response data:', error.response.data););
+      logger.error('📊 Response status:', error.response.status););
     }
   }
 }

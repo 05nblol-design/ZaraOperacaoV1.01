@@ -1,15 +1,16 @@
 // Script para atualizar CORS_ORIGIN no Railway com URLs corretas
 const https = require('https');
+const logger = require('utils/logger');
 
-console.log('🔧 ATUALIZANDO CORS_ORIGIN NO RAILWAY');
-console.log('=' .repeat(50));
+logger.info('🔧 ATUALIZANDO CORS_ORIGIN NO RAILWAY'););
+logger.info('=' .repeat(50)););
 
 // URLs corretas fornecidas pelo usuário
 const corsOrigin = 'https://sistema-zara-frontend.vercel.app,https://sistema-zara-frontend-peas4bni7-05nblol-designs-projects.vercel.app,http://localhost:3000,http://localhost:5173';
 
-console.log('\n📋 CONFIGURAÇÃO CORS ATUALIZADA:');
-console.log('-'.repeat(40));
-console.log(`CORS_ORIGIN=${corsOrigin}`);
+logger.info('\n📋 CONFIGURAÇÃO CORS ATUALIZADA:'););
+logger.info('-'.repeat(40)););
+logger.info(`CORS_ORIGIN=${corsOrigin}`););
 
 // Testar cada URL do CORS
 function testUrl(url) {
@@ -47,28 +48,28 @@ function testUrl(url) {
 }
 
 async function validateCorsUrls() {
-  console.log('\n🧪 VALIDANDO URLs DO CORS:');
-  console.log('-'.repeat(30));
+  logger.info('\n🧪 VALIDANDO URLs DO CORS:'););
+  logger.info('-'.repeat(30)););
   
   const urls = corsOrigin.split(',');
   const results = [];
   
   for (const url of urls) {
-    console.log(`Testando: ${url}`);
+    logger.info(`Testando: ${url}`););
     const result = await testUrl(url.trim());
     results.push(result);
     
     if (result.active) {
-      console.log(`✅ VÁLIDA - Status: ${result.status}`);
+      logger.info(`✅ VÁLIDA - Status: ${result.status}`););
     } else {
-      console.log(`❌ INVÁLIDA - Status: ${result.status}`);
+      logger.info(`❌ INVÁLIDA - Status: ${result.status}`););
     }
   }
   
   const validUrls = results.filter(r => r.active).length;
   const totalUrls = results.length;
   
-  console.log(`\n📊 RESUMO: ${validUrls}/${totalUrls} URLs válidas`);
+  logger.info(`\n📊 RESUMO: ${validUrls}/${totalUrls} URLs válidas`););
   
   return results;
 }
@@ -78,12 +79,12 @@ function testRailwayBackend() {
   return new Promise((resolve) => {
     const railwayUrl = 'https://zara-backend-production-aab3.up.railway.app';
     
-    console.log('\n🚂 TESTANDO BACKEND RAILWAY:');
-    console.log('-'.repeat(30));
-    console.log(`URL: ${railwayUrl}`);
+    logger.info('\n🚂 TESTANDO BACKEND RAILWAY:'););
+    logger.info('-'.repeat(30)););
+    logger.info(`URL: ${railwayUrl}`););
     
     const req = https.get(railwayUrl, (res) => {
-      console.log(`Status: ${res.statusCode}`);
+      logger.info(`Status: ${res.statusCode}`););
       resolve({
         status: res.statusCode,
         active: res.statusCode < 500
@@ -91,7 +92,7 @@ function testRailwayBackend() {
     });
     
     req.on('error', (error) => {
-      console.log(`Erro: ${error.message}`);
+      logger.info(`Erro: ${error.message}`););
       resolve({
         status: 'ERROR',
         active: false
@@ -100,7 +101,7 @@ function testRailwayBackend() {
     
     req.setTimeout(10000, () => {
       req.destroy();
-      console.log('Status: TIMEOUT');
+      logger.info('Status: TIMEOUT'););
       resolve({
         status: 'TIMEOUT',
         active: false
@@ -117,50 +118,50 @@ async function main() {
   const railwayResult = await testRailwayBackend();
   
   // 3. Mostrar instruções
-  console.log('\n🚀 INSTRUÇÕES PARA RAILWAY DASHBOARD:');
-  console.log('=' .repeat(50));
+  logger.info('\n🚀 INSTRUÇÕES PARA RAILWAY DASHBOARD:'););
+  logger.info('=' .repeat(50)););
   
-  console.log('\n1️⃣ ACESSE O RAILWAY DASHBOARD:');
-  console.log('   https://railway.app/dashboard');
+  logger.info('\n1️⃣ ACESSE O RAILWAY DASHBOARD:'););
+  logger.info('   https://railway.app/dashboard'););
   
-  console.log('\n2️⃣ SELECIONE O PROJETO DO BACKEND');
+  logger.info('\n2️⃣ SELECIONE O PROJETO DO BACKEND'););
   
-  console.log('\n3️⃣ VÁ PARA VARIABLES:');
-  console.log('   - Clique na aba "Variables"');
+  logger.info('\n3️⃣ VÁ PARA VARIABLES:'););
+  logger.info('   - Clique na aba "Variables"'););
   
-  console.log('\n4️⃣ CONFIGURE CORS_ORIGIN:');
-  console.log('   - Encontre ou crie a variável CORS_ORIGIN');
-  console.log('   - Cole o valor abaixo:');
-  console.log(`   ${corsOrigin}`);
+  logger.info('\n4️⃣ CONFIGURE CORS_ORIGIN:'););
+  logger.info('   - Encontre ou crie a variável CORS_ORIGIN'););
+  logger.info('   - Cole o valor abaixo:'););
+  logger.info(`   ${corsOrigin}`););
   
-  console.log('\n5️⃣ SALVE E REDEPLOY:');
-  console.log('   - Clique em "Save"');
-  console.log('   - Vá para "Deployments"');
-  console.log('   - Clique em "Deploy"');
+  logger.info('\n5️⃣ SALVE E REDEPLOY:'););
+  logger.info('   - Clique em "Save"'););
+  logger.info('   - Vá para "Deployments"'););
+  logger.info('   - Clique em "Deploy"'););
   
-  console.log('\n6️⃣ AGUARDE O DEPLOY:');
-  console.log('   - Monitore os logs');
-  console.log('   - Aguarde status "Success"');
+  logger.info('\n6️⃣ AGUARDE O DEPLOY:'););
+  logger.info('   - Monitore os logs'););
+  logger.info('   - Aguarde status "Success"'););
   
-  console.log('\n🧪 TESTE APÓS DEPLOY:');
-  console.log('-'.repeat(25));
-  console.log('1. Acesse: https://sistema-zara-frontend.vercel.app');
-  console.log('2. Tente fazer login:');
-  console.log('   - Email: admin@zara.com');
-  console.log('   - Senha: admin123');
+  logger.info('\n🧪 TESTE APÓS DEPLOY:'););
+  logger.info('-'.repeat(25)););
+  logger.info('1. Acesse: https://sistema-zara-frontend.vercel.app'););
+  logger.info('2. Tente fazer login:'););
+  logger.info('   - Email: admin@zara.com'););
+  logger.info('   - Senha: admin123'););
   
   if (railwayResult.status === 404) {
-    console.log('\n⚠️  ATENÇÃO:');
-    console.log('   Backend Railway retorna 404 - REDEPLOY NECESSÁRIO');
+    logger.info('\n⚠️  ATENÇÃO:'););
+    logger.info('   Backend Railway retorna 404 - REDEPLOY NECESSÁRIO'););
   } else if (railwayResult.active) {
-    console.log('\n✅ Backend Railway está respondendo');
+    logger.info('\n✅ Backend Railway está respondendo'););
   } else {
-    console.log('\n❌ Backend Railway não está acessível');
+    logger.info('\n❌ Backend Railway não está acessível'););
   }
   
-  console.log('\n' + '=' .repeat(50));
-  console.log('✅ CONFIGURAÇÃO CORS PRONTA PARA APLICAR');
+  logger.info('\n' + '=' .repeat(50)););
+  logger.info('✅ CONFIGURAÇÃO CORS PRONTA PARA APLICAR'););
 }
 
 // Executar
-main().catch(console.error);
+logger.error(main().catch(console.error););

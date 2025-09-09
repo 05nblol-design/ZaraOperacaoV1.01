@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function createOperator() {
@@ -10,7 +11,7 @@ async function createOperator() {
     });
     
     if (existing) {
-      console.log('Usuário operador já existe');
+      logger.info('Usuário operador já existe'););
       return;
     }
     
@@ -28,9 +29,9 @@ async function createOperator() {
       }
     });
     
-    console.log('Usuário operador criado:', operator.email);
+    logger.info('Usuário operador criado:', operator.email););
   } catch (error) {
-    console.error('Erro ao criar operador:', error);
+    logger.error('Erro ao criar operador:', error););
   } finally {
     await prisma.$disconnect();
   }

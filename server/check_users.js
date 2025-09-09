@@ -1,15 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function checkUsers() {
   try {
     const users = await prisma.user.findMany();
-    console.log('Usuários no banco:');
+    logger.info('Usuários no banco:'););
     users.forEach(u => {
-      console.log(`ID: ${u.id}, Email: ${u.email}, Role: ${u.role}`);
+      logger.info(`ID: ${u.id}, Email: ${u.email}, Role: ${u.role}`););
     });
   } catch (error) {
-    console.error('Erro:', error);
+    logger.error('Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

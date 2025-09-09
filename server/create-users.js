@@ -1,11 +1,12 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
+const logger = require('utils/logger');
 
 const prisma = new PrismaClient();
 
 async function createUsers() {
   try {
-    console.log('🔄 Criando usuários de demonstração...');
+    logger.info('🔄 Criando usuários de demonstração...'););
 
     // Criar usuário líder
     const existingLeader = await prisma.user.findUnique({
@@ -25,9 +26,9 @@ async function createUsers() {
           updatedAt: new Date()
         }
       });
-      console.log('✅ Líder criado:', leader.email);
+      logger.info('✅ Líder criado:', leader.email););
     } else {
-      console.log('ℹ️ Líder já existe:', existingLeader.email);
+      logger.info('ℹ️ Líder já existe:', existingLeader.email););
     }
 
     // Criar usuário gestor
@@ -48,9 +49,9 @@ async function createUsers() {
           updatedAt: new Date()
         }
       });
-      console.log('✅ Gestor criado:', manager.email);
+      logger.info('✅ Gestor criado:', manager.email););
     } else {
-      console.log('ℹ️ Gestor já existe:', existingManager.email);
+      logger.info('ℹ️ Gestor já existe:', existingManager.email););
     }
 
     // Criar usuário admin se não existir
@@ -71,25 +72,25 @@ async function createUsers() {
           updatedAt: new Date()
         }
       });
-      console.log('✅ Admin criado:', admin.email);
+      logger.info('✅ Admin criado:', admin.email););
     } else {
-      console.log('ℹ️ Admin já existe:', existingAdmin.email);
+      logger.info('ℹ️ Admin já existe:', existingAdmin.email););
     }
 
-    console.log('\n📋 Credenciais disponíveis:');
-    console.log('Admin: admin@zara.com / admin123');
-    console.log('Gestor: manager@zara.com / manager123');
-    console.log('Líder: leader@zara.com / leader123');
-    console.log('Operador (teste): operador@zara.com / 123456');
+    logger.info('\n📋 Credenciais disponíveis:'););
+    logger.info('Admin: admin@zara.com / admin123'););
+    logger.info('Gestor: manager@zara.com / manager123'););
+    logger.info('Líder: leader@zara.com / leader123'););
+    logger.info('Operador (teste): operador@zara.com / 123456'););
 
   } catch (error) {
-    console.error('❌ Erro ao criar usuários:', error.message);
+    logger.error('❌ Erro ao criar usuários:', error.message););
     
     // Se for erro de transação, tentar abordagem alternativa
     if (error.code === 'P2031') {
-      console.log('\n⚠️ MongoDB não está configurado como replica set.');
-      console.log('📋 Use as credenciais de teste hardcoded:');
-      console.log('Operador: operador@zara.com / 123456');
+      logger.info('\n⚠️ MongoDB não está configurado como replica set.'););
+      logger.info('📋 Use as credenciais de teste hardcoded:'););
+      logger.info('Operador: operador@zara.com / 123456'););
     }
   } finally {
     await prisma.$disconnect();

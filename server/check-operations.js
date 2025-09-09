@@ -1,9 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function checkOperations() {
   try {
-    console.log('=== Verificando operações ativas ===');
+    logger.info('=== Verificando operações ativas ==='););
     
     // Buscar operação ativa do usuário 2 na máquina 1
     const userOperation = await prisma.machineOperation.findFirst({
@@ -14,7 +15,7 @@ async function checkOperations() {
       }
     });
     
-    console.log('Operação do usuário 2 na máquina 1:', userOperation);
+    logger.info('Operação do usuário 2 na máquina 1:', userOperation););
     
     // Buscar todas as operações ativas na máquina 1
     const allOperations = await prisma.machineOperation.findMany({
@@ -28,7 +29,7 @@ async function checkOperations() {
       }
     });
     
-    console.log('Todas operações ativas na máquina 1:', allOperations);
+    logger.info('Todas operações ativas na máquina 1:', allOperations););
     
     // Verificar se existe alguma operação ativa para qualquer usuário
     const anyActiveOperation = await prisma.machineOperation.findFirst({
@@ -38,10 +39,10 @@ async function checkOperations() {
       }
     });
     
-    console.log('Existe operação ativa na máquina 1?', !!anyActiveOperation);
+    logger.info('Existe operação ativa na máquina 1?', !!anyActiveOperation););
     
   } catch (error) {
-    console.error('Erro:', error);
+    logger.error('Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

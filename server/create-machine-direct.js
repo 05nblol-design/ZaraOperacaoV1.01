@@ -1,12 +1,13 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
+const logger = require('utils/logger');
 
 async function createMachineDirectly() {
   const client = new MongoClient(process.env.DATABASE_URL);
   
   try {
     await client.connect();
-    console.log('✅ Conectado ao MongoDB');
+    logger.info('✅ Conectado ao MongoDB'););
     
     const db = client.db();
     const machinesCollection = db.collection('machines');
@@ -15,7 +16,7 @@ async function createMachineDirectly() {
     const existingMachine = await machinesCollection.findOne({ code: 'MAQ001' });
     
     if (existingMachine) {
-      console.log('⚠️  Máquina MAQ001 já existe:', existingMachine);
+      logger.info('⚠️  Máquina MAQ001 já existe:', existingMachine););
       return;
     }
     
@@ -57,17 +58,17 @@ async function createMachineDirectly() {
     ];
     
     const result = await machinesCollection.insertMany(machines);
-    console.log(`✅ ${result.insertedCount} máquinas criadas com sucesso!`);
+    logger.info(`✅ ${result.insertedCount} máquinas criadas com sucesso!`););
     
     // Listar as máquinas criadas
     const createdMachines = await machinesCollection.find({}).toArray();
-    console.log('\n📋 Máquinas no banco de dados:');
+    logger.info('\n📋 Máquinas no banco de dados:'););
     createdMachines.forEach(machine => {
-      console.log(`- ID: ${machine._id}, Código: ${machine.code}, Nome: ${machine.name}`);
+      logger.info(`- ID: ${machine._id}, Código: ${machine.code}, Nome: ${machine.name}`););
     });
     
   } catch (error) {
-    console.error('❌ Erro:', error);
+    logger.error('❌ Erro:', error););
   } finally {
     await client.close();
   }

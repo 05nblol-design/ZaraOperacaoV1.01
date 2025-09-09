@@ -2,9 +2,10 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const logger = require('utils/logger');
 
-console.log('🔍 OBTENDO URL REAL DO VERCEL DEPLOYMENT');
-console.log('=' .repeat(50));
+logger.info('🔍 OBTENDO URL REAL DO VERCEL DEPLOYMENT'););
+logger.info('=' .repeat(50)););
 
 // Função para executar comando e capturar saída
 function runCommand(command, options = {}) {
@@ -22,31 +23,31 @@ function runCommand(command, options = {}) {
 
 // Verificar se Vercel CLI está instalado
 function checkVercelCli() {
-  console.log('\n📋 VERIFICANDO VERCEL CLI:');
-  console.log('-'.repeat(30));
+  logger.info('\n📋 VERIFICANDO VERCEL CLI:'););
+  logger.info('-'.repeat(30)););
   
   const result = runCommand('vercel --version');
   if (result.success) {
-    console.log(`✅ Vercel CLI instalado: ${result.output}`);
+    logger.info(`✅ Vercel CLI instalado: ${result.output}`););
     return true;
   } else {
-    console.log('❌ Vercel CLI não encontrado');
-    console.log('💡 Instale com: npm i -g vercel');
+    logger.info('❌ Vercel CLI não encontrado'););
+    logger.info('💡 Instale com: npm i -g vercel'););
     return false;
   }
 }
 
 // Obter deployments do Vercel
 function getVercelDeployments() {
-  console.log('\n📋 OBTENDO DEPLOYMENTS DO VERCEL:');
-  console.log('-'.repeat(40));
+  logger.info('\n📋 OBTENDO DEPLOYMENTS DO VERCEL:'););
+  logger.info('-'.repeat(40)););
   
   // Tentar obter lista de deployments
   const listResult = runCommand('vercel ls', { cwd: path.join(__dirname, '..', 'frontend') });
   
   if (listResult.success) {
-    console.log('✅ Deployments encontrados:');
-    console.log(listResult.output);
+    logger.info('✅ Deployments encontrados:'););
+    logger.info(listResult.output););
     
     // Extrair URLs dos deployments
     const lines = listResult.output.split('\n');
@@ -62,16 +63,16 @@ function getVercelDeployments() {
     
     return urls;
   } else {
-    console.log('❌ Erro ao obter deployments:');
-    console.log(listResult.error);
+    logger.info('❌ Erro ao obter deployments:'););
+    logger.info(listResult.error););
     return [];
   }
 }
 
 // Verificar status do projeto Vercel
 function checkVercelProject() {
-  console.log('\n📋 VERIFICANDO PROJETO VERCEL:');
-  console.log('-'.repeat(35));
+  logger.info('\n📋 VERIFICANDO PROJETO VERCEL:'););
+  logger.info('-'.repeat(35)););
   
   const frontendPath = path.join(__dirname, '..', 'frontend');
   
@@ -81,24 +82,24 @@ function checkVercelProject() {
   if (fs.existsSync(vercelConfigPath)) {
     try {
       const config = JSON.parse(fs.readFileSync(vercelConfigPath, 'utf8'));
-      console.log('✅ Projeto Vercel configurado:');
-      console.log(`   Org ID: ${config.orgId}`);
-      console.log(`   Project ID: ${config.projectId}`);
+      logger.info('✅ Projeto Vercel configurado:'););
+      logger.info(`   Org ID: ${config.orgId}`););
+      logger.info(`   Project ID: ${config.projectId}`););
       
       // Tentar obter URL do projeto
       const inspectResult = runCommand(`vercel inspect`, { cwd: frontendPath });
       if (inspectResult.success) {
-        console.log('\n📋 INFORMAÇÕES DO DEPLOYMENT:');
-        console.log(inspectResult.output);
+        logger.info('\n📋 INFORMAÇÕES DO DEPLOYMENT:'););
+        logger.info(inspectResult.output););
       }
       
       return config;
     } catch (error) {
-      console.log('❌ Erro ao ler configuração Vercel:', error.message);
+      logger.info('❌ Erro ao ler configuração Vercel:', error.message););
     }
   } else {
-    console.log('❌ Projeto não está linkado ao Vercel');
-    console.log('💡 Execute: vercel --prod no diretório frontend');
+    logger.info('❌ Projeto não está linkado ao Vercel'););
+    logger.info('💡 Execute: vercel --prod no diretório frontend'););
   }
   
   return null;
@@ -142,15 +143,15 @@ async function main() {
   
   // 4. Se não encontrou URLs, usar URLs possíveis
   if (deploymentUrls.length === 0) {
-    console.log('\n📋 GERANDO URLs POSSÍVEIS:');
-    console.log('-'.repeat(30));
+    logger.info('\n📋 GERANDO URLs POSSÍVEIS:'););
+    logger.info('-'.repeat(30)););
     deploymentUrls = generatePossibleUrls();
-    console.log('⚠️  URLs baseadas em nomes comuns (podem não existir)');
+    logger.info('⚠️  URLs baseadas em nomes comuns (podem não existir)'););
   }
   
   // 5. Mostrar configuração CORS final
-  console.log('\n🎯 CONFIGURAÇÃO CORS RECOMENDADA:');
-  console.log('=' .repeat(50));
+  logger.info('\n🎯 CONFIGURAÇÃO CORS RECOMENDADA:'););
+  logger.info('=' .repeat(50)););
   
   const corsUrls = [
     ...deploymentUrls.slice(0, 3), // Primeiras 3 URLs
@@ -160,25 +161,25 @@ async function main() {
   
   const corsOrigin = corsUrls.join(',');
   
-  console.log('\n📝 VARIÁVEL CORS_ORIGIN:');
-  console.log(`CORS_ORIGIN=${corsOrigin}`);
+  logger.info('\n📝 VARIÁVEL CORS_ORIGIN:'););
+  logger.info(`CORS_ORIGIN=${corsOrigin}`););
   
-  console.log('\n🚀 PRÓXIMOS PASSOS:');
-  console.log('1. Acesse Railway Dashboard');
-  console.log('2. Vá em Variables');
-  console.log('3. Atualize CORS_ORIGIN com o valor acima');
-  console.log('4. Salve e faça redeploy');
+  logger.info('\n🚀 PRÓXIMOS PASSOS:'););
+  logger.info('1. Acesse Railway Dashboard'););
+  logger.info('2. Vá em Variables'););
+  logger.info('3. Atualize CORS_ORIGIN com o valor acima'););
+  logger.info('4. Salve e faça redeploy'););
   
   if (!hasVercelCli || deploymentUrls.length === 0) {
-    console.log('\n💡 RECOMENDAÇÕES:');
-    console.log('- Instale Vercel CLI: npm i -g vercel');
-    console.log('- Faça deploy do frontend: cd frontend && vercel --prod');
-    console.log('- Verifique URLs reais no Vercel Dashboard');
+    logger.info('\n💡 RECOMENDAÇÕES:'););
+    logger.info('- Instale Vercel CLI: npm i -g vercel'););
+    logger.info('- Faça deploy do frontend: cd frontend && vercel --prod'););
+    logger.info('- Verifique URLs reais no Vercel Dashboard'););
   }
   
-  console.log('\n' + '=' .repeat(50));
-  console.log('✅ ANÁLISE CONCLUÍDA');
+  logger.info('\n' + '=' .repeat(50)););
+  logger.info('✅ ANÁLISE CONCLUÍDA'););
 }
 
 // Executar
-main().catch(console.error);
+logger.error(main().catch(console.error););

@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
+const logger = require('utils/logger');
 
 // URL correta do PostgreSQL no Railway
 const DATABASE_URL = 'postgresql://postgres:GNquZiBhCMsFDZbvDTevPkrWFdRyyLQM@interchange.proxy.rlwy.net:17733/railway';
@@ -14,11 +15,11 @@ const prisma = new PrismaClient({
 
 async function createDemoUser() {
   try {
-    console.log('🔗 Conectando ao banco PostgreSQL...');
+    logger.info('🔗 Conectando ao banco PostgreSQL...'););
     
     // Testar conexão
     await prisma.$connect();
-    console.log('✅ Conexão estabelecida com sucesso!');
+    logger.info('✅ Conexão estabelecida com sucesso!'););
     
     // Verificar se usuário demo já existe
     const existingUser = await prisma.user.findUnique({
@@ -26,10 +27,10 @@ async function createDemoUser() {
     });
     
     if (existingUser) {
-      console.log('⚠️  Usuário demo já existe!');
-      console.log('📧 Email:', existingUser.email);
-      console.log('👤 Nome:', existingUser.name);
-      console.log('🔑 Role:', existingUser.role);
+      logger.info('⚠️  Usuário demo já existe!'););
+      logger.info('📧 Email:', existingUser.email););
+      logger.info('👤 Nome:', existingUser.name););
+      logger.info('🔑 Role:', existingUser.role););
       return;
     }
     
@@ -38,7 +39,7 @@ async function createDemoUser() {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     
-    console.log('🔐 Criando usuário de demonstração...');
+    logger.info('🔐 Criando usuário de demonstração...'););
     
     // Criar usuário demo
     const demoUser = await prisma.user.create({
@@ -53,16 +54,16 @@ async function createDemoUser() {
       }
     });
     
-    console.log('✅ Usuário demo criado com sucesso!');
-    console.log('📧 Email: demo@zara.com');
-    console.log('🔑 Senha: demo123');
-    console.log('👤 Nome:', demoUser.name);
-    console.log('🆔 ID:', demoUser.id);
-    console.log('🔑 Role:', demoUser.role);
+    logger.info('✅ Usuário demo criado com sucesso!'););
+    logger.info('📧 Email: demo@zara.com'););
+    logger.info('🔑 Senha: demo123'););
+    logger.info('👤 Nome:', demoUser.name););
+    logger.info('🆔 ID:', demoUser.id););
+    logger.info('🔑 Role:', demoUser.role););
     
     // Verificar total de usuários
     const totalUsers = await prisma.user.count();
-    console.log(`\n📊 Total de usuários no banco: ${totalUsers}`);
+    logger.info(`\n📊 Total de usuários no banco: ${totalUsers}`););
     
     // Listar todos os usuários
     const allUsers = await prisma.user.findMany({
@@ -76,39 +77,39 @@ async function createDemoUser() {
       }
     });
     
-    console.log('\n👥 Usuários cadastrados:');
+    logger.info('\n👥 Usuários cadastrados:'););
     allUsers.forEach((user, index) => {
-      console.log(`${index + 1}. ${user.name} (${user.email}) - ${user.role} - ${user.isActive ? 'Ativo' : 'Inativo'}`);
+      logger.info(`${index + 1}. ${user.name} (${user.email}) - ${user.role} - ${user.isActive ? 'Ativo' : 'Inativo'}`););
     });
     
-    console.log('\n🎯 CREDENCIAIS DE DEMONSTRAÇÃO:');
-    console.log('📧 Email: demo@zara.com');
-    console.log('🔑 Senha: demo123');
-    console.log('\n✅ Usuário pronto para testes no frontend!');
+    logger.info('\n🎯 CREDENCIAIS DE DEMONSTRAÇÃO:'););
+    logger.info('📧 Email: demo@zara.com'););
+    logger.info('🔑 Senha: demo123'););
+    logger.info('\n✅ Usuário pronto para testes no frontend!'););
     
   } catch (error) {
-    console.error('❌ Erro ao criar usuário demo:', error.message);
+    logger.error('❌ Erro ao criar usuário demo:', error.message););
     
     if (error.code === 'P2002') {
-      console.log('⚠️  Usuário com este email já existe!');
+      logger.info('⚠️  Usuário com este email já existe!'););
     } else if (error.code === 'P2025') {
-      console.log('⚠️  Tabela users não encontrada. Execute as migrações primeiro.');
+      logger.info('⚠️  Tabela users não encontrada. Execute as migrações primeiro.'););
     } else {
-      console.error('Detalhes do erro:', error);
+      logger.error('Detalhes do erro:', error););
     }
   } finally {
     await prisma.$disconnect();
-    console.log('🔌 Conexão fechada.');
+    logger.info('🔌 Conexão fechada.'););
   }
 }
 
 // Executar
 createDemoUser()
   .then(() => {
-    console.log('\n🏁 Script finalizado!');
+    logger.info('\n🏁 Script finalizado!'););
     process.exit(0);
   })
   .catch((error) => {
-    console.error('💥 Erro fatal:', error);
+    logger.error('💥 Erro fatal:', error););
     process.exit(1);
   });

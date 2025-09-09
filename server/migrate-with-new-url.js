@@ -1,33 +1,34 @@
 const { PrismaClient } = require('@prisma/client');
 const { execSync } = require('child_process');
+const logger = require('utils/logger');
 
 // URL correta fornecida pelo usuário
 const CORRECT_RAILWAY_URL = 'postgresql://postgres:GNquZiBhCMsFDZbvDTevPkrWFdRyyLQM@interchange.proxy.rlwy.net:17733/railway';
 
 async function migrateWithNewURL() {
-  console.log('🚀 Executando migrações com a URL correta do Railway...');
-  console.log('URL:', CORRECT_RAILWAY_URL.replace(/:[^:@]*@/, ':****@'));
+  logger.info('🚀 Executando migrações com a URL correta do Railway...'););
+  logger.info('URL:', CORRECT_RAILWAY_URL.replace(/:[^:@]*@/, ':****@')););
   
   try {
     // Definir a variável de ambiente temporariamente
     process.env.DATABASE_URL = CORRECT_RAILWAY_URL;
     
-    console.log('\n📦 Gerando Prisma Client...');
+    logger.info('\n📦 Gerando Prisma Client...'););
     execSync('npx prisma generate', { 
       stdio: 'inherit',
       env: { ...process.env, DATABASE_URL: CORRECT_RAILWAY_URL }
     });
-    console.log('✅ Prisma Client gerado com sucesso!');
+    logger.info('✅ Prisma Client gerado com sucesso!'););
     
-    console.log('\n🔄 Executando migrações (db push)...');
+    logger.info('\n🔄 Executando migrações (db push)...'););
     execSync('npx prisma db push --accept-data-loss', { 
       stdio: 'inherit',
       env: { ...process.env, DATABASE_URL: CORRECT_RAILWAY_URL }
     });
-    console.log('✅ Migrações executadas com sucesso!');
+    logger.info('✅ Migrações executadas com sucesso!'););
     
     // Testar conexão e verificar tabelas
-    console.log('\n🔍 Verificando tabelas criadas...');
+    logger.info('\n🔍 Verificando tabelas criadas...'););
     const prisma = new PrismaClient({
       datasources: {
         db: {
@@ -45,18 +46,18 @@ async function migrateWithNewURL() {
       WHERE table_schema = 'public'
     `;
     
-    console.log(`📋 Tabelas criadas (${tables.length}):`);
+    logger.info(`📋 Tabelas criadas (${tables.length}):`););
     tables.forEach(table => {
-      console.log(`  ✅ ${table.table_name}`);
+      logger.info(`  ✅ ${table.table_name}`););
     });
     
     // Verificar especificamente a tabela users
     const usersTable = tables.find(t => t.table_name === 'users');
     if (usersTable) {
-      console.log('\n🎉 Tabela "users" criada com sucesso!');
+      logger.info('\n🎉 Tabela "users" criada com sucesso!'););
       
       // Tentar criar um usuário admin de teste
-      console.log('\n👤 Criando usuário admin de teste...');
+      logger.info('\n👤 Criando usuário admin de teste...'););
       try {
         const bcrypt = require('bcrypt');
         const hashedPassword = await bcrypt.hash('admin123', 10);
@@ -70,24 +71,24 @@ async function migrateWithNewURL() {
           }
         });
         
-        console.log('✅ Usuário admin criado:', adminUser.email);
+        logger.info('✅ Usuário admin criado:', adminUser.email););
       } catch (userError) {
-        console.log('⚠️  Erro ao criar usuário admin (pode já existir):', userError.message);
+        logger.info('⚠️  Erro ao criar usuário admin (pode já existir):', userError.message););
       }
     }
     
     await prisma.$disconnect();
     
-    console.log('\n🎉 MIGRAÇÃO CONCLUÍDA COM SUCESSO!');
-    console.log('\n📝 PRÓXIMOS PASSOS URGENTES:');
-    console.log('1. ✅ URL do banco testada e funcionando');
-    console.log('2. ✅ Tabelas criadas no PostgreSQL');
-    console.log('3. 🔄 ATUALIZAR DATABASE_URL no Railway Dashboard');
-    console.log('4. 🔄 Fazer redeploy do backend no Railway');
-    console.log('5. 🔄 Testar login no frontend');
+    logger.info('\n🎉 MIGRAÇÃO CONCLUÍDA COM SUCESSO!'););
+    logger.info('\n📝 PRÓXIMOS PASSOS URGENTES:'););
+    logger.info('1. ✅ URL do banco testada e funcionando'););
+    logger.info('2. ✅ Tabelas criadas no PostgreSQL'););
+    logger.info('3. 🔄 ATUALIZAR DATABASE_URL no Railway Dashboard'););
+    logger.info('4. 🔄 Fazer redeploy do backend no Railway'););
+    logger.info('5. 🔄 Testar login no frontend'););
     
-    console.log('\n🔗 URL para configurar no Railway:');
-    console.log(CORRECT_RAILWAY_URL);
+    logger.info('\n🔗 URL para configurar no Railway:'););
+    logger.info(CORRECT_RAILWAY_URL););
     
     return {
       success: true,
@@ -101,15 +102,15 @@ async function migrateWithNewURL() {
     };
     
   } catch (error) {
-    console.error('\n❌ ERRO durante migração:');
-    console.error('Tipo:', error.constructor.name);
-    console.error('Mensagem:', error.message);
+    logger.error('\n❌ ERRO durante migração:'););
+    logger.error('Tipo:', error.constructor.name););
+    logger.error('Mensagem:', error.message););
     
     if (error.stdout) {
-      console.error('Stdout:', error.stdout.toString());
+      logger.error('Stdout:', error.stdout.toString()););
     }
     if (error.stderr) {
-      console.error('Stderr:', error.stderr.toString());
+      logger.error('Stderr:', error.stderr.toString()););
     }
     
     return {
@@ -122,10 +123,10 @@ async function migrateWithNewURL() {
 // Executar migração
 migrateWithNewURL()
   .then(result => {
-    console.log('\n📊 RESULTADO FINAL:', result);
+    logger.info('\n📊 RESULTADO FINAL:', result););
     process.exit(result.success ? 0 : 1);
   })
   .catch(error => {
-    console.error('\n💥 ERRO CRÍTICO:', error);
+    logger.error('\n💥 ERRO CRÍTICO:', error););
     process.exit(1);
   });

@@ -1,4 +1,5 @@
 const Sentry = require('@sentry/node');
+const logger = require('../utils/logger');
 
 const initSentry = (app) => {
   if (process.env.SENTRY_DSN) {
@@ -27,9 +28,9 @@ const initSentry = (app) => {
     app.use(Sentry.Handlers.requestHandler());
     app.use(Sentry.Handlers.tracingHandler());
 
-    console.log('📊 Sentry inicializado para monitoramento');
+    logger.info('📊 Sentry inicializado para monitoramento'););
   } else {
-    console.log('⚠️ Sentry DSN não configurado, monitoramento desabilitado');
+    logger.info('⚠️ Sentry DSN não configurado, monitoramento desabilitado'););
   }
 };
 
@@ -42,7 +43,7 @@ const captureException = (error, context = {}) => {
       extra: context
     });
   }
-  console.error('❌ Erro capturado:', error);
+  logger.error('❌ Erro capturado:', error););
 };
 
 const captureMessage = (message, level = 'info', context = {}) => {
@@ -54,7 +55,7 @@ const captureMessage = (message, level = 'info', context = {}) => {
       extra: context
     });
   }
-  console.log(`📝 Mensagem capturada [${level}]:`, message);
+  logger.info(`📝 Mensagem capturada [${level}]:`, message););
 };
 
 const errorHandler = () => {
@@ -62,7 +63,7 @@ const errorHandler = () => {
     return Sentry.Handlers.errorHandler();
   }
   return (err, req, res, next) => {
-    console.error('❌ Erro não tratado:', err);
+    logger.error('❌ Erro não tratado:', err););
     next(err);
   };
 };

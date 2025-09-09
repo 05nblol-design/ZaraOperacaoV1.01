@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function checkFinalStatus() {
@@ -11,26 +12,26 @@ async function checkFinalStatus() {
       }
     });
     
-    console.log(`\n=== STATUS FINAL ===`);
-    console.log(`Operações ativas: ${activeOps.length}`);
+    logger.info(`\n=== STATUS FINAL ===`););
+    logger.info(`Operações ativas: ${activeOps.length}`););
     
     if (activeOps.length === 0) {
-      console.log('✅ SUCESSO! Não há operações ativas.');
-      console.log('✅ Operadores podem agora iniciar novas operações sem erro.');
-      console.log('\n🔧 PROBLEMA RESOLVIDO:');
-      console.log('   - Canceladas 22 operações travadas');
-      console.log('   - Sistema liberado para novas operações');
-      console.log('   - Erro "Operador já possui operação ativa" corrigido');
+      logger.info('✅ SUCESSO! Não há operações ativas.'););
+      logger.info('✅ Operadores podem agora iniciar novas operações sem erro.'););
+      logger.info('\n🔧 PROBLEMA RESOLVIDO:'););
+      logger.info('   - Canceladas 22 operações travadas'););
+      logger.info('   - Sistema liberado para novas operações'););
+      logger.info('   - Erro "Operador já possui operação ativa" corrigido'););
     } else {
-      console.log('❌ Ainda há operações ativas:');
+      logger.info('❌ Ainda há operações ativas:'););
       activeOps.forEach(op => {
         const duration = Math.round((new Date() - new Date(op.startTime)) / 1000 / 60);
-        console.log(`   - ${op.user.name} na ${op.machine.name} (${duration} min)`);
+        logger.info(`   - ${op.user.name} na ${op.machine.name} (${duration} min)`););
       });
     }
     
   } catch (error) {
-    console.error('Erro:', error);
+    logger.error('Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

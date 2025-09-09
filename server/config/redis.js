@@ -1,4 +1,5 @@
 const redis = require('redis');
+const logger = require('../utils/logger');
 
 let redisClient;
 
@@ -9,25 +10,25 @@ const connectRedis = async () => {
     });
 
     redisClient.on('error', (err) => {
-      console.error('❌ Erro Redis:', err);
+      logger.error('❌ Erro Redis:', err););
     });
 
     redisClient.on('connect', () => {
-      console.log('🔗 Conectando ao Redis...');
+      logger.info('🔗 Conectando ao Redis...'););
     });
 
     redisClient.on('ready', () => {
-      console.log('✅ Redis conectado e pronto');
+      logger.info('✅ Redis conectado e pronto'););
     });
 
     redisClient.on('end', () => {
-      console.log('⚠️ Conexão Redis encerrada');
+      logger.info('⚠️ Conexão Redis encerrada'););
     });
 
     await redisClient.connect();
     
   } catch (error) {
-    console.error('❌ Erro ao conectar Redis:', error.message);
+    logger.error('❌ Erro ao conectar Redis:', error.message););
     // Não encerra o processo, Redis é opcional
   }
 };
@@ -43,7 +44,7 @@ const setCache = async (key, value, expireInSeconds = 3600) => {
       await redisClient.setEx(key, expireInSeconds, JSON.stringify(value));
     }
   } catch (error) {
-    console.error('Erro ao definir cache:', error);
+    logger.error('Erro ao definir cache:', error););
   }
 };
 
@@ -55,7 +56,7 @@ const getCache = async (key) => {
     }
     return null;
   } catch (error) {
-    console.error('Erro ao obter cache:', error);
+    logger.error('Erro ao obter cache:', error););
     return null;
   }
 };
@@ -66,7 +67,7 @@ const deleteCache = async (key) => {
       await redisClient.del(key);
     }
   } catch (error) {
-    console.error('Erro ao deletar cache:', error);
+    logger.error('Erro ao deletar cache:', error););
   }
 };
 
@@ -77,7 +78,7 @@ const publishEvent = async (channel, data) => {
       await redisClient.publish(channel, JSON.stringify(data));
     }
   } catch (error) {
-    console.error('Erro ao publicar evento:', error);
+    logger.error('Erro ao publicar evento:', error););
   }
 };
 

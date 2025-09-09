@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const fs = require('fs').promises;
 const path = require('path');
+const logger = require('../utils/logger');
 
 class EmailService {
   constructor() {
@@ -21,9 +22,9 @@ class EmailService {
 
       // Verificar conexão
       await this.transporter.verify();
-      console.log('📧 Serviço de email configurado com sucesso');
+      logger.info('📧 Serviço de email configurado com sucesso'););
     } catch (error) {
-      console.error('❌ Erro ao configurar serviço de email:', error.message);
+      logger.error('❌ Erro ao configurar serviço de email:', error.message););
     }
   }
 
@@ -67,10 +68,10 @@ class EmailService {
       };
 
       const result = await this.transporter.sendMail(mailOptions);
-      console.log('📧 Email de alerta de qualidade enviado:', result.messageId);
+      logger.info('📧 Email de alerta de qualidade enviado:', result.messageId););
       return { success: true, messageId: result.messageId };
     } catch (error) {
-      console.error('❌ Erro ao enviar email de alerta:', error);
+      logger.error('❌ Erro ao enviar email de alerta:', error););
       return { success: false, error: error.message };
     }
   }
@@ -133,10 +134,10 @@ class EmailService {
       };
 
       const result = await this.transporter.sendMail(mailOptions);
-      console.log('📧 Email de lembrete de teflon enviado:', result.messageId);
+      logger.info('📧 Email de lembrete de teflon enviado:', result.messageId););
       return { success: true, messageId: result.messageId };
     } catch (error) {
-      console.error('❌ Erro ao enviar email de lembrete:', error);
+      logger.error('❌ Erro ao enviar email de lembrete:', error););
       return { success: false, error: error.message };
     }
   }
@@ -199,10 +200,10 @@ class EmailService {
       };
 
       const result = await this.transporter.sendMail(mailOptions);
-      console.log('📧 Email de alerta de máquina enviado:', result.messageId);
+      logger.info('📧 Email de alerta de máquina enviado:', result.messageId););
       return { success: true, messageId: result.messageId };
     } catch (error) {
-      console.error('❌ Erro ao enviar email de alerta de máquina:', error);
+      logger.error('❌ Erro ao enviar email de alerta de máquina:', error););
       return { success: false, error: error.message };
     }
   }
@@ -270,10 +271,10 @@ class EmailService {
       };
 
       const result = await this.transporter.sendMail(mailOptions);
-      console.log('📧 Relatório diário enviado:', result.messageId);
+      logger.info('📧 Relatório diário enviado:', result.messageId););
       return { success: true, messageId: result.messageId };
     } catch (error) {
-      console.error('❌ Erro ao enviar relatório diário:', error);
+      logger.error('❌ Erro ao enviar relatório diário:', error););
       return { success: false, error: error.message };
     }
   }

@@ -1,9 +1,10 @@
 // Script para verificar URLs corretas do Vercel para configuração CORS
 const https = require('https');
 const http = require('http');
+const logger = require('utils/logger');
 
-console.log('🔍 VERIFICANDO URLs DO VERCEL PARA CORS');
-console.log('=' .repeat(50));
+logger.info('🔍 VERIFICANDO URLs DO VERCEL PARA CORS'););
+logger.info('=' .repeat(50)););
 
 // URLs possíveis do frontend Vercel
 const possibleUrls = [
@@ -48,36 +49,36 @@ function testUrl(url) {
 }
 
 async function checkVercelUrls() {
-  console.log('\n📋 TESTANDO URLs DO VERCEL:');
-  console.log('-'.repeat(40));
+  logger.info('\n📋 TESTANDO URLs DO VERCEL:'););
+  logger.info('-'.repeat(40)););
   
   const results = [];
   
   for (const url of possibleUrls) {
-    console.log(`Testando: ${url}`);
+    logger.info(`Testando: ${url}`););
     const result = await testUrl(url);
     results.push(result);
     
     if (result.active) {
-      console.log(`✅ ATIVA - Status: ${result.status}`);
+      logger.info(`✅ ATIVA - Status: ${result.status}`););
     } else {
-      console.log(`❌ INATIVA - Status: ${result.status}`);
+      logger.info(`❌ INATIVA - Status: ${result.status}`););
     }
   }
   
-  console.log('\n🎯 RESUMO - URLs ATIVAS DO VERCEL:');
-  console.log('=' .repeat(50));
+  logger.info('\n🎯 RESUMO - URLs ATIVAS DO VERCEL:'););
+  logger.info('=' .repeat(50)););
   
   const activeUrls = results.filter(r => r.active);
   
   if (activeUrls.length > 0) {
-    console.log('\n✅ URLs FUNCIONAIS ENCONTRADAS:');
+    logger.info('\n✅ URLs FUNCIONAIS ENCONTRADAS:'););
     activeUrls.forEach((result, index) => {
-      console.log(`${index + 1}. ${result.url}`);
+      logger.info(`${index + 1}. ${result.url}`););
     });
     
-    console.log('\n🔧 CONFIGURAÇÃO CORS PARA RAILWAY:');
-    console.log('-'.repeat(40));
+    logger.info('\n🔧 CONFIGURAÇÃO CORS PARA RAILWAY:'););
+    logger.info('-'.repeat(40)););
     
     // Criar string CORS_ORIGIN
     const corsUrls = [
@@ -88,30 +89,30 @@ async function checkVercelUrls() {
     
     const corsOrigin = corsUrls.join(',');
     
-    console.log('\n📝 VARIÁVEL CORS_ORIGIN COMPLETA:');
-    console.log(`CORS_ORIGIN=${corsOrigin}`);
+    logger.info('\n📝 VARIÁVEL CORS_ORIGIN COMPLETA:'););
+    logger.info(`CORS_ORIGIN=${corsOrigin}`););
     
-    console.log('\n🚀 PRÓXIMOS PASSOS:');
-    console.log('1. Acesse o Railway Dashboard');
-    console.log('2. Vá em Variables');
-    console.log('3. Atualize CORS_ORIGIN com o valor acima');
-    console.log('4. Salve as alterações');
-    console.log('5. Faça redeploy da aplicação');
+    logger.info('\n🚀 PRÓXIMOS PASSOS:'););
+    logger.info('1. Acesse o Railway Dashboard'););
+    logger.info('2. Vá em Variables'););
+    logger.info('3. Atualize CORS_ORIGIN com o valor acima'););
+    logger.info('4. Salve as alterações'););
+    logger.info('5. Faça redeploy da aplicação'););
     
   } else {
-    console.log('\n❌ NENHUMA URL ATIVA ENCONTRADA');
-    console.log('\n🔍 POSSÍVEIS CAUSAS:');
-    console.log('- Frontend não foi deployado no Vercel');
-    console.log('- URLs mudaram após redeploy');
-    console.log('- Problemas de conectividade');
+    logger.info('\n❌ NENHUMA URL ATIVA ENCONTRADA'););
+    logger.info('\n🔍 POSSÍVEIS CAUSAS:'););
+    logger.info('- Frontend não foi deployado no Vercel'););
+    logger.info('- URLs mudaram após redeploy'););
+    logger.info('- Problemas de conectividade'););
     
-    console.log('\n📋 CONFIGURAÇÃO CORS PADRÃO:');
-    console.log('CORS_ORIGIN=http://localhost:3000,http://localhost:5173');
+    logger.info('\n📋 CONFIGURAÇÃO CORS PADRÃO:'););
+    logger.info('CORS_ORIGIN=http://localhost:3000,http://localhost:5173'););
   }
   
-  console.log('\n' + '=' .repeat(50));
-  console.log('✅ VERIFICAÇÃO CONCLUÍDA');
+  logger.info('\n' + '=' .repeat(50)););
+  logger.info('✅ VERIFICAÇÃO CONCLUÍDA'););
 }
 
 // Executar verificação
-checkVercelUrls().catch(console.error);
+logger.error(checkVercelUrls().catch(console.error););

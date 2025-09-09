@@ -1,4 +1,5 @@
 const { captureException } = require('../config/sentry');
+const logger = require('../utils/logger');
 
 // Middleware de tratamento de erros
 const errorHandler = (err, req, res, next) => {
@@ -6,7 +7,7 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
 
   // Log do erro
-  console.error('❌ Erro capturado:', err);
+  logger.error('❌ Erro capturado:', err););
 
   // Capturar no Sentry
   captureException(err, {

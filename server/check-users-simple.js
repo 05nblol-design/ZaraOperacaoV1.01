@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function checkUsers() {
@@ -12,13 +13,13 @@ async function checkUsers() {
       }
     });
     
-    console.log('Usuários cadastrados:', users.length);
+    logger.info('Usuários cadastrados:', users.length););
     users.forEach(u => {
-      console.log(`- ${u.name} (ID: ${u.id}, Role: ${u.role}, Email: ${u.email})`);
+      logger.info(`- ${u.name} (ID: ${u.id}, Role: ${u.role}, Email: ${u.email})`););
     });
     
   } catch (error) {
-    console.error('Erro:', error);
+    logger.error('Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

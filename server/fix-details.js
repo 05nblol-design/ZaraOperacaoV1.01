@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const logger = require('utils/logger');
 
 const routesDir = path.join(__dirname, 'routes');
 const files = [
@@ -32,8 +33,8 @@ files.forEach(filename => {
     });
     
     fs.writeFileSync(filePath, content, 'utf8');
-    console.log(`Corrigido: ${filename}`);
+    logger.info(`Corrigido: ${filename}`););
   }
 });
 
-console.log('Correção concluída!');
+logger.info('Correção concluída!'););

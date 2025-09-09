@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function createMachinePermissions() {
@@ -27,16 +28,16 @@ async function createMachinePermissions() {
             canOperate: true
           }
         });
-        console.log(`Permissão criada para máquina ${machine.name} (${machine.code})`);
+        logger.info(`Permissão criada para máquina ${machine.name} (${machine.code})`););
       } else {
-        console.log(`Permissão já existe para máquina ${machine.name} (${machine.code})`);
+        logger.info(`Permissão já existe para máquina ${machine.name} (${machine.code})`););
       }
     }
     
-    console.log('\nPermissões criadas com sucesso!');
+    logger.info('\nPermissões criadas com sucesso!'););
     
   } catch (error) {
-    console.error('Erro:', error);
+    logger.error('Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

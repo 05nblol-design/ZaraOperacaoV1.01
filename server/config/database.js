@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('../utils/logger');
 
 const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
@@ -7,14 +8,14 @@ const prisma = new PrismaClient({
 const connectDB = async () => {
   try {
     await prisma.$connect();
-    console.log('📊 PostgreSQL conectado via Prisma');
+    logger.info('📊 PostgreSQL conectado via Prisma'););
     
     // Testar a conexão
     await prisma.$queryRaw`SELECT 1`;
-    console.log('✅ Conexão com PostgreSQL testada com sucesso');
+    logger.info('✅ Conexão com PostgreSQL testada com sucesso'););
     
   } catch (error) {
-    console.error('❌ Erro ao conectar PostgreSQL:', error.message);
+    logger.error('❌ Erro ao conectar PostgreSQL:', error.message););
     process.exit(1);
   }
 };
@@ -22,7 +23,7 @@ const connectDB = async () => {
 // Graceful shutdown
 process.on('beforeExit', async () => {
   await prisma.$disconnect();
-  console.log('🔌 PostgreSQL desconectado');
+  logger.info('🔌 PostgreSQL desconectado'););
 });
 
 module.exports = { connectDB, prisma };

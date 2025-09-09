@@ -1,5 +1,6 @@
 const rateLimit = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
+const logger = require('../utils/logger');
 
 // Rate limiting específico para autenticação - DESABILITADO
 const authLimiter = rateLimit({
@@ -117,7 +118,7 @@ const detectSQLInjection = (req, res, next) => {
   ].some(checkValue);
 
   if (suspicious) {
-    console.warn(`🚨 Possível SQL Injection detectado:`, {
+    logger.warn(`🚨 Possível SQL Injection detectado:`, {);
       ip: req.ip,
       userAgent: req.get('User-Agent'),
       url: req.originalUrl,
@@ -167,7 +168,7 @@ const securityLogger = (req, res, next) => {
     );
 
     if (isSuspicious) {
-      console.warn('🚨 Requisição suspeita detectada:', securityInfo);
+      logger.warn('🚨 Requisição suspeita detectada:', securityInfo););
     }
   }
 

@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
+const logger = require('utils/logger');
 
 const prisma = new PrismaClient();
 
@@ -11,8 +12,8 @@ async function createAdmin() {
     });
 
     if (existingAdmin) {
-      console.log('✅ Admin já existe!');
-      console.log('📋 Credenciais: admin@zara.com / admin123');
+      logger.info('✅ Admin já existe!'););
+      logger.info('📋 Credenciais: admin@zara.com / admin123'););
       return;
     }
 
@@ -32,12 +33,12 @@ async function createAdmin() {
       }
     });
 
-    console.log('✅ Admin criado com sucesso!');
-    console.log('📋 Credenciais: admin@zara.com / admin123');
-    console.log('ID:', admin.id);
+    logger.info('✅ Admin criado com sucesso!'););
+    logger.info('📋 Credenciais: admin@zara.com / admin123'););
+    logger.info('ID:', admin.id););
 
   } catch (error) {
-    console.error('❌ Erro ao criar admin:', error.message);
+    logger.error('❌ Erro ao criar admin:', error.message););
   } finally {
     await prisma.$disconnect();
   }

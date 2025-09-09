@@ -4,6 +4,7 @@ const { authenticateToken, requireRole } = require('../middleware/auth');
 const { validateRequest } = require('../middleware/validation');
 const { body, param, query } = require('express-validator');
 const NodeCache = require('node-cache');
+const logger = require('../utils/logger');
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -144,7 +145,7 @@ router.get('/',
         }
       });
     } catch (error) {
-      console.error('Erro ao buscar permissões:', error);
+      logger.error('Erro ao buscar permissões:', error););
       res.status(500).json({
         success: false,
         message: 'Erro interno do servidor'
@@ -217,7 +218,7 @@ router.get('/user/:userId',
         data: result
       });
     } catch (error) {
-      console.error('Erro ao buscar permissões do usuário:', error);
+      logger.error('Erro ao buscar permissões do usuário:', error););
       res.status(500).json({
         success: false,
         message: 'Erro interno do servidor'
@@ -323,7 +324,7 @@ router.post('/',
         message: 'Permissão criada com sucesso'
       });
     } catch (error) {
-      console.error('Erro ao criar permissão:', error);
+      logger.error('Erro ao criar permissão:', error););
       res.status(500).json({
         success: false,
         message: 'Erro interno do servidor'
@@ -402,7 +403,7 @@ router.put('/:id',
         message: 'Permissão atualizada com sucesso'
       });
     } catch (error) {
-      console.error('Erro ao atualizar permissão:', error);
+      logger.error('Erro ao atualizar permissão:', error););
       res.status(500).json({
         success: false,
         message: 'Erro interno do servidor'
@@ -449,7 +450,7 @@ router.delete('/:id',
         message: 'Permissão removida com sucesso'
       });
     } catch (error) {
-      console.error('Erro ao remover permissão:', error);
+      logger.error('Erro ao remover permissão:', error););
       res.status(500).json({
         success: false,
         message: 'Erro interno do servidor'
@@ -546,7 +547,7 @@ router.post('/bulk',
         message: `${createdPermissions.length} permissões processadas com sucesso`
       });
     } catch (error) {
-      console.error('Erro ao criar permissões em lote:', error);
+      logger.error('Erro ao criar permissões em lote:', error););
       res.status(500).json({
         success: false,
         message: 'Erro interno do servidor'
@@ -585,7 +586,7 @@ router.get('/operators',
         data: operators
       });
     } catch (error) {
-      console.error('Erro ao buscar operadores:', error);
+      logger.error('Erro ao buscar operadores:', error););
       res.status(500).json({
         success: false,
         message: 'Erro interno do servidor'
@@ -624,7 +625,7 @@ router.get('/machines',
         data: machines
       });
     } catch (error) {
-      console.error('Erro ao buscar máquinas:', error);
+      logger.error('Erro ao buscar máquinas:', error););
       res.status(500).json({
         success: false,
         message: 'Erro interno do servidor'

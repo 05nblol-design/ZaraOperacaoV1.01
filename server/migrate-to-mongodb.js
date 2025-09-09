@@ -12,6 +12,7 @@
 
 const { exec } = require('child_process');
 const { promisify } = require('util');
+const logger = require('utils/logger');
 const execAsync = promisify(exec);
 
 // Cores para output
@@ -25,7 +26,7 @@ const colors = {
 };
 
 function log(message, color = 'reset') {
-  console.log(`${colors[color]}${message}${colors.reset}`);
+  logger.info(`${colors[color]}${message}${colors.reset}`););
 }
 
 function logStep(step, message) {

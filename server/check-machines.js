@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function checkMachines() {
@@ -12,9 +13,9 @@ async function checkMachines() {
       }
     });
     
-    console.log('Máquinas no sistema:');
+    logger.info('Máquinas no sistema:'););
     machines.forEach(m => {
-      console.log(`- ${m.name} (ID: ${m.id}): ${m.status} - ${m.productionSpeed}pcs/min`);
+      logger.info(`- ${m.name} (ID: ${m.id}): ${m.status} - ${m.productionSpeed}pcs/min`););
     });
     
     const operations = await prisma.machineOperation.findMany({
@@ -28,14 +29,14 @@ async function checkMachines() {
       }
     });
     
-    console.log('\nOperações ativas:');
+    logger.info('\nOperações ativas:'););
     operations.forEach(op => {
       const duration = Math.floor((new Date() - new Date(op.startTime)) / (1000 * 60));
-      console.log(`- ${op.machine.name}: ${op.user.name} (${duration} min)`);
+      logger.info(`- ${op.machine.name}: ${op.user.name} (${duration} min)`););
     });
     
   } catch (error) {
-    console.error('Erro:', error);
+    logger.error('Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

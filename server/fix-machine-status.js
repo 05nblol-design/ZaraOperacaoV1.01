@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
 async function fixMachineStatus() {
@@ -8,7 +9,7 @@ async function fixMachineStatus() {
       data: { status: 'FUNCIONANDO' }
     });
     
-    console.log('✅ Status da Máquina 01d atualizado para FUNCIONANDO');
+    logger.info('✅ Status da Máquina 01d atualizado para FUNCIONANDO'););
     
     // Verificar o status atualizado
     const machine = await prisma.machine.findUnique({
@@ -16,10 +17,10 @@ async function fixMachineStatus() {
       select: { name: true, status: true }
     });
     
-    console.log(`Status atual: ${machine.name} - ${machine.status}`);
+    logger.info(`Status atual: ${machine.name} - ${machine.status}`););
     
   } catch (error) {
-    console.error('Erro:', error);
+    logger.error('Erro:', error););
   } finally {
     await prisma.$disconnect();
   }

@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const logger = require('../utils/logger');
 const prisma = new PrismaClient();
 
 /**
@@ -170,7 +171,7 @@ async function calculateProduction(machineId, startTime, endTime) {
     };
 
   } catch (error) {
-    console.error('Erro ao calcular produção:', error);
+    logger.error('Erro ao calcular produção:', error););
     throw error;
   }
 }
@@ -190,7 +191,7 @@ async function calculateMultipleProduction(machineIds, startTime, endTime) {
       const production = await calculateProduction(machineId, startTime, endTime);
       results.push(production);
     } catch (error) {
-      console.error(`Erro ao calcular produção da máquina ${machineId}:`, error);
+      logger.error(`Erro ao calcular produção da máquina ${machineId}:`, error););
       results.push({
         machineId,
         error: error.message,
