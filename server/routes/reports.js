@@ -1788,7 +1788,7 @@ router.get('/quality-summary', [
     machine: test.machine.name,
     operator: test.user.name,
     approved: test.approved,
-    testDate: test.testDate,
+    testDate: test.createdAt,
     createdAt: test.createdAt
   }));
 

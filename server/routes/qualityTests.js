@@ -55,9 +55,9 @@ router.get('/', [
   if (lot) where.lot = { contains: lot, mode: 'insensitive' };
   
   if (startDate || endDate) {
-    where.testDate = {};
-    if (startDate) where.testDate.gte = new Date(startDate);
-    if (endDate) where.testDate.lte = new Date(endDate);
+    where.createdAt = {};
+    if (startDate) where.createdAt.gte = new Date(startDate);
+    if (endDate) where.createdAt.lte = new Date(endDate);
   }
 
   // Se for operador, mostrar apenas seus testes
@@ -76,7 +76,7 @@ router.get('/', [
           select: { name: true, email: true }
         }
       },
-      orderBy: { testDate: 'desc' },
+      orderBy: { createdAt: 'desc' },
       skip,
       take: parseInt(limit)
     }),
@@ -487,9 +487,9 @@ router.get('/stats/summary', requireLeader, asyncHandler(async (req, res) => {
   const where = {};
   
   if (startDate || endDate) {
-    where.testDate = {};
-    if (startDate) where.testDate.gte = new Date(startDate);
-    if (endDate) where.testDate.lte = new Date(endDate);
+    where.createdAt = {};
+    if (startDate) where.createdAt.gte = new Date(startDate);
+    if (endDate) where.createdAt.lte = new Date(endDate);
   }
   
   if (machineId) where.machineId = machineId;
