@@ -25,6 +25,9 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { useSocket } from '@/hooks/useSocket';
 
+// Services
+import { qualityTestService, machineService } from '@/services/api';
+
 // Utilitários
 import { cn, formatDateTime, formatNumber } from '@/lib/utils';
 import { ROUTES } from '@/config/routes';
@@ -67,26 +70,12 @@ const QualityTests = () => {
         setError(null);
         
         const [testsResponse, machinesResponse] = await Promise.all([
-          fetch('/api/quality-tests', {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-          }),
-          fetch('/api/machines', {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-          })
+          qualityTestService.getAll(),
+          machineService.getAll()
         ]);
         
-        if (!testsResponse.ok || !machinesResponse.ok) {
-          throw new Error('Erro ao carregar dados');
-        }
-        
-        const [testsData, machinesData] = await Promise.all([
-          testsResponse.json(),
-          machinesResponse.json()
-        ]);
+        const testsData = testsResponse.data;
+        const machinesData = machinesResponse.data;
         
         if (testsData.success) {
           setTests(testsData.data || []);

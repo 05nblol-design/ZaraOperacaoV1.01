@@ -33,6 +33,9 @@ import { useMachineStatus } from '@/hooks/useMachineStatus';
 // Utilitários
 import { cn, formatDateTime, formatNumber, formatCurrency } from '@/lib/utils';
 
+// Services
+import { reportService } from '@/services/api';
+
 // Popups
 import DataAnalysisPopup from '@/components/popups/DataAnalysisPopup';
 import ReportsPopup from '@/components/popups/ReportsPopup';
@@ -68,16 +71,10 @@ const Reports = () => {
   // Buscar dados reais de produção para relatórios da API
   const fetchReportsProductionData = async () => {
     try {
-      const response = await fetch('/api/reports/production-summary', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await reportService.getDashboardStats();
+      const data = response.data;
       
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
+      if (data.success) {
           setReportsRealTimeData(data.data);
           return;
         }
@@ -121,31 +118,20 @@ const Reports = () => {
     try {
       setLoading(true);
       
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
+      // Buscar dados usando os serviços configurados
+      const [productionResponse, qualityResponse, machineResponse] = await Promise.all([
+        reportService.getProductionReport(),
+        reportService.getQualityReport(),
+        reportService.getMachineReport()
+      ]);
       
-      // Buscar dados de produção
-      const productionResponse = await fetch('/api/reports/production-data', { headers });
-      const productionData = await productionResponse.json();
+      const productionData = productionResponse.data;
+      const qualityData = qualityResponse.data;
+      const machineData = machineResponse.data;
       
-      // Buscar métricas de qualidade
-      const qualityResponse = await fetch('/api/reports/quality-metrics', { headers });
-      const qualityData = await qualityResponse.json();
-      
-      // Buscar performance das máquinas
-      const machineResponse = await fetch('/api/reports/machine-performance', { headers });
-      const machineData = await machineResponse.json();
-      
-      // Buscar dados de manutenção
-      const maintenanceResponse = await fetch('/api/reports/maintenance-data', { headers });
-      const maintenanceData = await maintenanceResponse.json();
-      
-      // Buscar dados de produtividade de operadores
-      const operatorResponse = await fetch('/api/reports/operator-productivity', { headers });
-      const operatorData = await operatorResponse.json();
+      // Para manutenção e operadores, usar dados padrão por enquanto
+      const maintenanceData = { success: true, data: { totalMaintenance: 0, preventive: 0, corrective: 0, avgDowntime: 0, maintenanceCost: 0, plannedVsUnplanned: { planned: 0, unplanned: 0 }, maintenanceByMachine: [], downtimeTrend: [] } };
+      const operatorData = { success: true, data: [] };
       
       // Atualizar estado com dados reais
       if (productionData.success && qualityData.success && machineData.success && maintenanceData.success && operatorData.success) {

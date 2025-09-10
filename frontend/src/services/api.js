@@ -1,15 +1,22 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-// Configuração base da API - detecta automaticamente localhost vs produção
+// Configuração base da API - detecção robusta de ambiente
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return import.meta.env.VITE_API_URL_LOCAL || 'http://localhost:5000/api';
+  const isDevelopment = hostname === 'localhost' || hostname === '127.0.0.1';
+  
+  if (isDevelopment) {
+    // Desenvolvimento: usar variável local ou fallback localhost
+    return import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
   } else {
-    // Em produção, sempre usar a variável de ambiente configurada
-    const baseUrl = import.meta.env.VITE_API_URL || 'https://zara-backend-production-aab3.up.railway.app';
-    return baseUrl.endsWith('/api') ? baseUrl : `${baseUrl}/api`;
+    // Produção: SEMPRE usar variável de ambiente (sem fallback hardcoded)
+    const apiUrl = import.meta.env.VITE_API_URL;
+    if (!apiUrl) {
+      console.error('❌ VITE_API_URL não configurada para produção!');
+      throw new Error('Configuração de API não encontrada para produção');
+    }
+    return apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
   }
 };
 
@@ -224,6 +231,15 @@ export const reportService = {
     params,
     responseType: 'blob'
   }),
+};
+
+// Serviços de permissões
+export const permissionService = {
+  getAll: () => api.get('/permissions'),
+  getById: (id) => api.get(`/permissions/${id}`),
+  create: (data) => api.post('/permissions', data),
+  update: (id, data) => api.put(`/permissions/${id}`, data),
+  delete: (id) => api.delete(`/permissions/${id}`),
 };
 
 // Serviços de configurações

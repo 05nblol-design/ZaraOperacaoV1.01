@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-hot-toast';
+
+// Services
+import { machineService } from '@/services/api';
 import {
   ArrowLeftIcon,
   WrenchScrewdriverIcon,
@@ -45,20 +49,10 @@ const MachineNew = () => {
     setError(null);
 
     try {
-      const response = await fetch('/api/machines', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao criar máquina');
-      }
-
+      await machineService.create(formData);
+      
       setSuccess(true);
+      toast.success('Máquina criada com sucesso!');
       setTimeout(() => {
         navigate(ROUTES.MACHINES);
       }, 2000);

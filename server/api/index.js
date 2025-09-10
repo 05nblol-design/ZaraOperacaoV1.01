@@ -62,7 +62,9 @@ const server = createServer(app);
 const httpsServer = createHTTPSServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [process.env.CLIENT_URL || 'http://localhost:5173', 'http://localhost:5173', 'http://localhost:5174', 'http://192.168.1.149:5173', 'http://192.168.1.149:5174'],
+    origin: process.env.NODE_ENV === 'production'
+      ? [process.env.CLIENT_URL || process.env.FRONTEND_URL]
+      : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
     methods: ['GET', 'POST']
   }
 });

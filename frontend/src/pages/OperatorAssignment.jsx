@@ -4,6 +4,9 @@ import { UserIcon, CogIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/out
 import { cn } from '@/lib/utils';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
+// Services
+import { machineService, userService, permissionService } from '@/services/api';
+
 const OperatorAssignment = () => {
   const { user } = useAuth();
   const [machines, setMachines] = useState([]);
@@ -35,30 +38,14 @@ const OperatorAssignment = () => {
 
       // Carregar máquinas, operadores e permissões em paralelo
       const [machinesRes, operatorsRes, permissionsRes] = await Promise.all([
-        fetch('/api/machines', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }),
-        fetch('/api/users?role=OPERATOR', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }),
-        fetch('/api/permissions', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        })
+        machineService.getAll(),
+        userService.getAll({ role: 'OPERATOR' }),
+        permissionService.getAll()
       ]);
 
-      if (!machinesRes.ok || !operatorsRes.ok || !permissionsRes.ok) {
-        throw new Error('Erro ao carregar dados');
-      }
-
-      const [machinesData, operatorsData, permissionsData] = await Promise.all([
-        machinesRes.json(),
-        operatorsRes.json(),
-        permissionsRes.json()
-      ]);
-
-      setMachines(machinesData.data || []);
-      setOperators(operatorsData.data || []);
-      setPermissions(permissionsData.data || []);
+      setMachines(machinesRes.data.data || []);
+      setOperators(operatorsRes.data.data || []);
+      setPermissions(permissionsRes.data.data || []);
     } catch (err) {
       console.error('Erro ao carregar dados:', err);
       setError('Erro ao carregar dados. Tente novamente.');
@@ -76,40 +63,21 @@ const OperatorAssignment = () => {
         p => p.userId === operatorId && p.machineId === machineId
       );
 
-      let response;
       if (existingPermission) {
         // Atualizar permissão existente
-        response = await fetch(`/api/permissions/${existingPermission.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({
-            ...existingPermission,
-            [permissionType]: value
-          })
+        await permissionService.update(existingPermission.id, {
+          ...existingPermission,
+          [permissionType]: value
         });
       } else {
         // Criar nova permissão
-        response = await fetch('/api/permissions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({
-            userId: operatorId,
-            machineId: machineId,
-            canView: permissionType === 'canView' ? value : false,
-            canOperate: permissionType === 'canOperate' ? value : true, // Operadores sempre podem operar
-            canEdit: permissionType === 'canEdit' ? value : false
-          })
+        await permissionService.create({
+          userId: operatorId,
+          machineId: machineId,
+          canView: permissionType === 'canView' ? value : false,
+          canOperate: permissionType === 'canOperate' ? value : true, // Operadores sempre podem operar
+          canEdit: permissionType === 'canEdit' ? value : false
         });
-      }
-
-      if (!response.ok) {
-        throw new Error('Erro ao atualizar permissão');
       }
 
       // Recarregar dados

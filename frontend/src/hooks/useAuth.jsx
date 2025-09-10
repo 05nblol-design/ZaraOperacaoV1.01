@@ -51,8 +51,8 @@ export const AuthProvider = ({ children }) => {
         // Auto-login para desenvolvimento
         try {
           const response = await authService.login({
-            email: 'admin@zara.com',
-            password: 'admin123'
+            email: 'teste@zara.com',
+            password: '123456'
           });
           
           if (response.data.success) {
