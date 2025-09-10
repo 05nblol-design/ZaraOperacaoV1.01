@@ -30,8 +30,7 @@ async function main() {
          await prisma.machine.create({
            data: {
              name: `Máquina ${i.toString().padStart(2, '0')}`,
-             code: `MAQ${i.toString().padStart(3, '0')}`,
-             description: `Máquina de embalagem linha ${Math.ceil(i / 2)}`,
+             type: `EMBALAGEM_${Math.ceil(i / 2)}`,
              status: i <= 7 ? 'RUNNING' : i <= 9 ? 'IDLE' : 'STOPPED',
              isActive: true,
              location: `Setor ${Math.ceil(i / 3)}`
@@ -149,12 +148,10 @@ async function main() {
       const machine = await prisma.machine.create({
         data: {
           name: `Máquina ${i.toString().padStart(2, '0')}`,
-          code: `MAQ${i.toString().padStart(3, '0')}`,
-          description: `Máquina de embalagem linha ${Math.ceil(i / 2)}`,
+          type: `EMBALAGEM_${Math.ceil(i / 2)}`,
           status: i <= 7 ? 'RUNNING' : i <= 9 ? 'IDLE' : 'MAINTENANCE',
           isActive: true,
           location: `Setor ${Math.ceil(i / 3)}`,
-          model: `Modelo ${['A', 'B', 'C'][i % 3]}`,
           createdAt: new Date(),
           updatedAt: new Date()
         }

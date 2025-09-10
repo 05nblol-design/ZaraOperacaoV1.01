@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-09-10T01:12:55.933Z",
+  "system": {
+    "frontend": "https://sistema-zara-frontend.vercel.app",
+    "backend": "https://zara-backend-production-aab3.up.railway.app",
+    "api": "https://zara-backend-production-aab3.up.railway.app/api"
+  },
+  "errors_identified": [
+    "SyntaxError: Failed to execute json on Response",
+    "Unexpected token < (HTML instead of JSON)",
+    "Multiple components affected: Dashboard, QualityTests, Reports"
+  ],
+  "affected_components": [
+    "ManagerDashboard",
+    "QualityTests",
+    "Reports",
+    "ProductionData"
+  ],
+  "critical_endpoints": [
+    "/api/reports/manager-dashboard",
+    "/api/reports/leader-dashboard",
+    "/api/reports/quality-metrics",
+    "/api/reports/production-data",
+    "/api/machines",
+    "/api/users",
+    "/api/auth/login",
+    "/api/health"
+  ],
+  "diagnosis": {},
+  "recommendations": [
+    "1. Verificar se o backend Railway está rodando corretamente",
+    "2. Confirmar se as rotas da API estão respondendo JSON",
+    "3. Verificar configuração de CORS no Railway",
+    "4. Validar variáveis de ambiente no Vercel",
+    "5. Testar redeploy do backend Railway",
+    "6. Verificar logs do Railway para erros internos",
+    "7. Confirmar se o PostgreSQL está conectado corretamente"
+  ],
+  "next_steps": [
+    "Executar redeploy manual do Railway",
+    "Verificar logs do Railway Dashboard",
+    "Testar endpoints individualmente",
+    "Validar configuração do banco PostgreSQL",
+    "Atualizar variáveis de ambiente se necessário"
+  ]
+}

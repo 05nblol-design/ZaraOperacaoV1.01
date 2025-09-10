@@ -187,16 +187,16 @@ export const useMachineStatus = () => {
 
   const getAverageEfficiency = () => {
     if (machines.length === 0) return 0;
-    const total = machines.reduce((sum, machine) => sum + (machine.efficiency || 0), 0);
+    const total = machines.reduce((acc, machine) => acc + (machine.efficiency || 0), 0);
     return Math.round(total / machines.length);
   };
 
   const getProductionToday = () => {
-    return machines.reduce((sum, machine) => sum + (machine.productionToday || 0), 0);
+    return machines.reduce((acc, machine) => acc + (machine.productionToday || 0), 0);
   };
 
   const getAlertsCount = () => {
-    return machines.reduce((sum, machine) => sum + (machine.alerts?.length || 0), 0);
+    return machines.reduce((acc, machine) => acc + (machine.alerts?.length || 0), 0);
   };
 
   const updateMachineStatus = async (machineId, status) => {

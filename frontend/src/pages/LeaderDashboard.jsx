@@ -241,7 +241,7 @@ const LeaderDashboard = () => {
         return 0;
       } else if (isRunning) {
         // Funcionando: eficiência baseada na produção real
-        if (!realMachine.productionSpeed) return acc;
+        if (!realMachine.productionSpeed) return machine.efficiency || 85;
         const speed = realMachine.productionSpeed;
         const runningTime = realMachine.runningTime || 0; // em minutos
         const currentProduction = realMachine.currentProduction || 0;

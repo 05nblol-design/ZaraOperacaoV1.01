@@ -187,35 +187,44 @@ router.get('/machine-performance', [
 
   if (machineId && machineId !== 'all') where.id = machineId;
 
-  // Usar Prisma para PostgreSQL
-  const { prisma } = require('../config/database');
-  
-  // Buscar máquinas
+  // Buscar máquinas usando Prisma
   const machineFilter = {};
   if (machineId && machineId !== 'all') {
     machineFilter.id = parseInt(machineId);
   }
   
-  const machines = await machinesCollection.find(machineFilter).toArray();
+  const machines = await prisma.machine.findMany({
+    where: machineFilter,
+    include: {
+      operations: {
+        include: {
+          user: true
+        }
+      }
+    }
+  });
   
   // Para cada máquina, buscar dados de qualidade
   const machinePerformance = [];
   
   for (const machine of machines) {
-    const testFilter = { machineId: machine._id.toString() };
+    const testFilter = { machineId: machine.id };
     
     if (startDate || endDate) {
       testFilter.createdAt = {};
-      if (startDate) testFilter.createdAt.$gte = new Date(startDate);
-      if (endDate) testFilter.createdAt.$lte = new Date(endDate);
+      if (startDate) testFilter.createdAt.gte = new Date(startDate);
+      if (endDate) testFilter.createdAt.lte = new Date(endDate);
     }
     
-    const tests = await qualityTestsCollection.find(testFilter).toArray();
+    const tests = await prisma.qualityTest.findMany({
+      where: testFilter
+    });
+    
     const totalTests = tests.length;
     const passedTests = tests.filter(t => t.approved).length;
     
     machinePerformance.push({
-      id: machine._id,
+      id: machine.id,
       name: machine.name || `Máquina ${machine.code}`,
       status: machine.status || 'UNKNOWN',
       totalTests,
@@ -225,8 +234,6 @@ router.get('/machine-performance', [
       lastMaintenance: machine.lastMaintenance
     });
   }
-  
-  await client.close();
   
   // Calcular médias
   const avgEfficiency = machinePerformance.length > 0 
