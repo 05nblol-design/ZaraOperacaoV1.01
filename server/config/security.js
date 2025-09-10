@@ -7,44 +7,47 @@ const getCorsConfig = () => {
   
   return {
     origin: function (origin, callback) {
-      // Permitir requisições sem origin (mobile apps, Postman, etc.) apenas em desenvolvimento
-      if (!origin && !isProduction) return callback(null, true);
-      
-      const allowedOrigins = isProduction
-        ? [
-            'https://sistema-zara-frontend.vercel.app',
-            'https://sistema-zara-frontend-i90xa6vrg-05nblol-designs-projects.vercel.app',
-            'https://sistema-zara-frontend-cp1cg9k3p-05nblol-designs-projects.vercel.app',
-            ...(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || '').split(',').map(url => url.trim()).filter(Boolean)
-          ]
-        : [
-            'http://localhost:5173',
-            'http://localhost:5174',
-            'http://localhost:3000',
-            'http://127.0.0.1:5173',
-            'http://127.0.0.1:5174',
-            'http://192.168.1.149:5173',
-            'http://192.168.1.149:5174',
-            process.env.CLIENT_URL
-          ].filter(Boolean);
-      
-      // Em produção, permitir requisições sem origin para health checks e Railway
-      if (isProduction && !origin) {
-        // Permitir para CORS_ORIGINS=* ou requisições internas (Railway health checks)
-        if (allowedOrigins.includes('*') || allowedOrigins.length === 0) {
+      // CORREÇÃO TEMPORÁRIA: Permitir todas as origens Vercel
+      if (isProduction) {
+        // Permitir requisições sem origin (health checks, Railway)
+        if (!origin) {
           return callback(null, true);
         }
-        logger.warn('⚠️ Requisição sem origin em produção - pode ser health check do Railway');
-        return callback(null, true); // Permitir para health checks
-      }
-      
-      // Verificar se origin está nas origens permitidas ou se é wildcard
-      if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
+        
+        // Permitir todas as URLs Vercel
+        if (origin.includes('vercel.app') || origin.includes('sistema-zara-frontend')) {
+          logger.info(`✅ CORS permitido para Vercel: ${origin}`);
+          return callback(null, true);
+        }
+        
+        // Permitir origens específicas
+        const allowedOrigins = [
+          'https://sistema-zara-frontend.vercel.app',
+          'https://sistema-zara-frontend-i90xa6vrg-05nblol-designs-projects.vercel.app',
+          'https://sistema-zara-frontend-cp1cg9k3p-05nblol-designs-projects.vercel.app'
+        ];
+        
+        if (allowedOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+        
         logger.warn(`🚫 CORS blocked origin: ${origin}`);
-        logger.warn(`📋 Allowed origins: ${allowedOrigins.join(', ')}`);
-        callback(new Error('Não permitido pelo CORS'));
+        return callback(new Error('Não permitido pelo CORS'));
+      } else {
+        // Desenvolvimento - permitir localhost
+        const devOrigins = [
+          'http://localhost:5173',
+          'http://localhost:5174',
+          'http://localhost:3000',
+          'http://127.0.0.1:5173',
+          'http://127.0.0.1:5174'
+        ];
+        
+        if (!origin || devOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+        
+        return callback(new Error('Não permitido pelo CORS'));
       }
     },
     credentials: true,
