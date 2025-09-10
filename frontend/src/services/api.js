@@ -310,14 +310,11 @@ api.interceptors.response.use(
           // Token expirado ou inválido
           localStorage.removeItem('token');
           localStorage.removeItem('user');
-          // Evitar redirecionamento direto que pode causar ERR_ABORTED
+          // Remover redirecionamento automático que pode interferir com logout
           // O componente ProtectedRoute já gerencia redirecionamentos
           if (!window.location.pathname.includes('/login')) {
             toast.error('Sessão expirada. Faça login novamente.');
-            // Usar setTimeout para evitar conflitos
-            setTimeout(() => {
-              window.location.replace('/login');
-            }, 100);
+            // Não fazer redirecionamento automático - deixar o ProtectedRoute gerenciar
           }
           break;
           

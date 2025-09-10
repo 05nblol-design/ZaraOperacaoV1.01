@@ -47,32 +47,8 @@ export const AuthProvider = ({ children }) => {
           localStorage.removeItem('user');
           setToken(null);
         }
-      } else {
-        // Auto-login para desenvolvimento
-        try {
-          const response = await authService.login({
-            email: 'admin@zara.com',
-            password: '123456'
-          });
-          
-          if (response.data.success) {
-            const { token: authToken, user: userData } = response.data.data || {};
-            
-            if (authToken && userData) {
-              localStorage.setItem('token', authToken);
-              localStorage.setItem('user', JSON.stringify(userData));
-              setToken(authToken);
-              setUser(userData);
-              setIsAuthenticated(true);
-            }
-          }
-        } catch (error) {
-          console.error('Erro no auto-login:', error);
-          // Se o auto-login falhar, limpar dados inválidos
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-        }
       }
+      // Auto-login removido para evitar login automático após logout
       
       setIsLoading(false);
     };
