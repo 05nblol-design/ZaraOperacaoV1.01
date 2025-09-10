@@ -1,29 +1,27 @@
-# Railway-optimized Dockerfile for ZARA system
+# Dockerfile ultra-simples para Railway
 FROM node:18-alpine
 
-# Install system dependencies
-RUN apk add --no-cache curl git openssl openssl-dev libc6-compat
+# Instalar dependências básicas
+RUN apk add --no-cache curl
 
-# Set working directory
+# Definir diretório de trabalho
 WORKDIR /app
 
-# Copy server files
+# Copiar arquivos do servidor
 COPY server/package*.json ./
 COPY server/prisma ./prisma/
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Instalar dependências
+RUN npm ci --only=production
 
-# Generate Prisma client
+# Gerar Prisma client
 RUN npx prisma generate
 
-# Copy server source code
+# Copiar código fonte
 COPY server/ .
 
-# Remover criação de diretórios uploads para evitar problemas de volume no Railway
-
-# Expose port
+# Expor porta
 EXPOSE 5000
 
-# Start the application
+# Iniciar aplicação
 CMD ["npm", "start"]
