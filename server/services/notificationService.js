@@ -186,23 +186,25 @@ class NotificationService {
     try {
       logger.info('📧 Enviando notificação de troca de teflon...');
       
-      const daysUntilExpiry = Math.ceil((new Date(changeData.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
-      const isExpired = daysUntilExpiry <= 0;
+      // Campo expiryDate não existe no modelo TeflonChange
+      // const daysUntilExpiry = Math.ceil((new Date(changeData.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
+      const daysUntilExpiry = 0;
+      const isExpired = false;
       
       // Salvar notificação no banco
       await this.saveNotification({
         type: 'TEFLON_CHANGE',
-        title: isExpired ? 'Teflon Vencido' : 'Lembrete de Troca de Teflon',
-        message: `${changeData.machine?.name} - ${isExpired ? 'Vencido' : `${daysUntilExpiry} dias restantes`}`,
+        title: 'Troca de Teflon Registrada',
+        message: `${changeData.machine?.name} - Troca registrada`,
         changeId: changeData.id,
         machineId: changeData.machineId,
-        priority: isExpired ? 'HIGH' : 'MEDIUM',
+        priority: 'MEDIUM',
         channels: ['EMAIL', 'PUSH', 'SYSTEM'],
         metadata: {
           daysUntilExpiry,
           isExpired,
-          machineName: changeData.machine?.name,
-          expiryDate: changeData.expiryDate
+          machineName: changeData.machine?.name
+          // expiryDate: changeData.expiryDate // Campo não existe
         }
       });
 
@@ -516,17 +518,14 @@ class NotificationService {
     try {
       logger.info('📧 Enviando notificação de vencimento de teflon...');
       
-      const { machine, user, daysUntilExpiry, expiryDate } = teflonData;
-      const isExpired = daysUntilExpiry <= 0;
-      const urgencyLevel = daysUntilExpiry <= 1 ? 'HIGH' : 'MEDIUM';
+      // Campo expiryDate não existe no modelo TeflonChange
+      const { machine, user, daysUntilExpiry } = teflonData;
+      const isExpired = false; // Sem campo de expiração
+      const urgencyLevel = 'MEDIUM';
       
-      const title = isExpired 
-        ? '🚨 Teflon Vencido'
-        : `⚠️ Teflon Vencerá em ${daysUntilExpiry} dia(s)`;
+      const title = 'Troca de Teflon Registrada';
         
-      const message = isExpired
-        ? `O teflon da máquina ${machine.name} está vencido desde ${expiryDate.toLocaleDateString('pt-BR')}`
-        : `O teflon da máquina ${machine.name} vencerá em ${daysUntilExpiry} dia(s) (${expiryDate.toLocaleDateString('pt-BR')})`;
+      const message = `Troca de teflon registrada para a máquina ${machine.name}`;
       
       // Salvar notificação no banco
       await this.saveNotification({
@@ -539,10 +538,10 @@ class NotificationService {
         channels: ['EMAIL', 'PUSH', 'SYSTEM'],
         metadata: {
           machineName: machine.name,
-          teflonType: teflonData.teflonType,
-          expiryDate: expiryDate.toISOString(),
-          daysUntilExpiry,
-          isExpired,
+          // teflonType: teflonData.teflonType, // Campo não existe
+          // expiryDate: expiryDate.toISOString(), // Campo não existe
+          daysUntilExpiry: 0,
+          isExpired: false,
           operatorName: user.name
         }
       });
@@ -556,10 +555,10 @@ class NotificationService {
       if (this.emailEnabled && recipients.length > 0) {
         results.email = await emailService.sendTeflonExpiryAlert({
           machine: machine.name,
-          teflonType: teflonData.teflonType,
-          expiryDate: expiryDate.toLocaleDateString('pt-BR'),
-          daysUntilExpiry,
-          isExpired,
+          // teflonType: teflonData.teflonType, // Campo não existe
+          // expiryDate: expiryDate.toLocaleDateString('pt-BR'), // Campo não existe
+          daysUntilExpiry: 0,
+          isExpired: false,
           operatorName: user.name
         }, recipients);
       }

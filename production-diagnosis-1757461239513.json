@@ -1,0 +1,223 @@
+{
+  "timestamp": "2025-09-09T23:40:39.512Z",
+  "summary": {
+    "totalEnvironments": 3,
+    "healthyEnvironments": 0,
+    "totalErrors": 4
+  },
+  "environments": [
+    {
+      "environment": "local",
+      "timestamp": "2025-09-09T23:40:30.020Z",
+      "frontend": {
+        "accessible": false,
+        "error": ""
+      },
+      "backend": {
+        "accessible": true,
+        "status": 200
+      },
+      "endpoints": {
+        "/auth/login": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "message": "Login realizado com sucesso",
+            "data": {
+              "user": {
+                "id": 2,
+                "email": "admin@zara.com",
+                "name": "Administrador",
+                "role": "ADMIN",
+                "isActive": true
+              },
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzU3NDYxMjMxLCJleHAiOjE3NTgwNjYwMzF9.nShyMhh9_NGZmXAiAdX_SWAmhtJg5CgCVc9rf4zLUJY"
+            }
+          }
+        },
+        "/reports/manager-dashboard": {
+          "status": 500,
+          "success": false,
+          "data": {
+            "success": false,
+            "message": "Erro interno do servidor",
+            "error": "\nInvalid `prisma.qualityTest.findMany()` invocation in\nC:\\Users\\lojaa\\Desktop\\EXERCICIO HTLM\\Zara versão atualizada com tecnologias\\ZaraOperacaoV1.01\\server\\routes\\reports.js:1843:51\n\n  1840 \n  1841 try {\n  1842   // Buscar dados de qualidade\n→ 1843   const qualityTests = await prisma.qualityTest.findMany({\n           where: {\n             createdAt: {\n               gte: new Date(\"2025-09-09T03:00:00.000Z\"),\n               lte: new Date(\"2025-09-09T23:40:32.609Z\")\n             }\n           },\n           include: {\n             machine: {\n               select: {\n                 id: true,\n                 name: true,\n                 code: true,\n                 ~~~~\n         ?       type?: true,\n         ?       location?: true,\n         ?       status?: true,\n         ?       isActive?: true,\n         ?       createdAt?: true,\n         ?       updatedAt?: true,\n         ?       qualityTests?: true,\n         ?       teflonChanges?: true,\n         ?       operations?: true,\n         ?       permissions?: true,\n         ?       statusHistory?: true,\n         ?       productionData?: true,\n         ?       archiveData?: true,\n         ?       _count?: true\n               }\n             },\n             user: {\n               select: {\n                 id: true,\n                 name: true,\n                 role: true\n               }\n             }\n           }\n         })\n\nUnknown field `code` for select statement on model `Machine`. Available options are marked with ?."
+          }
+        },
+        "/reports/leader-dashboard": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": {
+              "teamPerformance": {
+                "totalOperators": 0,
+                "activeOperators": 0,
+                "efficiency": 0,
+                "qualityScore": 0
+              },
+              "shiftMetrics": {
+                "production": {
+                  "current": 0,
+                  "target": 0,
+                  "percentage": 0
+                },
+                "quality": {
+                  "passRate": 0,
+                  "target": 95,
+                  "defects": 0
+                },
+                "downtime": {
+                  "total": 0,
+                  "planned": 0,
+                  "unplanned": 0
+                }
+              },
+              "alerts": {
+                "critical": 0,
+                "warning": 0,
+                "info": 0
+              },
+              "teamMembers": [],
+              "supervisedMachines": [],
+              "recentAlerts": []
+            }
+          }
+        },
+        "/machines": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": [],
+            "count": 0
+          }
+        },
+        "/users": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": [
+              {
+                "id": 2,
+                "name": "Administrador",
+                "email": "admin@zara.com",
+                "badgeNumber": null,
+                "role": "ADMIN",
+                "isActive": true,
+                "createdAt": "2025-09-09T02:27:47.334Z",
+                "updatedAt": "2025-09-09T02:27:47.334Z",
+                "_count": {
+                  "machineOperations": 0,
+                  "qualityTests": 0,
+                  "teflonChanges": 0
+                }
+              },
+              {
+                "id": 1,
+                "name": "Usuário Demo",
+                "email": "demo@zara.com",
+                "badgeNumber": null,
+                "role": "OPERATOR",
+                "isActive": true,
+                "createdAt": "2025-09-09T02:27:24.082Z",
+                "updatedAt": "2025-09-09T02:27:24.082Z",
+                "_count": {
+                  "machineOperations": 0,
+                  "qualityTests": 0,
+                  "teflonChanges": 0
+                }
+              }
+            ],
+            "pagination": {
+              "page": 1,
+              "limit": 20,
+              "total": 2,
+              "totalPages": 1,
+              "hasNext": false,
+              "hasPrev": false
+            }
+          }
+        },
+        "/reports/quality-metrics": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": {
+              "approvalRate": 0,
+              "total": 0,
+              "approved": [],
+              "rejected": [],
+              "labels": []
+            }
+          }
+        }
+      },
+      "errors": [
+        "Frontend: ",
+        "/reports/manager-dashboard: 500 - {\"success\":false,\"message\":\"Erro interno do servidor\",\"error\":\"\\nInvalid `prisma.qualityTest.findMany()` invocation in\\nC:\\\\Users\\\\lojaa\\\\Desktop\\\\EXERCICIO HTLM\\\\Zara versão atualizada com tecnologias\\\\ZaraOperacaoV1.01\\\\server\\\\routes\\\\reports.js:1843:51\\n\\n  1840 \\n  1841 try {\\n  1842   // Buscar dados de qualidade\\n→ 1843   const qualityTests = await prisma.qualityTest.findMany({\\n           where: {\\n             createdAt: {\\n               gte: new Date(\\\"2025-09-09T03:00:00.000Z\\\"),\\n               lte: new Date(\\\"2025-09-09T23:40:32.609Z\\\")\\n             }\\n           },\\n           include: {\\n             machine: {\\n               select: {\\n                 id: true,\\n                 name: true,\\n                 code: true,\\n                 ~~~~\\n         ?       type?: true,\\n         ?       location?: true,\\n         ?       status?: true,\\n         ?       isActive?: true,\\n         ?       createdAt?: true,\\n         ?       updatedAt?: true,\\n         ?       qualityTests?: true,\\n         ?       teflonChanges?: true,\\n         ?       operations?: true,\\n         ?       permissions?: true,\\n         ?       statusHistory?: true,\\n         ?       productionData?: true,\\n         ?       archiveData?: true,\\n         ?       _count?: true\\n               }\\n             },\\n             user: {\\n               select: {\\n                 id: true,\\n                 name: true,\\n                 role: true\\n               }\\n             }\\n           }\\n         })\\n\\nUnknown field `code` for select statement on model `Machine`. Available options are marked with ?.\"}"
+      ]
+    },
+    {
+      "environment": "vercel",
+      "timestamp": "2025-09-09T23:40:38.559Z",
+      "frontend": {
+        "status": 200,
+        "accessible": true,
+        "size": 5372
+      },
+      "backend": {
+        "accessible": true,
+        "status": 404
+      },
+      "endpoints": {
+        "/auth/login": {
+          "status": 404,
+          "success": false,
+          "data": {
+            "error": {
+              "code": "404",
+              "message": "The deployment could not be found on Vercel."
+            }
+          }
+        }
+      },
+      "errors": [
+        "Login failed: {\"error\":{\"code\":\"404\",\"message\":\"The deployment could not be found on Vercel.\"}}"
+      ]
+    },
+    {
+      "environment": "railway",
+      "timestamp": "2025-09-09T23:40:38.690Z",
+      "frontend": null,
+      "backend": {
+        "accessible": true,
+        "status": 404
+      },
+      "endpoints": {
+        "/auth/login": {
+          "status": 404,
+          "success": false,
+          "data": {
+            "status": "error",
+            "code": 404,
+            "message": "Application not found",
+            "request_id": "lrKenKdAQoa0oRY2ezItjw"
+          }
+        }
+      },
+      "errors": [
+        "Login failed: {\"status\":\"error\",\"code\":404,\"message\":\"Application not found\",\"request_id\":\"lrKenKdAQoa0oRY2ezItjw\"}"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Verificar logs detalhados dos serviços com erro",
+    "Validar configurações de CORS e variáveis de ambiente",
+    "Testar conectividade de banco de dados",
+    "Verificar se todos os serviços estão rodando"
+  ]
+}

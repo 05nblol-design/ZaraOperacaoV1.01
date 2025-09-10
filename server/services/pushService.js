@@ -243,11 +243,13 @@ class PushNotificationService {
   }
 
   async sendTeflonChangeAlert(changeData) {
-    const daysUntilExpiry = Math.ceil((new Date(changeData.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
-    const isExpired = daysUntilExpiry <= 0;
+    // Campo expiryDate não existe no modelo TeflonChange
+    // const daysUntilExpiry = Math.ceil((new Date(changeData.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
+    const daysUntilExpiry = 0;
+    const isExpired = false;
 
     const notification = {
-      title: isExpired ? '🚨 Teflon Vencido!' : '⚠️ Lembrete: Troca de Teflon',
+      title: '📋 Troca de Teflon Registrada',
       body: `${changeData.machine?.name} - ${isExpired ? 'Vencido' : `${daysUntilExpiry} dias restantes`}`,
       icon: isExpired ? '/icons/error.png' : '/icons/warning.png'
     };

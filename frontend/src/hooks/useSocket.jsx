@@ -42,7 +42,7 @@ export const SocketProvider = ({ children }) => {
     const getSocketUrl = () => {
       const hostname = window.location.hostname;
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        return import.meta.env.VITE_SOCKET_URL_LOCAL || 'http://localhost:3001';
+        return import.meta.env.VITE_SOCKET_URL_LOCAL || 'http://localhost:5000';
       } else {
         // Em produção, sempre usar a variável de ambiente configurada
         return import.meta.env.VITE_SOCKET_URL || 'https://zara-backend-production-aab3.up.railway.app';

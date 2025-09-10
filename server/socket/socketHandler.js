@@ -351,18 +351,21 @@ const socketHandler = (io) => {
         const now = new Date();
         const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-        const expiringTeflon = await prisma.teflonChange.findMany({
-          where: {
-            expiryDate: {
-              gte: now,
-              lte: sevenDaysFromNow
-            },
-            alertSent: false
-          },
-          include: {
-            machine: { select: { name: true } }
-          }
-        });
+        // Campo expiryDate não existe no modelo TeflonChange
+        // const expiringTeflon = await prisma.teflonChange.findMany({
+        //   where: {
+        //     expiryDate: {
+        //       gte: now,
+        //       lte: sevenDaysFromNow
+        //     },
+        //     alertSent: false
+        //   },
+        //   include: {
+        //     machine: { select: { name: true } }
+        //   }
+        // });
+        
+        const expiringTeflon = [];
 
         if (expiringTeflon.length > 0) {
           // Notificar operadores
@@ -371,8 +374,8 @@ const socketHandler = (io) => {
             items: expiringTeflon.map(t => ({
               machineId: t.machineId,
               machineName: t.machine.name,
-              expiryDate: t.expiryDate,
-              daysLeft: Math.ceil((t.expiryDate - now) / (1000 * 60 * 60 * 24))
+              // expiryDate: t.expiryDate, // Campo não existe
+              daysLeft: 0 // Sem campo de expiração
             })),
             timestamp: new Date()
           });

@@ -68,27 +68,30 @@ class SchedulerService {
       const now = new Date();
       const fiveDaysFromNow = new Date(now.getTime() + (5 * 24 * 60 * 60 * 1000));
 
-      // Buscar trocas de teflon que vencerão em 5 dias
-      const expiringChanges = await prisma.teflonChange.findMany({
-        where: {
-          expiryDate: {
-            gte: now,
-            lte: fiveDaysFromNow
-          },
-          notificationSent: {
-            not: true
-          }
-        },
-        include: {
-          machine: true,
-          user: true
-        }
-      });
+      // Campo expiryDate não existe no modelo TeflonChange
+      // const expiringChanges = await prisma.teflonChange.findMany({
+      //   where: {
+      //     expiryDate: {
+      //       gte: now,
+      //       lte: fiveDaysFromNow
+      //     },
+      //     notificationSent: {
+      //       not: true
+      //     }
+      //   },
+      //   include: {
+      //     machine: true,
+      //     user: true
+      //   }
+      // });
+      
+      const expiringChanges = [];
 
       logger.info(`🔍 Encontradas ${expiringChanges.length} trocas de teflon para notificar`);
 
       for (const change of expiringChanges) {
-        const daysUntilExpiry = Math.ceil((change.expiryDate - now) / (1000 * 60 * 60 * 24));
+        // const daysUntilExpiry = Math.ceil((change.expiryDate - now) / (1000 * 60 * 60 * 24));
+        const daysUntilExpiry = 0; // Campo expiryDate não existe
         
         await notificationService.sendTeflonExpiryNotification({
           ...change,

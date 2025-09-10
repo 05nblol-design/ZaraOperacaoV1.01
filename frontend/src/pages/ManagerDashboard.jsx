@@ -29,6 +29,7 @@ import toast from 'react-hot-toast';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useMachinePermissions } from '@/hooks/useMachinePermissions';
+import { useAuth } from '../hooks/useAuth';
 
 // Registrar componentes do Chart.js
 ChartJS.register(
@@ -45,6 +46,7 @@ ChartJS.register(
 );
 
 const ManagerDashboard = () => {
+  const { isAuthenticated, isLoading: authLoading, token } = useAuth();
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState({
     startDate: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
@@ -62,9 +64,12 @@ const ManagerDashboard = () => {
   const { filterMachinesByPermissions } = useMachinePermissions();
 
   useEffect(() => {
-    fetchDashboardData();
-    fetchMachines();
-  }, [dateRange, selectedMachine]);
+    // Aguardar autenticação antes de fazer chamadas da API
+    if (!authLoading && isAuthenticated && token) {
+      fetchDashboardData();
+      fetchMachines();
+    }
+  }, [dateRange, selectedMachine, authLoading, isAuthenticated, token]);
 
   const fetchMachines = async () => {
     try {
@@ -243,7 +248,7 @@ const ManagerDashboard = () => {
     }
   };
 
-  if (loading) {
+  if (authLoading || loading || !isAuthenticated) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>

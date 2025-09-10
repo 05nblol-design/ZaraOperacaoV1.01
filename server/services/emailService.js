@@ -78,29 +78,28 @@ class EmailService {
 
   async sendTeflonChangeReminder(changeData, recipients) {
     try {
-      const daysUntilExpiry = Math.ceil((new Date(changeData.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
-      const isExpired = daysUntilExpiry <= 0;
+      // Campo expiryDate não existe no modelo TeflonChange
+      // const daysUntilExpiry = Math.ceil((new Date(changeData.expiryDate) - new Date()) / (1000 * 60 * 60 * 1000));
+      const daysUntilExpiry = 0;
+      const isExpired = false;
       
-      const subject = isExpired 
-        ? `🚨 URGENTE: Teflon Vencido - ${changeData.machine?.name}`
-        : `⚠️ Lembrete: Troca de Teflon em ${daysUntilExpiry} dias - ${changeData.machine?.name}`;
+      const subject = `📋 Troca de Teflon Registrada - ${changeData.machine?.name}`;
       
       const htmlContent = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background: ${isExpired ? '#dc3545' : '#ffc107'}; color: ${isExpired ? 'white' : '#212529'}; padding: 20px; text-align: center;">
-            <h1>Sistema ZARA - ${isExpired ? 'Teflon Vencido' : 'Lembrete de Troca'}</h1>
+          <div style="background: #28a745; color: white; padding: 20px; text-align: center;">
+            <h1>Sistema ZARA - Troca de Teflon Registrada</h1>
           </div>
           
           <div style="padding: 20px; background: #f8f9fa;">
-            <h2 style="color: ${isExpired ? '#dc3545' : '#ffc107'};">Atenção Necessária</h2>
+            <h2 style="color: #28a745;">Troca Realizada</h2>
             
             <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
               <p><strong>Máquina:</strong> ${changeData.machine?.name || 'N/A'}</p>
-              <p><strong>Data da Última Troca:</strong> ${new Date(changeData.changeDate).toLocaleDateString('pt-BR')}</p>
-              <p><strong>Data de Vencimento:</strong> ${new Date(changeData.expiryDate).toLocaleDateString('pt-BR')}</p>
+              <p><strong>Data da Troca:</strong> ${new Date(changeData.createdAt).toLocaleDateString('pt-BR')}</p>
               <p><strong>Status:</strong> 
-                <span style="color: ${isExpired ? '#dc3545' : '#ffc107'}; font-weight: bold;">
-                  ${isExpired ? 'VENCIDO' : `${daysUntilExpiry} dias restantes`}
+                <span style="color: #28a745; font-weight: bold;">
+                  Troca registrada com sucesso
                 </span>
               </p>
               ${changeData.observations ? `<p><strong>Observações:</strong> ${changeData.observations}</p>` : ''}

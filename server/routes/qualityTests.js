@@ -70,7 +70,7 @@ router.get('/', [
       where,
       include: {
         machine: {
-          select: { name: true, code: true }
+          select: { name: true, type: true }
         },
         user: {
           select: { name: true, email: true }
@@ -133,7 +133,7 @@ router.get('/:id', [
     where,
     include: {
       machine: {
-        select: { name: true, code: true, location: true }
+        select: { name: true, type: true, location: true }
       },
       user: {
         select: { name: true, email: true, role: true }
@@ -322,7 +322,7 @@ router.post('/', [
     data: testData,
     include: {
       machine: {
-        select: { name: true, code: true }
+        select: { name: true, type: true }
       },
       user: {
         select: { name: true, email: true }
@@ -519,7 +519,7 @@ router.get('/stats/summary', requireLeader, asyncHandler(async (req, res) => {
   const [machines, users] = await Promise.all([
     prisma.machine.findMany({
       where: { id: { in: machineIds } },
-      select: { id: true, name: true, code: true }
+      select: { id: true, name: true, type: true }
     }),
     prisma.user.findMany({
       where: { id: { in: userIds } },

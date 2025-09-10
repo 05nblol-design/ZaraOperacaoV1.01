@@ -183,40 +183,45 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Rota não encontrada' });
 });
 
-const PORT = process.env.PORT || 5000;
-const HTTPS_PORT = process.env.HTTPS_PORT || 443;
+// Para Vercel (serverless), não iniciar servidor aqui
+if (process.env.VERCEL !== '1') {
+  const PORT = process.env.PORT || 5000;
+  const HTTPS_PORT = process.env.HTTPS_PORT || 443;
 
-// Iniciar servidor HTTP
-server.listen(PORT, () => {
-  logger.info(`🚀 Servidor ZARA (HTTP) rodando na porta ${PORT}`);
-  logger.info(`🌍 Ambiente: ${process.env.NODE_ENV}`);
-  logger.info(`📊 Health check: http://localhost:${PORT}/api/health`);
-});
-
-// Iniciar servidor HTTPS se disponível (desabilitado no Railway)
-if (httpsServer && process.env.SSL_ENABLED === 'true' && process.env.RAILWAY_ENVIRONMENT !== 'production') {
-  httpsServer.listen(HTTPS_PORT, () => {
-    logger.info(`🔒 Servidor ZARA (HTTPS) rodando na porta ${HTTPS_PORT}`);
-    logger.info(`🔐 SSL/TLS habilitado`);
-    logger.info(`📊 Health check: https://localhost:${HTTPS_PORT}/api/health`);
+  // Iniciar servidor HTTP apenas se não estiver no Vercel
+  server.listen(PORT, () => {
+    logger.info(`🚀 Servidor ZARA (HTTP) rodando na porta ${PORT}`);
+    logger.info(`🌍 Ambiente: ${process.env.NODE_ENV}`);
+    logger.info(`📊 Health check: http://localhost:${PORT}/api/health`);
   });
 
-  // Configurar Socket.IO para HTTPS também
-  const httpsIO = new Server(httpsServer, {
-    cors: corsOptions
+  // Iniciar servidor HTTPS se disponível (desabilitado no Railway)
+  if (httpsServer && process.env.SSL_ENABLED === 'true' && process.env.RAILWAY_ENVIRONMENT !== 'production') {
+    httpsServer.listen(HTTPS_PORT, () => {
+      logger.info(`🔒 Servidor ZARA (HTTPS) rodando na porta ${HTTPS_PORT}`);
+      logger.info(`🔐 SSL/TLS habilitado`);
+      logger.info(`📊 Health check: https://localhost:${HTTPS_PORT}/api/health`);
+    });
+
+    // Configurar Socket.IO para HTTPS também
+    const httpsIO = new Server(httpsServer, {
+      cors: corsOptions
+    });
+    
+    // Aplicar handlers do socket para HTTPS
+    socketHandler(httpsIO);
+  }
+
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    logger.info('🛑 Recebido SIGTERM, encerrando servidor...');
+    server.close(() => {
+      logger.info('✅ Servidor encerrado com sucesso');
+      process.exit(0);
+    });
   });
-  
-  // Aplicar handlers do socket para HTTPS
-  socketHandler(httpsIO);
 }
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  logger.info('🛑 Recebido SIGTERM, encerrando servidor...');
-  server.close(() => {
-    logger.info('✅ Servidor encerrado com sucesso');
-    process.exit(0);
-  });
-});
-
-module.exports = { app, server, io };
+// Export para Vercel (serverless functions)
+module.exports = app;
+module.exports.default = app;

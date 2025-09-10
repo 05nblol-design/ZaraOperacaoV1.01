@@ -1,0 +1,265 @@
+{
+  "timestamp": "2025-09-09T23:43:03.670Z",
+  "summary": {
+    "totalEnvironments": 3,
+    "healthyEnvironments": 0,
+    "totalErrors": 3
+  },
+  "environments": [
+    {
+      "environment": "local",
+      "timestamp": "2025-09-09T23:42:52.900Z",
+      "frontend": {
+        "accessible": false,
+        "error": ""
+      },
+      "backend": {
+        "accessible": true,
+        "status": 200
+      },
+      "endpoints": {
+        "/auth/login": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "message": "Login realizado com sucesso",
+            "data": {
+              "user": {
+                "id": 2,
+                "email": "admin@zara.com",
+                "name": "Administrador",
+                "role": "ADMIN",
+                "isActive": true
+              },
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzU3NDYxMzc0LCJleHAiOjE3NTgwNjYxNzR9.-Ww7eXvVQ5kOIaC_rB2jMEBtDWBC4YCYl5a1h5Yhkew"
+            }
+          }
+        },
+        "/reports/manager-dashboard": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": {
+              "overview": {
+                "totalProduction": 0,
+                "qualityScore": 85,
+                "machineEfficiency": 0,
+                "operatorUtilization": 0
+              },
+              "metrics": {
+                "production": {
+                  "total": 0,
+                  "target": 0,
+                  "percentage": 0
+                },
+                "quality": {
+                  "passRate": 85,
+                  "target": 95,
+                  "totalTests": 0,
+                  "approvedTests": 0,
+                  "rejectedTests": 0
+                },
+                "efficiency": {
+                  "machines": 0,
+                  "operators": 0,
+                  "overall": 0
+                }
+              },
+              "alerts": {
+                "critical": 0,
+                "warning": 0,
+                "info": 0
+              },
+              "machineStats": [],
+              "operatorStats": [
+                {
+                  "id": 1,
+                  "name": "Usuário Demo",
+                  "operations": 0,
+                  "qualityTests": 0,
+                  "efficiency": 85,
+                  "isActive": false
+                }
+              ],
+              "recentAlerts": [],
+              "timeRange": "today"
+            }
+          }
+        },
+        "/reports/leader-dashboard": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": {
+              "teamPerformance": {
+                "totalOperators": 0,
+                "activeOperators": 0,
+                "efficiency": 0,
+                "qualityScore": 0
+              },
+              "shiftMetrics": {
+                "production": {
+                  "current": 0,
+                  "target": 0,
+                  "percentage": 0
+                },
+                "quality": {
+                  "passRate": 0,
+                  "target": 95,
+                  "defects": 0
+                },
+                "downtime": {
+                  "total": 0,
+                  "planned": 0,
+                  "unplanned": 0
+                }
+              },
+              "alerts": {
+                "critical": 0,
+                "warning": 0,
+                "info": 0
+              },
+              "teamMembers": [],
+              "supervisedMachines": [],
+              "recentAlerts": []
+            }
+          }
+        },
+        "/machines": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": [],
+            "count": 0
+          }
+        },
+        "/users": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": [
+              {
+                "id": 2,
+                "name": "Administrador",
+                "email": "admin@zara.com",
+                "badgeNumber": null,
+                "role": "ADMIN",
+                "isActive": true,
+                "createdAt": "2025-09-09T02:27:47.334Z",
+                "updatedAt": "2025-09-09T02:27:47.334Z",
+                "_count": {
+                  "machineOperations": 0,
+                  "qualityTests": 0,
+                  "teflonChanges": 0
+                }
+              },
+              {
+                "id": 1,
+                "name": "Usuário Demo",
+                "email": "demo@zara.com",
+                "badgeNumber": null,
+                "role": "OPERATOR",
+                "isActive": true,
+                "createdAt": "2025-09-09T02:27:24.082Z",
+                "updatedAt": "2025-09-09T02:27:24.082Z",
+                "_count": {
+                  "machineOperations": 0,
+                  "qualityTests": 0,
+                  "teflonChanges": 0
+                }
+              }
+            ],
+            "pagination": {
+              "page": 1,
+              "limit": 20,
+              "total": 2,
+              "totalPages": 1,
+              "hasNext": false,
+              "hasPrev": false
+            }
+          }
+        },
+        "/reports/quality-metrics": {
+          "status": 200,
+          "success": true,
+          "data": {
+            "success": true,
+            "data": {
+              "approvalRate": 0,
+              "total": 0,
+              "approved": [],
+              "rejected": [],
+              "labels": []
+            }
+          }
+        }
+      },
+      "errors": [
+        "Frontend: "
+      ]
+    },
+    {
+      "environment": "vercel",
+      "timestamp": "2025-09-09T23:43:02.646Z",
+      "frontend": {
+        "status": 200,
+        "accessible": true,
+        "size": 5372
+      },
+      "backend": {
+        "accessible": true,
+        "status": 404
+      },
+      "endpoints": {
+        "/auth/login": {
+          "status": 404,
+          "success": false,
+          "data": {
+            "error": {
+              "code": "404",
+              "message": "The deployment could not be found on Vercel."
+            }
+          }
+        }
+      },
+      "errors": [
+        "Login failed: {\"error\":{\"code\":\"404\",\"message\":\"The deployment could not be found on Vercel.\"}}"
+      ]
+    },
+    {
+      "environment": "railway",
+      "timestamp": "2025-09-09T23:43:02.847Z",
+      "frontend": null,
+      "backend": {
+        "accessible": true,
+        "status": 404
+      },
+      "endpoints": {
+        "/auth/login": {
+          "status": 404,
+          "success": false,
+          "data": {
+            "status": "error",
+            "code": 404,
+            "message": "Application not found",
+            "request_id": "-o8Kz1akQ-C7HwwMozsQ6Q"
+          }
+        }
+      },
+      "errors": [
+        "Login failed: {\"status\":\"error\",\"code\":404,\"message\":\"Application not found\",\"request_id\":\"-o8Kz1akQ-C7HwwMozsQ6Q\"}"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Verificar logs detalhados dos serviços com erro",
+    "Validar configurações de CORS e variáveis de ambiente",
+    "Testar conectividade de banco de dados",
+    "Verificar se todos os serviços estão rodando"
+  ]
+}

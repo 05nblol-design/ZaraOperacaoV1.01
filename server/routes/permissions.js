@@ -55,7 +55,7 @@ router.get('/',
                 select: {
                   id: true,
                   name: true,
-                  code: true,
+                  type: true,
                   status: true,
                   location: true
                 }
@@ -121,7 +121,7 @@ router.get('/',
               select: {
                 id: true,
                 name: true,
-                code: true,
+                type: true,
                 status: true,
                 location: true
               }
@@ -194,12 +194,12 @@ router.get('/user/:userId',
         include: {
           machine: {
             select: {
-              id: true,
-              name: true,
-              code: true,
-              status: true,
-              location: true
-            }
+                id: true,
+                name: true,
+                type: true,
+                status: true,
+                location: true
+              }
           }
         },
         orderBy: { machine: { name: 'asc' } }
@@ -307,7 +307,7 @@ router.post('/',
             select: {
               id: true,
               name: true,
-              code: true,
+              type: true,
               status: true
             }
           }
@@ -386,7 +386,7 @@ router.put('/:id',
             select: {
               id: true,
               name: true,
-              code: true,
+              type: true,
               status: true
             }
           }
@@ -608,7 +608,7 @@ router.get('/machines',
         select: {
           id: true,
           name: true,
-          code: true,
+          type: true,
           location: true,
           status: true,
           _count: {

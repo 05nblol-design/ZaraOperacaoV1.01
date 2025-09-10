@@ -175,7 +175,7 @@ router.get('/history', async (req, res) => {
       prisma.shiftData.findMany({
         where,
         include: {
-          machine: { select: { name: true, code: true } },
+          machine: { select: { name: true, type: true } },
           operator: { select: { name: true, email: true } }
         },
         orderBy: {

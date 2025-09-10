@@ -197,19 +197,20 @@ async function main() {
       const machine = machines[i];
       const daysAgo = Math.floor(Math.random() * 30) + 1;
       const changeDate = new Date(Date.now() - (daysAgo * 24 * 60 * 60 * 1000));
-      const expiryDate = new Date(changeDate.getTime() + (90 * 24 * 60 * 60 * 1000)); // 90 dias de validade
+      // Campo expiryDate não existe no modelo TeflonChange
+      // const expiryDate = new Date(changeDate.getTime() + (90 * 24 * 60 * 60 * 1000)); // 90 dias de validade
       
       await prisma.teflonChange.create({
         data: {
           machineId: machine.id,
           userId: [operator1, operator2, operator3][i % 3].id,
           changeDate,
-          expiryDate,
+          // expiryDate, // Campo não existe
           teflonBrand: ['Marca A', 'Marca B', 'Marca C'][i % 3],
           teflonModel: `Modelo ${i % 5 + 1}`,
           batchNumber: `LOTE${Date.now()}${i}`,
           notes: `Troca realizada conforme cronograma. Teflon anterior: ${daysAgo + 90} dias de uso.`,
-          alertSent: expiryDate < new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)), // Alert se expira em 7 dias
+          // alertSent: expiryDate < new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)), // Campo não existe
           createdAt: changeDate,
           updatedAt: changeDate
         }
