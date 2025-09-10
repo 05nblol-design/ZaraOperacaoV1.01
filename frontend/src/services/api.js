@@ -8,7 +8,8 @@ const getApiBaseUrl = () => {
     return import.meta.env.VITE_API_URL_LOCAL || 'http://localhost:5000/api';
   } else {
     // Em produção, sempre usar a variável de ambiente configurada
-    return import.meta.env.VITE_API_URL || 'https://zara-backend-production-aab3.up.railway.app/api';
+    const baseUrl = import.meta.env.VITE_API_URL || 'https://sistema-zara-backend-production.up.railway.app';
+    return baseUrl.endsWith('/api') ? baseUrl : `${baseUrl}/api`;
   }
 };
 

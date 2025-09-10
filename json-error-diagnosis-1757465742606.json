@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-09-10T00:55:42.606Z",
+  "error_type": "JSON_PARSE_ERROR",
+  "html_responses": 0,
+  "json_responses": 3,
+  "error_responses": 0,
+  "backend_status": "ONLINE",
+  "frontend_url": "https://sistema-zara-frontend.vercel.app",
+  "recommended_actions": [
+    "Redeploy Railway Dashboard",
+    "Wait 3-5 minutes",
+    "Test again",
+    "Check Railway logs if still failing",
+    "Configure environment variables"
+  ]
+}
