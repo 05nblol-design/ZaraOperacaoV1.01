@@ -105,10 +105,45 @@ const Reports = () => {
     }
   };
 
+  // Buscar dados de performance das máquinas da API
+  const fetchMachinePerformanceData = async () => {
+    try {
+      const params = {
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        machineId: selectedMachine || 'all'
+      };
+      
+      const response = await reportService.getMachinePerformance(params);
+      const data = response.data;
+      
+      if (data.success && data.data.machines) {
+        setMaintenanceData({
+          data: {
+            maintenanceByMachine: data.data.machines.map(machine => ({
+              machine: machine.name,
+              preventive: Math.floor(machine.totalTests * 0.7), // 70% preventiva
+              corrective: Math.floor(machine.totalTests * 0.3), // 30% corretiva
+              cost: machine.totalTests * 150, // Custo estimado
+              efficiency: machine.passRate,
+              downtime: machine.status === 'RUNNING' ? 0 : 2
+            }))
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de performance das máquinas:', error);
+    }
+  };
+
   // Atualizar dados de relatórios periodicamente
   useEffect(() => {
     fetchReportsProductionData();
-    const interval = setInterval(fetchReportsProductionData, 60000); // A cada 1 minuto
+    fetchMachinePerformanceData();
+    const interval = setInterval(() => {
+      fetchReportsProductionData();
+      fetchMachinePerformanceData();
+    }, 60000); // A cada 1 minuto
     return () => clearInterval(interval);
   }, [machines, dateRange, selectedMachine]);
   
@@ -237,13 +272,7 @@ const Reports = () => {
         { date: '2024-01-13', production: 525, target: 550, efficiency: 95.5 },
         { date: '2024-01-14', production: 539, target: 550, efficiency: 98.0 }
       ],
-      machinePerformance: reportsRealTimeData.machinePerformance.length > 0 ? reportsRealTimeData.machinePerformance : [
-        { machine: 'Máquina 01', production: 3200, efficiency: 98.2, downtime: 1.2 },
-        { machine: 'Máquina 02', production: 3150, efficiency: 96.8, downtime: 2.1 },
-        { machine: 'Máquina 03', production: 3080, efficiency: 94.5, downtime: 3.8 },
-        { machine: 'Máquina 04', production: 3100, efficiency: 95.1, downtime: 2.9 },
-        { machine: 'Máquina 05', production: 2890, efficiency: 88.7, downtime: 7.2 }
-      ]
+      machinePerformance: reportsRealTimeData.machinePerformance || []
     },
     quality: {
       totalTests: reportsRealTimeData.totalTests || 1247,
@@ -284,13 +313,7 @@ const Reports = () => {
         planned: 68.1,
         unplanned: 31.9
       },
-      maintenanceByMachine: [
-        { machine: 'Máquina 01', preventive: 6, corrective: 2, cost: 18500 },
-        { machine: 'Máquina 02', preventive: 7, corrective: 3, cost: 22100 },
-        { machine: 'Máquina 03', preventive: 8, corrective: 4, cost: 28900 },
-        { machine: 'Máquina 04', preventive: 6, corrective: 3, cost: 21200 },
-        { machine: 'Máquina 05', preventive: 5, corrective: 3, cost: 34700 }
-      ],
+      maintenanceByMachine: maintenanceData.data.maintenanceByMachine || [],
       downtimeTrend: [
         { date: '2024-01-08', downtime: 3.2, maintenance: 2 },
         { date: '2024-01-09', downtime: 1.8, maintenance: 1 },
@@ -349,13 +372,11 @@ const Reports = () => {
     }
   ];
   
-  const mockMachines = [
-    { id: 'M001', name: 'Máquina 01' },
-    { id: 'M002', name: 'Máquina 02' },
-    { id: 'M003', name: 'Máquina 03' },
-    { id: 'M004', name: 'Máquina 04' },
-    { id: 'M005', name: 'Máquina 05' }
-  ];
+  // Usar máquinas reais do banco de dados
+  const realMachines = machines ? filterMachinesByPermissions(machines, 'canView').map(machine => ({
+    id: machine.id,
+    name: machine.name || `Máquina ${machine.id}`
+  })) : [];
   
   const operators = [
     { id: 'OP001', name: 'João Silva' },
@@ -1117,7 +1138,7 @@ const Reports = () => {
                   className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="ALL">Todas as Máquinas</option>
-                  {mockMachines.map(machine => (
+                  {realMachines.map(machine => (
                     <option key={machine.id} value={machine.id}>
                       {machine.name}
                     </option>

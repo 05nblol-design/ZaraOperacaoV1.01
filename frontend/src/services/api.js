@@ -475,6 +475,7 @@ export const reportService = {
   getProductionReport: (params) => api.get('/reports/production', { params }),
   getQualityReport: (params) => api.get('/reports/quality', { params }),
   getMachineReport: (params) => api.get('/reports/machines', { params }),
+  getMachinePerformance: (params) => api.get('/reports/machine-performance', { params }),
   exportReport: (type, params) => api.get(`/reports/${type}/export`, {
     params,
     responseType: 'blob'
