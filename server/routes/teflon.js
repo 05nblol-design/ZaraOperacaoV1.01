@@ -16,7 +16,7 @@ router.get('/', [
   query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit deve ser entre 1 e 100'),
   query('machineId').optional().custom(value => {
     if (value === 'all') return true;
-    return /^[0-9a-fA-F]{24}$/.test(value);
+    return /^\d+$/.test(value);
   }).withMessage('ID da máquina inválido'),
   query('expired').optional().isBoolean().withMessage('Expired deve ser boolean'),
   query('expiringSoon').optional().isBoolean().withMessage('ExpiringSoon deve ser boolean')
