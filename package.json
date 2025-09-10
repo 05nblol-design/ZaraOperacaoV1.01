@@ -18,7 +18,7 @@
     "qualidade",
     "nodejs",
     "react",
-    "mongodb"
+    "postgresql"
   ],
   "author": "ZARA Operations Team",
   "license": "MIT",

@@ -46,18 +46,18 @@ VITE_SOCKET_URL=https://server-1yku08uaq-05nblol-designs-projects.vercel.app
 - Acesse: https://vercel.com/dashboard
 - Vá para o projeto `server`
 - Configure as variáveis:
-  - `MONGODB_URI`: String de conexão do MongoDB Atlas
+  - `DATABASE_URL`: String de conexão do PostgreSQL (configurado automaticamente pelo Railway)
   - `JWT_SECRET`: Chave secreta para JWT
   - `NODE_ENV`: production
 
 #### 2. Testar Integração
 - ✅ Frontend deployado e funcionando
 - ✅ Backend deployado e funcionando
-- ⏳ Configurar MongoDB Atlas
+- ✅ PostgreSQL configurado (Railway)
 - ⏳ Testar comunicação frontend-backend
 
-#### 3. Configuração do MongoDB
-- Siga o arquivo: `CONFIGURAR-MONGODB.md`
+#### 3. PostgreSQL Railway
+- PostgreSQL é configurado automaticamente pelo Railway
 - Configure a string de conexão no Vercel
 - Teste a conectividade
 
@@ -74,7 +74,7 @@ Para verificar se tudo está funcionando:
 - ✅ **Frontend**: Deployado e ativo
 - ✅ **Backend**: Deployado e ativo
 - ✅ **Configurações**: URLs atualizadas
-- ⏳ **MongoDB**: Pendente configuração
+- ✅ **PostgreSQL**: Configurado automaticamente pelo Railway
 - ⏳ **Variáveis de Ambiente**: Pendente no Vercel Dashboard
 
 ---

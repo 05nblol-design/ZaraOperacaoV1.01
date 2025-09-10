@@ -72,15 +72,16 @@ Acesse: https://vercel.com/dashboard → Projeto `server` → Settings → Envir
 
 **Variáveis necessárias:**
 ```env
-MONGODB_URI=sua_string_de_conexao_mongodb
+# MongoDB não é mais usado - agora usamos PostgreSQL do Railway
+# DATABASE_URL é configurado automaticamente pelo Railway
 JWT_SECRET=sua_chave_secreta_jwt
 NODE_ENV=production
 CORS_ORIGIN=https://sistema-zara-frontend-n0qc8axky-05nblol-designs-projects.vercel.app
 ```
 
-### 2. Configurar MongoDB Atlas
+### 2. PostgreSQL Railway
 
-- Siga o guia: `MONGODB-ATLAS-CONFIG.md`
+- PostgreSQL é configurado automaticamente pelo Railway
 - Configure IP whitelist para 0.0.0.0/0 (Vercel)
 - Obtenha a string de conexão
 
@@ -88,7 +89,7 @@ CORS_ORIGIN=https://sistema-zara-frontend-n0qc8axky-05nblol-designs-projects.ver
 
 - ✅ Frontend funcionando
 - ✅ Backend deployado (Prisma corrigido)
-- ⏳ Configurar MongoDB
+- ✅ PostgreSQL configurado (Railway)
 - ⏳ Testar comunicação frontend-backend
 
 ## 📝 Comandos Úteis
@@ -111,7 +112,7 @@ npm run prisma:generate
 O sistema agora:
 - Gera automaticamente o Prisma Client a cada deploy
 - Não sofre mais com problemas de cache do Vercel
-- Está pronto para receber configurações do MongoDB
+- PostgreSQL configurado automaticamente pelo Railway
 
 ---
 

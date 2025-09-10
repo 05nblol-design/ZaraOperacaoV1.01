@@ -1,24 +1,22 @@
-const { MongoClient, ObjectId } = require('mongodb');
+const { PrismaClient } = require('@prisma/client');
 require('dotenv').config();
 const logger = require('utils/logger');
 
 async function createMachineConfig() {
-  const client = new MongoClient(process.env.DATABASE_URL);
+  const prisma = new PrismaClient();
   
   try {
-    await client.connect();
-    logger.info('✅ Conectado ao MongoDB');
-    
-    const db = client.db();
-    const machineConfigsCollection = db.collection('machine_configs');
-    const machinesCollection = db.collection('machines');
+    await prisma.$connect();
+    logger.info('✅ Conectado ao PostgreSQL');
     
     // Buscar todas as máquinas
-    const machines = await machinesCollection.find({}).toArray();
+    const machines = await prisma.machine.findMany();
     
     for (const machine of machines) {
       // Verificar se já existe configuração para esta máquina
-      const existingConfig = await machineConfigsCollection.findOne({ machineId: machine._id });
+      const existingConfig = await prisma.machineConfig.findFirst({ 
+        where: { machineId: machine.id } 
+      });
       
       if (existingConfig) {
         logger.info(`⚠️  Configuração já existe para máquina ${machine.name}`);
@@ -27,7 +25,7 @@ async function createMachineConfig() {
       
       // Criar configuração padrão
       const config = {
-        machineId: machine._id,
+        machineId: machine.id,
         general: {
           name: machine.name,
           model: machine.model || '',
@@ -64,13 +62,11 @@ async function createMachineConfig() {
           predictiveEnabled: false,
           autoSchedule: true,
           reminderDays: 7
-        },
-        createdAt: new Date(),
-        updatedAt: new Date()
+        }
       };
       
-      const result = await machineConfigsCollection.insertOne(config);
-      logger.info(`✅ Configuração criada para máquina ${machine.name} - ID: ${result.insertedId}`);
+      const result = await prisma.machineConfig.create({ data: config });
+      logger.info(`✅ Configuração criada para máquina ${machine.name} - ID: ${result.id}`);
     }
     
     logger.info('\n📋 Configurações criadas com sucesso!');
@@ -78,7 +74,7 @@ async function createMachineConfig() {
   } catch (error) {
     logger.error('❌ Erro ao criar configurações:', error);
   } finally {
-    await client.close();
+    await prisma.$disconnect();
   }
 }
 

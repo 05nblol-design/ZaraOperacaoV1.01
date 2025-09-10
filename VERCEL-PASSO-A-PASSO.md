@@ -144,11 +144,12 @@ postgresql://usuario:senha@host:porta/database?sslmode=require
 
 5. **Adicione as variáveis de ambiente:**
 ```env
-# Banco de Dados MongoDB Atlas
-MONGODB_URI=mongodb+srv://05:<db_password>@cluster0.hvggzox.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-DATABASE_URL=mongodb+srv://05:<db_password>@cluster0.hvggzox.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+# Banco de Dados PostgreSQL Railway
+# MongoDB não é mais usado - agora usamos PostgreSQL do Railway
+# DATABASE_URL é configurado automaticamente pelo Railway
+# DATABASE_URL é configurado automaticamente pelo Railway PostgreSQL
 
-# IMPORTANTE: Substitua <db_password> pela senha real do seu MongoDB Atlas
+# PostgreSQL é configurado automaticamente pelo Railway
 
 # JWT
 JWT_SECRET=zara-production-jwt-secret-key-2024-ultra-secure
@@ -164,9 +165,9 @@ NODE_ENV=production
 ```
 
 **⚠️ ATENÇÃO IMPORTANTE:**
-- Substitua `<db_password>` pela senha real do seu MongoDB Atlas
+- PostgreSQL é configurado automaticamente pelo Railway
 - A string de conexão fornecida já está configurada para o Cluster0
-- Certifique-se de que o usuário "05" tem as permissões necessárias no MongoDB
+- PostgreSQL configurado automaticamente com todas as permissões
 
 6. **Clique em "Deploy"**
 

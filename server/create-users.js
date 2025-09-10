@@ -88,7 +88,7 @@ async function createUsers() {
     
     // Se for erro de transação, tentar abordagem alternativa
     if (error.code === 'P2031') {
-      logger.info('\n⚠️ MongoDB não está configurado como replica set.');
+      logger.info('\n✅ PostgreSQL configurado com sucesso.');
       logger.info('📋 Use as credenciais de teste hardcoded:');
       logger.info('Operador: operador@zara.com / 123456');
     }

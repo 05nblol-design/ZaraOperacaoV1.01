@@ -1,19 +1,15 @@
-const { MongoClient } = require('mongodb');
+const { PrismaClient } = require('@prisma/client');
 require('dotenv').config();
 const logger = require('utils/logger');
 
+const prisma = new PrismaClient();
+
 async function createMachineDirectly() {
-  const client = new MongoClient(process.env.DATABASE_URL);
-  
   try {
-    await client.connect();
-    logger.info('✅ Conectado ao MongoDB');
-    
-    const db = client.db();
-    const machinesCollection = db.collection('machines');
+    logger.info('✅ Conectado ao PostgreSQL');
     
     // Verificar se já existe uma máquina com código MAQ001
-    const existingMachine = await machinesCollection.findOne({ code: 'MAQ001' });
+    const existingMachine = await prisma.machine.findFirst({ where: { code: 'MAQ001' } });
     
     if (existingMachine) {
       logger.info('⚠️  Máquina MAQ001 já existe:', existingMachine);
@@ -29,9 +25,7 @@ async function createMachineDirectly() {
         status: 'RUNNING',
         isActive: true,
         location: 'Setor 1',
-        model: 'Modelo A',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        model: 'Modelo A'
       },
       {
         name: 'Máquina 02',
@@ -40,9 +34,7 @@ async function createMachineDirectly() {
         status: 'STOPPED',
         isActive: true,
         location: 'Setor 1',
-        model: 'Modelo A',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        model: 'Modelo A'
       },
       {
         name: 'Máquina 03',
@@ -51,26 +43,24 @@ async function createMachineDirectly() {
         status: 'STOPPED',
         isActive: true,
         location: 'Setor 2',
-        model: 'Modelo B',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        model: 'Modelo B'
       }
     ];
     
-    const result = await machinesCollection.insertMany(machines);
-    logger.info(`✅ ${result.insertedCount} máquinas criadas com sucesso!`);
+    const result = await prisma.machine.createMany({ data: machines });
+    logger.info(`✅ ${result.count} máquinas criadas com sucesso!`);
     
     // Listar as máquinas criadas
-    const createdMachines = await machinesCollection.find({}).toArray();
+    const createdMachines = await prisma.machine.findMany();
     logger.info('\n📋 Máquinas no banco de dados:');
     createdMachines.forEach(machine => {
-      logger.info(`- ID: ${machine._id}, Código: ${machine.code}, Nome: ${machine.name}`);
+      logger.info(`- ID: ${machine.id}, Código: ${machine.code}, Nome: ${machine.name}`);
     });
     
   } catch (error) {
     logger.error('❌ Erro:', error);
   } finally {
-    await client.close();
+    await prisma.$disconnect();
   }
 }
 

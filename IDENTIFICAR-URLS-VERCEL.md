@@ -76,8 +76,9 @@ CORS_ORIGIN=http://localhost:3000,https://zara-sistema-frontend.vercel.app
 3. Adicione:
 ```
 NODE_ENV=production
-MONGODB_URI=mongodb+srv://05:SUA_SENHA@cluster0.hvggzox.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-DATABASE_URL=mongodb+srv://05:SUA_SENHA@cluster0.hvggzox.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+# MongoDB não é mais usado - agora usamos PostgreSQL do Railway
+# DATABASE_URL é configurado automaticamente pelo Railway
+# DATABASE_URL é configurado automaticamente pelo Railway PostgreSQL
 JWT_SECRET=zara-production-jwt-secret-key-2024-ultra-secure
 JWT_EXPIRES_IN=7d
 FRONTEND_URL=https://SUA-URL-FRONTEND.vercel.app

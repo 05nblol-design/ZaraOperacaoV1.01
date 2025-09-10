@@ -168,8 +168,8 @@ NODE_ENV=development
 PORT=3001
 
 # Banco de dados
-MONGODB_URI=mongodb://localhost:27017/zara-operacao
-DATABASE_URL=mongodb://localhost:27017/zara-operacao
+# MongoDB não é mais usado - agora usamos PostgreSQL do Railway
+# DATABASE_URL é configurado automaticamente pelo Railway
 
 # JWT
 JWT_SECRET=zara-jwt-secret-key-2024

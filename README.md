@@ -12,7 +12,7 @@ Sistema operacional ZARA para controle de qualidade e operações industriais co
 
 ### Backend
 - **Node.js** + **Express**
-- **MongoDB** + **Prisma ORM**
+- **PostgreSQL** + **Prisma ORM**
 - **Socket.IO** + **Redis** (tempo real)
 - **JWT** (autenticação)
 - **Nodemailer** + **FCM** (notificações)
@@ -31,7 +31,7 @@ Sistema operacional ZARA para controle de qualidade e operações industriais co
 
 ### Pré-requisitos
 - Node.js >= 18.0.0
-- MongoDB
+- PostgreSQL (Railway)
 - Redis
 - NPM >= 9.0.0
 
@@ -65,7 +65,7 @@ npm run dev
 
 Configure o arquivo `server/.env` com suas credenciais:
 
-- **MongoDB**: String de conexão
+- **DATABASE_URL**: String de conexão PostgreSQL (configurado automaticamente pelo Railway)
 - **Redis**: URL do Redis
 - **JWT**: Chave secreta
 - **Email**: Configurações SMTP

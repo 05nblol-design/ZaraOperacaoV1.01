@@ -73,14 +73,14 @@ https://sistema-zara-frontend-apovs6sm3-05nblol-designs-projects.vercel.app
 |------------|--------|-----|
 | **Frontend** | ✅ **ATIVO** | `https://sistema-zara-frontend-apovs6sm3-05nblol-designs-projects.vercel.app` |
 | **Backend** | ⏳ **Pendente** | `Aguardando deploy` |
-| **MongoDB** | ⚠️ **Config** | `Aguardando senha` |
+| **PostgreSQL** | ✅ **OK** | `Railway configurado` |
 
 ---
 
 ## 🎯 **PRÓXIMA AÇÃO:**
 
 1. **Deploy do Backend**: `cd ../server && vercel --prod`
-2. **Configurar MongoDB**: Adicionar senha real no `.env`
+2. **PostgreSQL**: Configurado automaticamente pelo Railway
 3. **Conectar Frontend ↔ Backend**: Atualizar variáveis de ambiente
 4. **Testar sistema completo**
 
