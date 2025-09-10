@@ -6,17 +6,29 @@ const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
   const isDevelopment = hostname === 'localhost' || hostname === '127.0.0.1';
   
+  // Log para debug da detecção de ambiente
+  console.log('🔍 Detectando ambiente:');
+  console.log('- Hostname:', hostname);
+  console.log('- isDevelopment:', isDevelopment);
+  console.log('- VITE_API_URL:', import.meta.env.VITE_API_URL);
+  
   if (isDevelopment) {
     // Desenvolvimento: usar variável local ou fallback localhost
-    return import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const devUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    console.log('🏠 Usando URL de desenvolvimento:', devUrl);
+    return devUrl;
   } else {
     // Produção: SEMPRE usar variável de ambiente (sem fallback hardcoded)
     const apiUrl = import.meta.env.VITE_API_URL;
     if (!apiUrl) {
       console.error('❌ VITE_API_URL não configurada para produção!');
+      console.error('- Hostname atual:', hostname);
+      console.error('- Todas as variáveis VITE_:', Object.keys(import.meta.env).filter(key => key.startsWith('VITE_')));
       throw new Error('Configuração de API não encontrada para produção');
     }
-    return apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
+    const finalUrl = apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
+    console.log('🚀 Usando URL de produção:', finalUrl);
+    return finalUrl;
   }
 };
 
