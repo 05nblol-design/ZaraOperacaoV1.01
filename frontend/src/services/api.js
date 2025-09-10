@@ -50,8 +50,18 @@ api.interceptors.response.use(
   (response) => {
     // Verificar se a resposta é HTML (Vercel SSO) em vez de JSON
     const contentType = response.headers['content-type'] || '';
-    if (contentType.includes('text/html') && response.config.url) {
-      console.warn('🔒 Vercel SSO detectado - usando dados de fallback');
+    const responseText = typeof response.data === 'string' ? response.data : '';
+    
+    // Detectar HTML tanto pelo content-type quanto pelo conteúdo
+    const isHtmlResponse = contentType.includes('text/html') || 
+                          responseText.includes('<!doctype') || 
+                          responseText.includes('<!DOCTYPE') ||
+                          responseText.includes('<html');
+    
+    if (isHtmlResponse && response.config.url) {
+      console.warn('🔒 Vercel SSO/HTML detectado - usando dados de fallback');
+      console.log('Content-Type:', contentType);
+      console.log('Response preview:', responseText.substring(0, 100));
       
       // Retornar dados de fallback baseados na URL
       if (response.config.url.includes('/reports/dashboard')) {
@@ -121,12 +131,43 @@ api.interceptors.response.use(
         };
       }
       
+      if (response.config.url.includes('/permissions')) {
+        return {
+          ...response,
+          data: {
+            success: true,
+            data: []
+          }
+        };
+      }
+      
+      if (response.config.url.includes('/users') || response.config.url.includes('/operators')) {
+        return {
+          ...response,
+          data: {
+            success: true,
+            data: []
+          }
+        };
+      }
+      
+      if (response.config.url.includes('/machines')) {
+        return {
+          ...response,
+          data: {
+            success: true,
+            data: []
+          }
+        };
+      }
+      
       // Para outras URLs, retornar estrutura padrão
       return {
         ...response,
         data: {
           success: false,
-          message: 'Dados não disponíveis - usando fallback'
+          message: 'Dados não disponíveis - usando fallback',
+          data: []
         }
       };
     }
@@ -137,8 +178,13 @@ api.interceptors.response.use(
     const { response } = error;
     
     // Verificar se é erro de parsing JSON (HTML recebido)
-    if (error.message && error.message.includes('Unexpected token')) {
-      console.warn('🔒 HTML detectado em resposta JSON - usando dados de fallback');
+    if (error.message && (error.message.includes('Unexpected token') || 
+                         error.message.includes('not valid JSON') ||
+                         error.message.includes('Failed to execute \'json\'') ||
+                         error.message.includes('SyntaxError'))) {
+      console.warn('🔒 JSON Parse Error detectado - HTML recebido em vez de JSON');
+      console.log('Error message:', error.message);
+      console.log('Request URL:', error.config?.url);
       
       // Retornar dados de fallback baseados na URL da requisição
       const url = error.config?.url || '';
@@ -205,6 +251,42 @@ api.interceptors.response.use(
           }
         });
       }
+      
+      if (url.includes('/permissions')) {
+        return Promise.resolve({
+          data: {
+            success: true,
+            data: []
+          }
+        });
+      }
+      
+      if (url.includes('/users') || url.includes('/operators')) {
+        return Promise.resolve({
+          data: {
+            success: true,
+            data: []
+          }
+        });
+      }
+      
+      if (url.includes('/machines')) {
+        return Promise.resolve({
+          data: {
+            success: true,
+            data: []
+          }
+        });
+      }
+      
+      // Fallback genérico para outras URLs
+      return Promise.resolve({
+        data: {
+          success: false,
+          message: 'Dados não disponíveis - usando fallback',
+          data: []
+        }
+      });
     }
     
     // Tratar diferentes tipos de erro
