@@ -24,7 +24,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import api from '../services/api';
+import { machineService } from '../services/api';
 import toast from 'react-hot-toast';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -73,11 +73,16 @@ const ManagerDashboard = () => {
 
   const fetchMachines = async () => {
     try {
-      const response = await api.get('/machines');
-      const allMachines = response.data.data || [];
-      // Aplicar filtro de permissões
-      const filteredMachines = filterMachinesByPermissions(allMachines, 'canView');
-      setMachines(filteredMachines);
+      const response = await machineService.getAll();
+      const data = response.data;
+      if (data.success) {
+        const allMachines = data.data || [];
+        // Aplicar filtro de permissões
+        const filteredMachines = filterMachinesByPermissions(allMachines, 'canView');
+        setMachines(filteredMachines);
+      } else {
+        throw new Error(data.message || 'Erro ao buscar máquinas');
+      }
     } catch (error) {
       console.error('Erro ao buscar máquinas:', error);
       setMachines([]);

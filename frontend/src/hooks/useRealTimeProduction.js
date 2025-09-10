@@ -279,7 +279,6 @@ export const useRealTimeProduction = (machine, refreshInterval = 1000) => {
           }
           
           return; // Sucesso, não usar fallback
-        }
       }
     } catch (error) {
       console.error('Erro ao buscar dados de produção:', error);

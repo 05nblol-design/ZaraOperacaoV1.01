@@ -13,7 +13,7 @@ import {
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth';
 import { useSocket } from '../hooks/useSocket';
-import api from '../services/api';
+import { machineService } from '../services/api';
 
 const MachineStatus = () => {
   const { id } = useParams();
@@ -91,12 +91,17 @@ const MachineStatus = () => {
   const fetchMachineData = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/machines/${id}`);
-      setMachine(response.data);
-      setNewStatus(response.data.status);
+      const response = await machineService.getById(id);
+      const data = response.data;
+      if (data.success) {
+        setMachine(data.data);
+        setNewStatus(data.data.status);
+      } else {
+        throw new Error(data.message || 'Erro ao carregar dados da máquina');
+      }
     } catch (err) {
       console.error('Erro ao carregar dados da máquina:', err);
-      setError('Erro ao carregar dados da máquina');
+      setError(err.message || 'Erro ao carregar dados da máquina');
     } finally {
       setLoading(false);
     }
@@ -104,8 +109,11 @@ const MachineStatus = () => {
 
   const fetchStatusHistory = async () => {
     try {
-      const response = await api.get(`/machines/${id}/status-history`);
-      setStatusHistory(response.data);
+      const response = await machineService.getStatusHistory(id);
+      const data = response.data;
+      if (data.success) {
+        setStatusHistory(data.data);
+      }
     } catch (err) {
       console.error('Erro ao carregar histórico de status:', err);
     }
@@ -125,7 +133,7 @@ const MachineStatus = () => {
 
     setIsUpdatingStatus(true);
     try {
-      await api.put(`/machines/${id}/status`, {
+      await machineService.updateStatus(id, {
         status: statusMap[newStatus] || newStatus,
         reason: statusReason,
         notes: statusNotes,
