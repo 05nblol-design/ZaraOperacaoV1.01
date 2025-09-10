@@ -79,12 +79,7 @@ const Reports = () => {
         return;
       }
     } catch (error) {
-      // Verificar se é erro de parsing JSON (usuário não autenticado)
-      if (error.message && error.message.includes('Unexpected token')) {
-        console.warn('Usuário não autenticado - usando dados de fallback para relatórios');
-      } else {
-        console.error('Erro ao buscar dados de produção para relatórios:', error);
-      }
+      console.error('Erro ao buscar dados de produção para relatórios:', error);
     }
       
     // Fallback: usar dados básicos das máquinas sem cálculos aleatórios
@@ -210,12 +205,7 @@ const Reports = () => {
         }));
       }
     } catch (error) {
-      // Verificar se é erro de parsing JSON (usuário não autenticado)
-      if (error.message && error.message.includes('Unexpected token')) {
-        console.warn('Usuário não autenticado - usando dados de fallback para relatórios');
-      } else {
-        console.error('Erro ao buscar dados dos relatórios:', error);
-      }
+      console.error('Erro ao buscar dados dos relatórios:', error);
       // Manter dados padrão em caso de erro
     } finally {
       setLoading(false);
