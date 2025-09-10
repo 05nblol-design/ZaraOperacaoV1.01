@@ -397,6 +397,10 @@ export const machineService = {
   updateConfig: (id, data) => api.put(`/machines/${id}/config`, data),
   startOperation: (id, notes = '') => api.post(`/machines/${id}/start-operation`, { notes }),
   stopOperation: (id) => api.post(`/machines/${id}/stop-operation`),
+  endOperation: (id) => api.post(`/machines/${id}/end-operation`),
+  updateProductionSpeed: (id, productionSpeed) => api.put(`/machines/${id}/production-speed`, { productionSpeed }),
+  getCurrentShiftProduction: (id) => api.get(`/machines/${id}/production/current-shift`),
+  getDailyProduction: (id) => api.get(`/machines/${id}/production/daily`),
 };
 
 // Serviços de testes de qualidade
@@ -440,6 +444,42 @@ export const uploadService = {
     files.forEach(file => formData.append('files', file));
     
     return api.post('/upload/multiple', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: (progressEvent) => {
+        if (onProgress) {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          onProgress(percentCompleted);
+        }
+      },
+    });
+  },
+  uploadTeflonImages: (files, onProgress) => {
+    const formData = new FormData();
+    files.forEach(file => formData.append('images', file));
+    
+    return api.post('/upload/teflon-images', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: (progressEvent) => {
+        if (onProgress) {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          onProgress(percentCompleted);
+        }
+      },
+    });
+  },
+  uploadAvatar: (file, onProgress) => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    
+    return api.post('/upload/avatar', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

@@ -19,6 +19,9 @@ import {
 // Hooks
 import { useAuth } from '@/hooks/useAuth';
 
+// Services
+import { userService } from '@/services/api';
+
 // Componentes
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { cn } from '@/lib/utils';
@@ -52,17 +55,8 @@ const UserEdit = () => {
       try {
         setLoading(true);
         
-        const response = await fetch(`/api/users/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Erro ao carregar dados do usuário');
-        }
-        
-        const data = await response.json();
+        const response = await userService.getById(id);
+        const data = response.data;
         
         if (data.success) {
           const userData = data.data;
@@ -150,16 +144,8 @@ const UserEdit = () => {
         updateData.password = formData.password;
       }
 
-      const response = await fetch(`/api/users/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(updateData)
-      });
-
-      const data = await response.json();
+      const response = await userService.update(id, updateData);
+      const data = response.data;
 
       if (data.success) {
         toast.success('Usuário atualizado com sucesso!');

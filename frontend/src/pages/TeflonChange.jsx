@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../hooks/useAuth';
 import { cn } from '../lib/utils';
-import api from '../services/api';
+import api, { uploadService } from '../services/api';
 import { useMachinePermissions } from '@/hooks/useMachinePermissions';
 
 const TeflonChange = () => {
@@ -122,26 +122,9 @@ const TeflonChange = () => {
 
     setLoading(true);
     try {
-      const formDataUpload = new FormData();
-      files.forEach(file => {
-        formDataUpload.append('images', file);
-      });
+      const response = await uploadService.uploadTeflonImages(files);
       
-      const response = await fetch('/api/upload/teflon-images', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: formDataUpload
-      });
-      
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.message || 'Erro ao fazer upload das fotos');
-      }
-      
-      const newPhotos = result.data.map(photo => photo.filename);
+      const newPhotos = response.data.data.map(photo => photo.filename);
       setUploadedPhotos(prev => [...prev, ...newPhotos]);
       setPhotos(prev => [...prev, ...files]);
       setError(null);

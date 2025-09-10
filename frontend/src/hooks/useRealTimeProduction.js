@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSocket } from './useSocket';
+import { machineService } from '../services/api';
 
 /**
  * Hook para calcular produção em tempo real baseado no status da máquina
@@ -242,17 +243,10 @@ export const useRealTimeProduction = (machine, refreshInterval = 1000) => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/machines/${machine.id}/production/current-shift`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success && result.data) {
+      const response = await machineService.getCurrentShiftProduction(machine.id);
+      const result = response.data;
+      
+      if (result.success && result.data) {
           const productionData = result.data;
           
           // Usar dados reais da API (shiftData) ao invés de cálculos locais

@@ -15,6 +15,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { cn } from '@/lib/utils';
+import { uploadService } from '@/services/api';
 
 const Profile = () => {
   const { user, updateProfile, changePassword } = useAuth();
@@ -127,25 +128,14 @@ const Profile = () => {
     setAvatarUploading(true);
     
     try {
-      const formData = new FormData();
-      formData.append('avatar', file);
+      const response = await uploadService.uploadAvatar(file);
 
-      const response = await fetch('/api/upload/avatar', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.data.success) {
         toast.success('Avatar atualizado com sucesso!');
         // Recarregar dados do usuário para mostrar o novo avatar
         window.location.reload();
       } else {
-        throw new Error(data.message || 'Erro ao fazer upload do avatar');
+        throw new Error(response.data.message || 'Erro ao fazer upload do avatar');
       }
     } catch (error) {
       console.error('Erro no upload:', error);

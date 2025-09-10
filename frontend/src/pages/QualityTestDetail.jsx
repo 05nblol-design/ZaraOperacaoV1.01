@@ -28,6 +28,9 @@ import {
 
 // Hooks
 import { useAuth } from '@/hooks/useAuth';
+
+// Services
+import { qualityTestService } from '@/services/api';
 import { useSocket } from '@/hooks/useSocket';
 
 // Utilitários
@@ -52,17 +55,8 @@ const QualityTestDetail = () => {
       try {
         setLoading(true);
         
-        const response = await fetch(`/api/quality-tests/${testId}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Erro ao carregar dados do teste');
-        }
-        
-        const data = await response.json();
+        const response = await qualityTestService.getById(testId);
+        const data = response.data;
         
         if (data.success) {
            setTest(data.data);

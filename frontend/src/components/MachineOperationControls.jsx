@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PlayIcon, StopIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '@/hooks/useAuth';
 import { useMachinePermissions } from '@/hooks/useMachinePermissions';
+import { machineService } from '@/services/api';
 import { cn } from '@/lib/utils';
 
 const MachineOperationControls = ({ machine, onOperationChange }) => {
@@ -32,20 +33,8 @@ const MachineOperationControls = ({ machine, onOperationChange }) => {
     
     setLoading(true);
     try {
-      const response = await fetch(`/api/machines/${machine.id}/start-operation`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ notes: notes.trim() || undefined })
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro ao iniciar operação');
-      }
+      const response = await machineService.startOperation(machine.id, notes.trim() || '');
+      const data = response.data;
 
       // Notificar o componente pai sobre a mudança
       if (onOperationChange) {
@@ -76,20 +65,8 @@ const MachineOperationControls = ({ machine, onOperationChange }) => {
     
     setLoading(true);
     try {
-      const response = await fetch(`/api/machines/${machine.id}/end-operation`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ notes: notes.trim() || undefined })
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro ao finalizar operação');
-      }
+      const response = await machineService.endOperation(machine.id);
+      const data = response.data;
 
       // Notificar o componente pai sobre a mudança
       if (onOperationChange) {

@@ -21,6 +21,9 @@ import {
 // Hooks
 import { useAuth } from '@/hooks/useAuth';
 
+// Services
+import { userService } from '@/services/api';
+
 // Componentes
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { cn } from '@/lib/utils';
@@ -40,17 +43,8 @@ const UserDetail = () => {
       try {
         setLoading(true);
         
-        const response = await fetch(`/api/users/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Erro ao carregar dados do usuário');
-        }
-        
-        const data = await response.json();
+        const response = await userService.getById(id);
+        const data = response.data;
         
         if (data.success) {
           setUserData(data.data);

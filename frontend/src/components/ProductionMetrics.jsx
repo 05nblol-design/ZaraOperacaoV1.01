@@ -10,6 +10,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { useRealTimeProduction } from '@/hooks/useRealTimeProduction';
 import { toast } from 'react-hot-toast';
+import { machineService } from '@/services/api';
 
 const ProductionMetrics = ({ machineId, machine, refreshTrigger = 0 }) => {
   const { user } = useAuth();
@@ -28,37 +29,13 @@ const ProductionMetrics = ({ machineId, machine, refreshTrigger = 0 }) => {
     setError(null);
     
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
       // Buscar produção do turno atual
-      const shiftResponse = await fetch(
-        `/api/machines/${machineId}/production/current-shift`,
-        { headers }
-      );
-      
-      if (!shiftResponse.ok) {
-        throw new Error('Erro ao buscar produção do turno');
-      }
-      
-      const shiftData = await shiftResponse.json();
-      setCurrentShift(shiftData.data);
+      const shiftResponse = await machineService.getCurrentShiftProduction(machineId);
+      setCurrentShift(shiftResponse.data.data);
 
       // Buscar produção diária
-      const dailyResponse = await fetch(
-        `/api/machines/${machineId}/production/daily`,
-        { headers }
-      );
-      
-      if (!dailyResponse.ok) {
-        throw new Error('Erro ao buscar produção diária');
-      }
-      
-      const dailyData = await dailyResponse.json();
-      setDailyProduction(dailyData.data);
+      const dailyResponse = await machineService.getDailyProduction(machineId);
+      setDailyProduction(dailyResponse.data.data);
       
     } catch (err) {
       console.error('Erro ao buscar dados de produção:', err);

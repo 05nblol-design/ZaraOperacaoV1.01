@@ -21,6 +21,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { useMachineStatus } from '@/hooks/useMachineStatus';
 import { useMachinePermissions } from '@/hooks/useMachinePermissions';
 
+// Services
+import { machineService } from '@/services/api';
+
 // Componentes
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ProductionSpeedControl from '@/components/ProductionSpeedControl';
@@ -66,17 +69,8 @@ const MachineDetail = () => {
         
         setHasAccess(true);
         
-        const response = await fetch(`/api/machines/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Erro ao carregar dados da máquina');
-        }
-        
-        const data = await response.json();
+        const response = await machineService.getById(id);
+        const data = response.data;
         
         if (data.success) {
           // Extrair nome do operador de forma mais robusta

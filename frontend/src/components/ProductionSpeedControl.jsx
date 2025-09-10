@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { CogIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'react-hot-toast';
+import { machineService } from '../services/api';
 
 const ProductionSpeedControl = ({ machine, onSpeedUpdate }) => {
   const { user } = useAuth();
@@ -22,28 +23,9 @@ const ProductionSpeedControl = ({ machine, onSpeedUpdate }) => {
 
     setIsUpdating(true);
     try {
-      const response = await fetch(`/api/machines/${machine.id}/production-speed`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ productionSpeed: parseInt(speed) })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        
-        if (response.status === 403) {
-          toast.error('Sem permissão');
-          throw new Error('INSUFFICIENT_PERMISSION');
-        }
-        
-        toast.error('Erro');
-        throw new Error(errorData.message || 'Erro ao atualizar velocidade');
-      }
-
-      const data = await response.json();
+      const response = await machineService.updateProductionSpeed(machine.id, parseInt(speed));
+      const data = response.data;
+      
       toast.success('Salvo');
       setIsEditing(false);
       
