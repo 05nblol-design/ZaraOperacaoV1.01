@@ -207,18 +207,28 @@ const requireMachinePermission = (permissionType = 'canView') => {
 
       // Para operadores e líderes, verificar permissões específicas
       if (user.role === 'OPERATOR') {
+        logger.info('🔍 OPERATOR DEBUG - ID original:', id, 'tipo:', typeof id);
+        
         const machineId = parseInt(id);
         
-        logger.info('🔍 DEBUG - ID recebido:', id, 'Convertido para:', machineId, 'isNaN:', isNaN(machineId));
+        logger.info('🔍 OPERATOR DEBUG - ID convertido:', machineId, 'isNaN:', isNaN(machineId), 'tipo:', typeof machineId);
         
         if (!machineId || isNaN(machineId)) {
-          logger.error('🔍 DEBUG - ID inválido:', { id, machineId, isNaN: isNaN(machineId) });
+          logger.error('🔍 OPERATOR DEBUG - ID inválido detectado:', { 
+            idOriginal: id, 
+            idConvertido: machineId, 
+            isNaN: isNaN(machineId),
+            tipoOriginal: typeof id,
+            tipoConvertido: typeof machineId
+          });
           return res.status(400).json({
             success: false,
             message: 'Dados de entrada inválidos',
             code: 'VALIDATION_ERROR'
           });
         }
+        
+        logger.info('🔍 OPERATOR DEBUG - ID válido, prosseguindo com verificação da máquina');
         
         // Verificar se a máquina existe
         const machine = await prisma.machine.findUnique({
