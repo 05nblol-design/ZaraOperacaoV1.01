@@ -189,7 +189,10 @@ const requireMachinePermission = (permissionType = 'canView') => {
       const { id } = req.params;
       const user = req.user;
 
+      logger.info('🔐 MACHINE PERMISSION DEBUG - ID:', id, 'User:', user?.email, 'Role:', user?.role, 'Permission:', permissionType);
+
       if (!user) {
+        logger.error('🔐 MACHINE PERMISSION - Usuário não autenticado');
         return res.status(401).json({ 
           message: 'Usuário não autenticado',
           code: 'NOT_AUTHENTICATED'
@@ -198,6 +201,7 @@ const requireMachinePermission = (permissionType = 'canView') => {
 
       // Admins e Managers têm acesso total
       if (['ADMIN', 'MANAGER'].includes(user.role)) {
+        logger.info('🔐 MACHINE PERMISSION - Usuário ADMIN/MANAGER, acesso liberado');
         return next();
       }
 
