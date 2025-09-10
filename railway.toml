@@ -2,7 +2,8 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "cd server && npx prisma db push && npm start"
+startCommand = "npm run railway:start"
+workingDirectory = "server"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 300
 
