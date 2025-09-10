@@ -1,0 +1,62 @@
+{
+  "timestamp": "2025-09-10T02:36:30.407Z",
+  "summary": {
+    "workingEndpoints": 1,
+    "totalEndpoints": 5,
+    "hasAccError": false,
+    "vercelOk": false,
+    "railwayOk": true
+  },
+  "results": [
+    {
+      "url": "https://zara-operacao-v1-01.vercel.app",
+      "description": "Vercel Frontend",
+      "status": 404,
+      "responseTime": 14,
+      "isOk": false,
+      "hasAccError": false,
+      "dataLength": 85,
+      "contentType": "application/json"
+    },
+    {
+      "url": "https://zara-operacao-v1-01.vercel.app/login",
+      "description": "Vercel Login Page",
+      "status": 404,
+      "responseTime": 14,
+      "isOk": false,
+      "hasAccError": false,
+      "dataLength": 85,
+      "contentType": "application/json"
+    },
+    {
+      "url": "https://zara-backend-production-aab3.up.railway.app/api/health",
+      "description": "Railway Health",
+      "status": 200,
+      "responseTime": 126,
+      "isOk": true,
+      "hasAccError": false,
+      "dataLength": 154,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://zara-backend-production-aab3.up.railway.app/api/machines",
+      "description": "Railway Machines API",
+      "status": 401,
+      "responseTime": 126,
+      "isOk": false,
+      "hasAccError": false,
+      "dataLength": 57,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "url": "https://zara-backend-production-aab3.up.railway.app/api/users",
+      "description": "Railway Users API",
+      "status": 401,
+      "responseTime": 124,
+      "isOk": false,
+      "hasAccError": false,
+      "dataLength": 57,
+      "contentType": "application/json; charset=utf-8"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "timestamp": "2025-09-10T02:38:49.807Z",
+  "vercelURL": "https://sistema-zara-frontend.vercel.app",
+  "railwayURL": "https://zaraoperacaov101-production.up.railway.app",
+  "systemHealth": {
+    "vercelWorking": true,
+    "accErrorFixed": true,
+    "railwayWorking": false,
+    "overallHealth": "good"
+  },
+  "vercelResults": [
+    {
+      "page": "Página Principal",
+      "url": "https://sistema-zara-frontend.vercel.app",
+      "status": 200,
+      "responseTime": 92,
+      "hasAccError": false,
+      "hasReactError": false,
+      "hasJSError": false,
+      "hasZaraContent": true,
+      "hasReactApp": false
+    },
+    {
+      "page": "Login",
+      "url": "https://sistema-zara-frontend.vercel.app/login",
+      "status": 200,
+      "responseTime": 13,
+      "hasAccError": false,
+      "hasReactError": false,
+      "hasJSError": false,
+      "hasZaraContent": true,
+      "hasReactApp": false
+    },
+    {
+      "page": "Dashboard",
+      "url": "https://sistema-zara-frontend.vercel.app/dashboard",
+      "status": 200,
+      "responseTime": 12,
+      "hasAccError": false,
+      "hasReactError": false,
+      "hasJSError": false,
+      "hasZaraContent": true,
+      "hasReactApp": false
+    },
+    {
+      "page": "Máquinas",
+      "url": "https://sistema-zara-frontend.vercel.app/machines",
+      "status": 200,
+      "responseTime": 10,
+      "hasAccError": false,
+      "hasReactError": false,
+      "hasJSError": false,
+      "hasZaraContent": true,
+      "hasReactApp": false
+    },
+    {
+      "page": "Usuários",
+      "url": "https://sistema-zara-frontend.vercel.app/users",
+      "status": 200,
+      "responseTime": 10,
+      "hasAccError": false,
+      "hasReactError": false,
+      "hasJSError": false,
+      "hasZaraContent": true,
+      "hasReactApp": false
+    },
+    {
+      "page": "Relatórios",
+      "url": "https://sistema-zara-frontend.vercel.app/reports",
+      "status": 200,
+      "responseTime": 19,
+      "hasAccError": false,
+      "hasReactError": false,
+      "hasJSError": false,
+      "hasZaraContent": true,
+      "hasReactApp": false
+    }
+  ],
+  "apiResults": [
+    {
+      "endpoint": "Health Check",
+      "url": "https://zaraoperacaov101-production.up.railway.app/api/health",
+      "method": "GET",
+      "status": 404,
+      "responseTime": 812
+    },
+    {
+      "endpoint": "Lista de Usuários",
+      "url": "https://zaraoperacaov101-production.up.railway.app/api/users",
+      "method": "GET",
+      "status": 404,
+      "responseTime": 121
+    },
+    {
+      "endpoint": "Lista de Máquinas",
+      "url": "https://zaraoperacaov101-production.up.railway.app/api/machines",
+      "method": "GET",
+      "status": 404,
+      "responseTime": 241
+    },
+    {
+      "endpoint": "Dados de Produção",
+      "url": "https://zaraoperacaov101-production.up.railway.app/api/production",
+      "method": "GET",
+      "status": 404,
+      "responseTime": 121
+    },
+    {
+      "endpoint": "Relatórios",
+      "url": "https://zaraoperacaov101-production.up.railway.app/api/reports",
+      "method": "GET",
+      "status": 404,
+      "responseTime": 120
+    },
+    {
+      "endpoint": "Login de Usuário",
+      "url": "https://zaraoperacaov101-production.up.railway.app/api/auth/login",
+      "method": "POST",
+      "status": 404,
+      "responseTime": 121
+    }
+  ],
+  "summary": {
+    "vercelPagesWorking": 6,
+    "vercelPagesTotal": 6,
+    "accErrorFixed": true,
+    "apiEndpointsWorking": 0,
+    "apiEndpointsTotal": 6
+  }
+}

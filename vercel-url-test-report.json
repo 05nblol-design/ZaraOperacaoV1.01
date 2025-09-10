@@ -1,0 +1,132 @@
+{
+  "timestamp": "2025-09-10T02:37:44.131Z",
+  "correctURL": "https://sistema-zara-frontend.vercel.app",
+  "summary": {
+    "totalTested": 10,
+    "working": 4,
+    "withZaraContent": 4,
+    "withAccError": 0
+  },
+  "results": [
+    {
+      "url": "https://zara-operacao-v1-01.vercel.app",
+      "description": "URL Principal (formato padrão)",
+      "status": 404,
+      "responseTime": 116,
+      "isOk": false,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": false,
+      "dataLength": 3804,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://zara-operacao-v101.vercel.app",
+      "description": "URL sem pontos",
+      "status": 404,
+      "responseTime": 96,
+      "isOk": false,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": false,
+      "dataLength": 3804,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://zaraoperacaov101.vercel.app",
+      "description": "URL compacta",
+      "status": 404,
+      "responseTime": 47,
+      "isOk": false,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": false,
+      "dataLength": 3804,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://zara-operacao-v1-01-git-main-05nblol-design.vercel.app",
+      "description": "URL do branch main",
+      "status": 404,
+      "responseTime": 50,
+      "isOk": false,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": false,
+      "dataLength": 3804,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://zara-operacao-v1-01-05nblol-design.vercel.app",
+      "description": "URL com scope do usuário",
+      "status": 404,
+      "responseTime": 83,
+      "isOk": false,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": false,
+      "dataLength": 3804,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://zaraoperacaov101-git-main-05nblol-design.vercel.app",
+      "description": "URL compacta com branch",
+      "status": 404,
+      "responseTime": 73,
+      "isOk": false,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": false,
+      "dataLength": 3804,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://sistema-zara-frontend.vercel.app",
+      "description": "URL alternativa do frontend",
+      "status": 200,
+      "responseTime": 75,
+      "isOk": true,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": true,
+      "dataLength": 5372,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://sistema-zara-frontend.vercel.app/login",
+      "description": "Página Login",
+      "status": 200,
+      "responseTime": 11,
+      "isOk": true,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": true,
+      "dataLength": 5372,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://sistema-zara-frontend.vercel.app/dashboard",
+      "description": "Página Dashboard",
+      "status": 200,
+      "responseTime": 10,
+      "isOk": true,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": true,
+      "dataLength": 5372,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://sistema-zara-frontend.vercel.app/machines",
+      "description": "Página Máquinas",
+      "status": 200,
+      "responseTime": 11,
+      "isOk": true,
+      "isRedirect": false,
+      "hasAccError": false,
+      "hasZaraContent": true,
+      "dataLength": 5372,
+      "contentType": "text/html; charset=utf-8"
+    }
+  ]
+}

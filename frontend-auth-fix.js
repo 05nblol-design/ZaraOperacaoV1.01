@@ -1,16 +1,13 @@
 
-// ========================================
-// SCRIPT DE CORREÇÃO - AUTENTICAÇÃO FRONTEND
-// ========================================
+// SCRIPT DE CORREÇÃO DE AUTENTICAÇÃO
+// Execute este código no console do navegador em https://sistema-zara-frontend.vercel.app
 
 // 1. Limpar dados antigos
-console.log('🧹 Limpando dados antigos...');
 localStorage.clear();
 sessionStorage.clear();
 
-// 2. Configurar token válido
-console.log('🔑 Configurando autenticação...');
-const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzU3NDY2ODUxLCJleHAiOjE3NTgwNzE2NTF9.Np45pqt147s55phQ54qIBBNkAOAWlTKuSt72H40QGJY';
+// 2. Definir novo token e dados do usuário
+const newToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzU3NDcyNDgwLCJleHAiOjE3NTgwNzcyODB9.Zv0IAEomd24gYc1Bhx6e9DxQy9K_Cy42yWe_uuD4ZNY';
 const userData = {
   "id": 2,
   "email": "admin@zara.com",
@@ -20,26 +17,10 @@ const userData = {
 };
 
 // 3. Salvar no localStorage
-localStorage.setItem('token', validToken);
+localStorage.setItem('token', newToken);
 localStorage.setItem('user', JSON.stringify(userData));
+localStorage.setItem('isAuthenticated', 'true');
 
-// 4. Verificar se foi salvo corretamente
-const savedToken = localStorage.getItem('token');
-const savedUser = localStorage.getItem('user');
-
-if (savedToken && savedUser) {
-  console.log('✅ Autenticação configurada com sucesso!');
-  console.log('👤 Usuário:', JSON.parse(savedUser).name);
-  console.log('🔑 Token salvo:', savedToken.substring(0, 30) + '...');
-  
-  // 5. Recarregar página para aplicar mudanças
-  console.log('🔄 Recarregando página em 2 segundos...');
-  setTimeout(() => {
-    window.location.reload();
-  }, 2000);
-  
-} else {
-  console.error('❌ Erro ao salvar dados de autenticação!');
-}
-
-// ========================================
+// 4. Recarregar a página
+console.log('✅ Token atualizado! Recarregando página...');
+window.location.reload();

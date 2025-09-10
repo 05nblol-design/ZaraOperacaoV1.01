@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-09-10T02:44:26.908Z",
+  "leaderDashboard": {
+    "success": true,
+    "analysis": {
+      "hasError": true,
+      "errorType": "500 Server Error",
+      "errorMessage": "Erro interno do servidor",
+      "hasReactContent": true,
+      "hasZaraContent": true,
+      "hasJavaScriptErrors": false,
+      "pageSize": 5372
+    },
+    "status": 200,
+    "responseTime": 101
+  },
+  "otherPages": [
+    {
+      "page": "Página Principal",
+      "url": "https://sistema-zara-frontend.vercel.app",
+      "status": 200,
+      "hasError": true,
+      "errorType": "500 Server Error"
+    },
+    {
+      "page": "Login",
+      "url": "https://sistema-zara-frontend.vercel.app/login",
+      "status": 200,
+      "hasError": true,
+      "errorType": "500 Server Error"
+    },
+    {
+      "page": "Dashboard Normal",
+      "url": "https://sistema-zara-frontend.vercel.app/dashboard",
+      "status": 200,
+      "hasError": true,
+      "errorType": "500 Server Error"
+    }
+  ],
+  "summary": {
+    "dashboardWorking": false,
+    "otherPagesWorking": 0,
+    "totalOtherPages": 3
+  }
+}
