@@ -207,24 +207,28 @@ const requireMachinePermission = (permissionType = 'canView') => {
 
       // Para operadores e líderes, verificar permissões específicas
       if (user.role === 'OPERATOR') {
-        const machineId = parseInt(id) || null;
+        const machineId = parseInt(id);
         
-        if (!machineId) {
-          // Se não conseguir converter para número, tentar buscar por código
-          const machine = await prisma.machine.findUnique({
-            where: { code: id },
-            select: { id: true }
+        if (!machineId || isNaN(machineId)) {
+          return res.status(400).json({
+            success: false,
+            message: 'ID da máquina inválido',
+            code: 'INVALID_MACHINE_ID'
           });
-          
-          if (!machine) {
-            return res.status(404).json({
-              success: false,
-              message: 'Máquina não encontrada',
-              code: 'MACHINE_NOT_FOUND'
-            });
-          }
-          
-          machineId = machine.id;
+        }
+        
+        // Verificar se a máquina existe
+        const machine = await prisma.machine.findUnique({
+          where: { id: machineId },
+          select: { id: true }
+        });
+        
+        if (!machine) {
+          return res.status(404).json({
+            success: false,
+            message: 'Máquina não encontrada',
+            code: 'MACHINE_NOT_FOUND'
+          });
         }
 
         // Verificar se o operador tem permissão para esta máquina
