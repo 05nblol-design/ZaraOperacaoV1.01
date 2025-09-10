@@ -3,7 +3,6 @@ builder = "nixpacks"
 
 [deploy]
 startCommand = "npm run railway:start"
-workingDirectory = "server"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 300
 
