@@ -1,0 +1,12 @@
+[phases.setup]
+aptPkgs = ["curl"]
+
+[phases.build]
+cmds = ["cd server && npm ci --only=production && npx prisma generate"]
+
+[start]
+cmd = "cd server && npx prisma db push && npm start"
+
+[variables]
+NODE_ENV = "production"
+PORT = "5000"
