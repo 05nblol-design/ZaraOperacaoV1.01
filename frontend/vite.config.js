@@ -10,43 +10,44 @@ const RAILWAY_API_URL = 'https://zara-backend-production-aab3.up.railway.app/api
 
 export default defineConfig({
   plugins: [
-    react(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']
-      },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
-      manifest: {
-        name: 'Sistema ZARA',
-        short_name: 'ZARA',
-        description: 'Sistema de Controle de Qualidade e Operações',
-        theme_color: '#1f2937',
-        background_color: '#ffffff',
-        display: 'standalone',
-        orientation: 'portrait',
-        scope: '/',
-        start_url: '/',
-        icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ]
-      }
-    })
+    react()
+    // Temporariamente desabilitado para resolver erro de build
+    // VitePWA({
+    //   registerType: 'autoUpdate',
+    //   workbox: {
+    //     globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']
+    //   },
+    //   includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+    //   manifest: {
+    //     name: 'Sistema ZARA',
+    //     short_name: 'ZARA',
+    //     description: 'Sistema de Controle de Qualidade e Operações',
+    //     theme_color: '#1f2937',
+    //     background_color: '#ffffff',
+    //     display: 'standalone',
+    //     orientation: 'portrait',
+    //     scope: '/',
+    //     start_url: '/',
+    //     icons: [
+    //       {
+    //         src: 'pwa-192x192.png',
+    //         sizes: '192x192',
+    //         type: 'image/png'
+    //       },
+    //       {
+    //         src: 'pwa-512x512.png',
+    //         sizes: '512x512',
+    //         type: 'image/png'
+    //       },
+    //       {
+    //         src: 'pwa-512x512.png',
+    //         sizes: '512x512',
+    //         type: 'image/png',
+    //         purpose: 'any maskable'
+    //       }
+    //     ]
+    //   }
+    // })
   ],
   resolve: {
     alias: {
@@ -115,6 +116,9 @@ export default defineConfig({
       'clsx',
       'tailwind-merge'
     ]
+  },
+  esbuild: {
+    charset: 'utf8'
   },
   define: {
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version),

@@ -75,34 +75,33 @@ const Reports = () => {
       const data = response.data;
       
       if (data.success) {
-          setReportsRealTimeData(data.data);
-          return;
-        }
-      }
-      
-      // Fallback: usar dados básicos das máquinas sem cálculos aleatórios
-      if (machines && machines.length > 0) {
-        const filteredMachines = filterMachinesByPermissions(machines, 'canView');
-        const runningMachines = filteredMachines.filter(m => 
-          m.status === 'FUNCIONANDO' || m.status === 'RUNNING'
-        );
-        
-        setReportsRealTimeData({
-          totalProduction: runningMachines.length * 150, // Estimativa conservadora
-          totalRunningTime: runningMachines.length * 60,
-          averageEfficiency: runningMachines.length > 0 ? 80 : 0, // Estimativa conservadora
-          totalDowntime: (filteredMachines.length - runningMachines.length) * 2,
-          qualityRate: 95, // Valor padrão conservador
-          machinePerformance: filteredMachines.map(machine => ({
-            machine: machine.name || `Máquina ${machine.code}`,
-            production: (machine.status === 'FUNCIONANDO' || machine.status === 'RUNNING') ? 150 : 0,
-            efficiency: (machine.status === 'FUNCIONANDO' || machine.status === 'RUNNING') ? 80 : 0,
-            downtime: (machine.status === 'FUNCIONANDO' || machine.status === 'RUNNING') ? 0 : 2
-          }))
-        });
+        setReportsRealTimeData(data.data);
+        return;
       }
     } catch (error) {
       console.error('Erro ao buscar dados de produção para relatórios:', error);
+    }
+      
+    // Fallback: usar dados básicos das máquinas sem cálculos aleatórios
+    if (machines && machines.length > 0) {
+      const filteredMachines = filterMachinesByPermissions(machines, 'canView');
+      const runningMachines = filteredMachines.filter(m => 
+        m.status === 'FUNCIONANDO' || m.status === 'RUNNING'
+      );
+      
+      setReportsRealTimeData({
+        totalProduction: runningMachines.length * 150, // Estimativa conservadora
+        totalRunningTime: runningMachines.length * 60,
+        averageEfficiency: runningMachines.length > 0 ? 80 : 0, // Estimativa conservadora
+        totalDowntime: (filteredMachines.length - runningMachines.length) * 2,
+        qualityRate: 95, // Valor padrão conservador
+        machinePerformance: filteredMachines.map(machine => ({
+          machine: machine.name || `Máquina ${machine.code}`,
+          production: (machine.status === 'FUNCIONANDO' || machine.status === 'RUNNING') ? 150 : 0,
+          efficiency: (machine.status === 'FUNCIONANDO' || machine.status === 'RUNNING') ? 80 : 0,
+          downtime: (machine.status === 'FUNCIONANDO' || machine.status === 'RUNNING') ? 0 : 2
+        }))
+      });
     }
   };
 
