@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
         // Auto-login para desenvolvimento
         try {
           const response = await authService.login({
-            email: 'teste@zara.com',
+            email: 'admin@zara.com',
             password: '123456'
           });
           
@@ -68,6 +68,9 @@ export const AuthProvider = ({ children }) => {
           }
         } catch (error) {
           console.error('Erro no auto-login:', error);
+          // Se o auto-login falhar, limpar dados inválidos
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
         }
       }
       

@@ -1,37 +1,49 @@
-#!/usr/bin/env node
+// SCRIPT DE CORREÇÃO DE AUTENTICAÇÃO DO FRONTEND
+// Execute este código no console do navegador em: https://sistema-zara-frontend.vercel.app
 
-/**
- * CORREÇÃO DE TOKEN DE AUTENTICAÇÃO DO FRONTEND
- * 
- * Problema identificado:
- * - O frontend está usando tokens JWT expirados
- * - Backend funcionando perfeitamente com tokens válidos
- * - Erro 400 "Dados de entrada inválidos" causado por token expirado
- * 
- * Solução:
- * - Gerar novo token válido
- * - Atualizar localStorage do frontend
- * - Verificar funcionamento do leader-dashboard
- */
+console.log('🔧 Corrigindo autenticação do frontend...');
 
-const axios = require('axios');
-const fs = require('fs');
+// 1. Limpar dados antigos
+localStorage.clear();
+sessionStorage.clear();
 
-// URLs do sistema
-const FRONTEND_URL = 'https://sistema-zara-frontend.vercel.app';
-const BACKEND_URL = 'https://zara-backend-production-aab3.up.railway.app';
+// 2. Fazer login e obter token válido com usuário ADMIN
+fetch('https://zara-backend-production-aab3.up.railway.app/api/auth/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    email: 'admin@zara.com',
+    password: 'admin123'
+  })
+})
+.then(response => response.json())
+.then(data => {
+  if (data.success) {
+    const { token, user } = data.data;
+    
+    // 3. Salvar no localStorage
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('isAuthenticated', 'true');
+    
+    console.log('✅ Token configurado com sucesso!');
+    console.log('👤 Usuário:', user);
+    console.log('🔑 Token salvo no localStorage');
+    
+    // 4. Recarregar página
+    console.log('🔄 Recarregando página...');
+    window.location.reload();
+  } else {
+    console.error('❌ Erro no login:', data.message);
+  }
+})
+.catch(error => {
+  console.error('❌ Erro na requisição:', error);
+});
 
-// Credenciais de admin
-const ADMIN_CREDENTIALS = {
-  email: 'admin@zara.com',
-  password: 'admin123'
-};
-
-console.log('🔧 CORREÇÃO DE TOKEN DE AUTENTICAÇÃO DO FRONTEND');
-console.log('=' .repeat(60));
-console.log(`Frontend: ${FRONTEND_URL}`);
-console.log(`Backend:  ${BACKEND_URL}`);
-console.log('');
+console.log('⏳ Fazendo login e configurando autenticação...');
 
 async function fixFrontendAuth() {
   try {

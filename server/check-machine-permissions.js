@@ -1,50 +1,61 @@
 const { PrismaClient } = require('@prisma/client');
-const logger = require('utils/logger');
 const prisma = new PrismaClient();
 
-async function checkMachinePermissions() {
+(async () => {
   try {
-    // Verificar permissões do usuário Lucas (ID: 2)
+    console.log('Verificando máquina ID 1:');
+    const machine = await prisma.machine.findUnique({
+      where: { id: 1 }
+    });
+    console.log('Máquina:', machine);
+    
+    console.log('\nVerificando permissões para máquina ID 1:');
     const permissions = await prisma.machinePermission.findMany({
-      where: {
-        userId: 2
-      },
+      where: { machineId: 1 },
       include: {
-        machine: {
-          select: {
-            id: true,
-            name: true,
-            code: true
+        user: { select: { email: true, role: true } }
+      }
+    });
+    console.log('Permissões:', permissions);
+    
+    console.log('\nVerificando todos os usuários:');
+    const allUsers = await prisma.user.findMany({
+      select: { id: true, email: true, name: true, role: true }
+    });
+    console.log('Usuários:', allUsers);
+    
+    console.log('\nCriando permissão para usuário admin acessar máquina ID 1:');
+    const adminUser = allUsers.find(u => u.role === 'ADMIN');
+    if (adminUser) {
+      const permission = await prisma.machinePermission.upsert({
+        where: {
+          userId_machineId: {
+            userId: adminUser.id,
+            machineId: 1
           }
+        },
+        update: {
+          canView: true,
+          canOperate: true,
+          canEdit: true
+        },
+        create: {
+          userId: adminUser.id,
+          machineId: 1,
+          canView: true,
+          canOperate: true,
+          canEdit: true
         }
-      }
-    });
+      });
+      console.log('Permissão criada/atualizada:', permission);
+    } else {
+      console.log('Usuário admin não encontrado');
+    }
     
-    logger.info('Permissões do usuário Lucas (ID: 2):', permissions.length);
-    permissions.forEach(p => {
-      logger.info(`- Máquina: ${p.machine.name} (${p.machine.code}) - canView: ${p.canView}, canOperate: ${p.canOperate}`);
-    });
-    
-    // Verificar todas as máquinas disponíveis
-    const allMachines = await prisma.machine.findMany({
-      select: {
-        id: true,
-        name: true,
-        code: true,
-        isActive: true
-      }
-    });
-    
-    logger.info('\nTodas as máquinas:', allMachines.length);
-    allMachines.forEach(m => {
-      logger.info(`- ${m.name} (${m.code}) - Ativa: ${m.isActive}`);
-    });
-    
-  } catch (error) {
-    logger.error('Erro:', error);
-  } finally {
     await prisma.$disconnect();
+  } catch (error) {
+    console.error('Erro:', error.message);
+    await prisma.$disconnect();
+    process.exit(1);
   }
-}
-
-checkMachinePermissions();
+})();
