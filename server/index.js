@@ -115,8 +115,8 @@ app.use(fileUpload({
   createParentPath: true
 }));
 
-// Servir arquivos estáticos (uploads)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Servir arquivos estáticos (uploads) - Desabilitado para Railway
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Conectar ao banco de dados
 connectDB();

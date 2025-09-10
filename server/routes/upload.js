@@ -15,15 +15,11 @@ const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm', 'video/quicktime'];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-// Criar diretório de uploads se não existir
+// Função de upload sem criação de diretórios físicos (Railway compatibility)
 const ensureUploadDir = async () => {
-  try {
-    await fs.access(UPLOAD_DIR);
-  } catch {
-    await fs.mkdir(UPLOAD_DIR, { recursive: true });
-    await fs.mkdir(path.join(UPLOAD_DIR, 'images'), { recursive: true });
-    await fs.mkdir(path.join(UPLOAD_DIR, 'videos'), { recursive: true });
-  }
+  // No Railway, não criamos diretórios físicos para evitar problemas de volume
+  // Os uploads serão tratados em memória ou via serviços externos
+  return true;
 };
 
 // @desc    Upload de imagem para teste de qualidade

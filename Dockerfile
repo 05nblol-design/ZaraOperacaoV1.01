@@ -20,9 +20,7 @@ RUN npx prisma generate
 # Copy server source code
 COPY server/ .
 
-# Create directories with proper permissions
-RUN mkdir -p uploads/avatars uploads/images && \
-    chmod -R 755 uploads
+# Remover criação de diretórios uploads para evitar problemas de volume no Railway
 
 # Expose port
 EXPOSE 5000

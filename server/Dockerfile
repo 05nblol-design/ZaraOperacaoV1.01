@@ -20,8 +20,7 @@ RUN npx prisma generate
 # Copy application code
 COPY . .
 
-# Create necessary directories
-RUN mkdir -p uploads/avatars uploads/images
+# Diretórios uploads removidos para compatibilidade com Railway
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs
