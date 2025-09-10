@@ -420,6 +420,17 @@ export const qualityTestService = {
   }),
 };
 
+// Serviços de teflon
+export const teflonService = {
+  getAll: () => api.get('/teflon'),
+  getById: (id) => api.get(`/teflon/${id}`),
+  create: (data) => api.post('/teflon', data),
+  update: (id, data) => api.put(`/teflon/${id}`, data),
+  delete: (id) => api.delete(`/teflon/${id}`),
+  getByMachine: (machineId) => api.get(`/teflon/machine/${machineId}`),
+  getExpiringSoon: () => api.get('/teflon/alerts/expiring-soon'),
+};
+
 // Serviços de upload
 export const uploadService = {
   uploadFile: (file, onProgress) => {

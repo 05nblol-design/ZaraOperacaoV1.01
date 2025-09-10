@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../hooks/useAuth';
 import { cn } from '../lib/utils';
-import api, { uploadService } from '../services/api';
+import { machineService, uploadService, teflonService } from '../services/api';
 import { useMachinePermissions } from '@/hooks/useMachinePermissions';
 
 const TeflonChange = () => {
@@ -62,7 +62,7 @@ const TeflonChange = () => {
   const loadMachines = async () => {
     try {
       console.log('🔄 TeflonChange: Carregando máquinas...', { permissionsLoading, user: user?.role });
-      const response = await api.get('/machines');
+      const response = await machineService.getAll();
       console.log('📡 TeflonChange: Resposta da API:', response.data);
       
       if (response.data && Array.isArray(response.data.data)) {
@@ -170,7 +170,7 @@ const TeflonChange = () => {
         photos: uploadedPhotos // Enviar os nomes dos arquivos uploadados
       };
 
-      await api.post('/teflon', payload);
+      await teflonService.create(payload);
 
       setSuccess(true);
       setTimeout(() => {
