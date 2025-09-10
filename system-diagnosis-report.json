@@ -1,0 +1,222 @@
+{
+  "timestamp": "2025-09-10T02:24:00.242Z",
+  "vercel": {
+    "name": "Vercel Frontend",
+    "status": 200,
+    "data": "<!doctype html>\n<html lang=\"pt-BR\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/vite.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <meta name=\"description\" content=\"Sistema ZARA - Controle de Qualidade e Operações Industriais\" />\n    <meta name=\"keywords\" content=\"ZARA, qualidade, operações, indústria, controle\" />\n    <meta name=\"author\" content=\"Sistema ZARA\" />\n    \n    <!-- PWA Meta Tags -->\n    <meta name=\"theme-color\" content=\"#1f2937\" />\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"default\" />\n    <meta name=\"apple-mobile-web-app-title\" content=\"ZARA\" />\n    \n    <!-- Preconnect to external domains -->\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    \n    <!-- Google Fonts -->\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\" />\n    <link href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap\" rel=\"stylesheet\" />\n    \n    <!-- Favicon -->\n    <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-touch-icon.png\" />\n    <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/favicon-32x32.png\" />\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"/favicon-16x16.png\" />\n    <link rel=\"manifest\" href=\"/site.webmanifest\" />\n    \n    <title>Sistema ZARA - Controle de Qualidade</title>\n    \n    <!-- Loading styles -->\n    <style>\n      /* Loading screen styles */\n      #loading-screen {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background: linear-gradient(135deg, #1f2937 0%, #374151 100%);\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        justify-content: center;\n        z-index: 9999;\n        transition: opacity 0.5s ease-out;\n      }\n      \n      .loading-logo {\n        width: 80px;\n        height: 80px;\n        margin-bottom: 2rem;\n        animation: pulse 2s infinite;\n      }\n      \n      .loading-text {\n        color: #f9fafb;\n        font-family: 'Inter', sans-serif;\n        font-size: 1.5rem;\n        font-weight: 600;\n        margin-bottom: 1rem;\n      }\n      \n      .loading-spinner {\n        width: 40px;\n        height: 40px;\n        border: 3px solid #374151;\n        border-top: 3px solid #3b82f6;\n        border-radius: 50%;\n        animation: spin 1s linear infinite;\n      }\n      \n      @keyframes pulse {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.5; }\n      }\n      \n      @keyframes spin {\n        0% { transform: rotate(0deg); }\n        100% { transform: rotate(360deg); }\n      }\n      \n      /* Hide loading screen when app is ready */\n      .app-ready #loading-screen {\n        opacity: 0;\n        pointer-events: none;\n      }\n    </style>\n    <script type=\"module\" crossorigin src=\"/assets/index-CkEcoi_V.js\"></script>\n    <link rel=\"modulepreload\" crossorigin href=\"/assets/vendor-BKU87Gzz.js\">\n    <link rel=\"modulepreload\" crossorigin href=\"/assets/query-B88w_-l3.js\">\n    <link rel=\"modulepreload\" crossorigin href=\"/assets/router-Cr3qqr-L.js\">\n    <link rel=\"modulepreload\" crossorigin href=\"/assets/utils-CZH8StwO.js\">\n    <link rel=\"stylesheet\" crossorigin href=\"/assets/index-CdB0r4wI.css\">\n  <link rel=\"manifest\" href=\"/manifest.webmanifest\"><script id=\"vite-plugin-pwa:register-sw\" src=\"/registerSW.js\"></script></head>\n  <body>\n    <!-- Loading Screen -->\n    <div id=\"loading-screen\">\n      <div class=\"loading-logo\">\n        <svg viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n          <rect x=\"10\" y=\"10\" width=\"80\" height=\"80\" rx=\"12\" fill=\"#3b82f6\" />\n          <rect x=\"20\" y=\"20\" width=\"60\" height=\"60\" rx=\"8\" fill=\"#1f2937\" />\n          <circle cx=\"35\" cy=\"35\" r=\"8\" fill=\"#3b82f6\" />\n          <circle cx=\"65\" cy=\"35\" r=\"8\" fill=\"#10b981\" />\n          <rect x=\"30\" y=\"55\" width=\"40\" height=\"4\" rx=\"2\" fill=\"#f59e0b\" />\n          <rect x=\"25\" y=\"65\" width=\"50\" height=\"4\" rx=\"2\" fill=\"#ef4444\" />\n        </svg>\n      </div>\n      <div class=\"loading-text\">Sistema ZARA</div>\n      <div class=\"loading-spinner\"></div>\n    </div>\n    \n    <!-- React App Root -->\n    <div id=\"root\"></div>\n    \n    <!-- Service Worker Registration -->\n    <script>\n      // Register service worker for PWA\n      if ('serviceWorker' in navigator) {\n        window.addEventListener('load', () => {\n          navigator.serviceWorker.register('/sw.js')\n            .then((registration) => {\n              console.log('SW registered: ', registration);\n            })\n            .catch((registrationError) => {\n              console.log('SW registration failed: ', registrationError);\n            });\n        });\n      }\n      \n      // Hide loading screen when app is ready\n      window.addEventListener('DOMContentLoaded', () => {\n        setTimeout(() => {\n          document.body.classList.add('app-ready');\n          setTimeout(() => {\n            const loadingScreen = document.getElementById('loading-screen');\n            if (loadingScreen) {\n              loadingScreen.remove();\n            }\n          }, 500);\n        }, 1000);\n      });\n    </script>\n    \n  </body>\n</html>",
+    "headers": {
+      "accept-ranges": "bytes",
+      "access-control-allow-origin": "*",
+      "age": "5940",
+      "cache-control": "public, max-age=0, must-revalidate",
+      "content-disposition": "inline",
+      "content-length": "5377",
+      "content-security-policy": "default-src 'self'; connect-src 'self' https://zara-backend-production-aab3.up.railway.app https://zara-backend-production-aab3.up.railway.app/api wss://*.railway.app ws://*.railway.app; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
+      "content-type": "text/html; charset=utf-8",
+      "date": "Wed, 10 Sep 2025 02:23:58 GMT",
+      "etag": "\"39fbd269a69c047bdbe5985452af8ed3\"",
+      "last-modified": "Wed, 10 Sep 2025 00:44:57 GMT",
+      "permissions-policy": "camera=(), microphone=(), geolocation=()",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "server": "Vercel",
+      "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-vercel-cache": "HIT",
+      "x-vercel-id": "gru1::lfxjw-1757471038767-5941a1c0765f",
+      "x-xss-protection": "1; mode=block"
+    }
+  },
+  "railway": [
+    {
+      "name": "Health Check",
+      "status": 404,
+      "data": {
+        "status": "error",
+        "code": 404,
+        "message": "Application not found",
+        "request_id": "oOayYT8KRGmY1puYCx5-qw"
+      },
+      "headers": {
+        "content-length": "101",
+        "content-type": "application/json",
+        "server": "railway-edge",
+        "x-railway-edge": "railway/us-east4-eqdc4a",
+        "x-railway-fallback": "true",
+        "x-railway-request-id": "oOayYT8KRGmY1puYCx5-qw",
+        "date": "Wed, 10 Sep 2025 02:23:59 GMT"
+      }
+    },
+    {
+      "name": "Auth Login",
+      "status": 404,
+      "data": {
+        "status": "error",
+        "code": 404,
+        "message": "Application not found",
+        "request_id": "oUBGGRasQEe4ln2DCx5-qw"
+      },
+      "headers": {
+        "content-length": "101",
+        "content-type": "application/json",
+        "server": "railway-edge",
+        "x-railway-edge": "railway/us-east4-eqdc4a",
+        "x-railway-fallback": "true",
+        "x-railway-request-id": "oUBGGRasQEe4ln2DCx5-qw",
+        "date": "Wed, 10 Sep 2025 02:23:59 GMT"
+      }
+    },
+    {
+      "name": "Machines List",
+      "status": 404,
+      "data": {
+        "status": "error",
+        "code": 404,
+        "message": "Application not found",
+        "request_id": "XFud_ErvQ8GoIhWKCx5-qw"
+      },
+      "headers": {
+        "content-length": "101",
+        "content-type": "application/json",
+        "server": "railway-edge",
+        "x-railway-edge": "railway/us-east4-eqdc4a",
+        "x-railway-fallback": "true",
+        "x-railway-request-id": "XFud_ErvQ8GoIhWKCx5-qw",
+        "date": "Wed, 10 Sep 2025 02:23:59 GMT"
+      }
+    },
+    {
+      "name": "Users List",
+      "status": 404,
+      "data": {
+        "status": "error",
+        "code": 404,
+        "message": "Application not found",
+        "request_id": "sYh61datRZOeGPF8Cx5-qw"
+      },
+      "headers": {
+        "content-length": "101",
+        "content-type": "application/json",
+        "server": "railway-edge",
+        "x-railway-edge": "railway/us-east4-eqdc4a",
+        "x-railway-fallback": "true",
+        "x-railway-request-id": "sYh61datRZOeGPF8Cx5-qw",
+        "date": "Wed, 10 Sep 2025 02:23:59 GMT"
+      }
+    },
+    {
+      "name": "Production Data",
+      "status": 404,
+      "data": {
+        "status": "error",
+        "code": 404,
+        "message": "Application not found",
+        "request_id": "Ddi1_tqBT52S8va5Cx5-qw"
+      },
+      "headers": {
+        "content-length": "101",
+        "content-type": "application/json",
+        "server": "railway-edge",
+        "x-railway-edge": "railway/us-east4-eqdc4a",
+        "x-railway-fallback": "true",
+        "x-railway-request-id": "Ddi1_tqBT52S8va5Cx5-qw",
+        "date": "Wed, 10 Sep 2025 02:23:59 GMT"
+      }
+    },
+    {
+      "name": "Reports",
+      "status": 404,
+      "data": {
+        "status": "error",
+        "code": 404,
+        "message": "Application not found",
+        "request_id": "qPIOnL_9Q0KcrUW8Cx5-qw"
+      },
+      "headers": {
+        "content-length": "101",
+        "content-type": "application/json",
+        "server": "railway-edge",
+        "x-railway-edge": "railway/us-east4-eqdc4a",
+        "x-railway-fallback": "true",
+        "x-railway-request-id": "qPIOnL_9Q0KcrUW8Cx5-qw",
+        "date": "Wed, 10 Sep 2025 02:24:00 GMT"
+      }
+    }
+  ],
+  "comparison": [
+    {
+      "name": "Frontend Local",
+      "status": 200,
+      "data": "<!doctype html>\n<html lang=\"pt-BR\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/vite.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <meta name=\"description\" content=\"Sistema ZARA - Controle de Qualidade e Operações Industriais\" />\n    <meta name=\"keywords\" content=\"ZARA, qualidade, operações, indústria, controle\" />\n    <meta name=\"author\" content=\"Sistema ZARA\" />\n    \n    <!-- PWA Meta Tags -->\n    <meta name=\"theme-color\" content=\"#1f2937\" />\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"default\" />\n    <meta name=\"apple-mobile-web-app-title\" content=\"ZARA\" />\n    \n    <!-- Preconnect to external domains -->\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    \n    <!-- Google Fonts -->\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\" />\n    <link href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap\" rel=\"stylesheet\" />\n    \n    <!-- Favicon -->\n    <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-touch-icon.png\" />\n    <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/favicon-32x32.png\" />\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"/favicon-16x16.png\" />\n    <link rel=\"manifest\" href=\"/site.webmanifest\" />\n    \n    <title>Sistema ZARA - Controle de Qualidade</title>\n    \n    <!-- Loading styles -->\n    <style>\n      /* Loading screen styles */\n      #loading-screen {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background: linear-gradient(135deg, #1f2937 0%, #374151 100%);\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        justify-content: center;\n        z-index: 9999;\n        transition: opacity 0.5s ease-out;\n      }\n      \n      .loading-logo {\n        width: 80px;\n        height: 80px;\n        margin-bottom: 2rem;\n        animation: pulse 2s infinite;\n      }\n      \n      .loading-text {\n        color: #f9fafb;\n        font-family: 'Inter', sans-serif;\n        font-size: 1.5rem;\n        font-weight: 600;\n        margin-bottom: 1rem;\n      }\n      \n      .loading-spinner {\n        width: 40px;\n        height: 40px;\n        border: 3px solid #374151;\n        border-top: 3px solid #3b82f6;\n        border-radius: 50%;\n        animation: spin 1s linear infinite;\n      }\n      \n      @keyframes pulse {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.5; }\n      }\n      \n      @keyframes spin {\n        0% { transform: rotate(0deg); }\n        100% { transform: rotate(360deg); }\n      }\n      \n      /* Hide loading screen when app is ready */\n      .app-ready #loading-screen {\n        opacity: 0;\n        pointer-events: none;\n      }\n    </style>\n  </head>\n  <body>\n    <!-- Loading Screen -->\n    <div id=\"loading-screen\">\n      <div class=\"loading-logo\">\n        <svg viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n          <rect x=\"10\" y=\"10\" width=\"80\" height=\"80\" rx=\"12\" fill=\"#3b82f6\" />\n          <rect x=\"20\" y=\"20\" width=\"60\" height=\"60\" rx=\"8\" fill=\"#1f2937\" />\n          <circle cx=\"35\" cy=\"35\" r=\"8\" fill=\"#3b82f6\" />\n          <circle cx=\"65\" cy=\"35\" r=\"8\" fill=\"#10b981\" />\n          <rect x=\"30\" y=\"55\" width=\"40\" height=\"4\" rx=\"2\" fill=\"#f59e0b\" />\n          <rect x=\"25\" y=\"65\" width=\"50\" height=\"4\" rx=\"2\" fill=\"#ef4444\" />\n        </svg>\n      </div>\n      <div class=\"loading-text\">Sistema ZARA</div>\n      <div class=\"loading-spinner\"></div>\n    </div>\n    \n    <!-- React App Root -->\n    <div id=\"root\"></div>\n    \n    <!-- Service Worker Registration -->\n    <script>\n      // Register service worker for PWA\n      if ('serviceWorker' in navigator) {\n        window.addEventListener('load', () => {\n          navigator.serviceWorker.register('/sw.js')\n            .then((registration) => {\n              console.log('SW registered: ', registration);\n            })\n            .catch((registrationError) => {\n              console.log('SW registration failed: ', registrationError);\n            });\n        });\n      }\n      \n      // Hide loading screen when app is ready\n      window.addEventListener('DOMContentLoaded', () => {\n        setTimeout(() => {\n          document.body.classList.add('app-ready');\n          setTimeout(() => {\n            const loadingScreen = document.getElementById('loading-screen');\n            if (loadingScreen) {\n              loadingScreen.remove();\n            }\n          }, 500);\n        }, 1000);\n      });\n    </script>\n    \n    <script type=\"module\" src=\"/src/main.jsx?t=1757470529426\"></script>\n  </body>\n</html>",
+      "headers": {
+        "vary": "Origin",
+        "content-type": "text/html",
+        "cache-control": "no-cache",
+        "etag": "W/\"1403-eZQQ2qZX1R/md+YptYocDH+hdaY\"",
+        "date": "Wed, 10 Sep 2025 02:24:00 GMT",
+        "connection": "keep-alive",
+        "keep-alive": "timeout=5",
+        "content-length": "5123"
+      }
+    },
+    {
+      "name": "Frontend Vercel",
+      "status": 200,
+      "data": "<!doctype html>\n<html lang=\"pt-BR\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/vite.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <meta name=\"description\" content=\"Sistema ZARA - Controle de Qualidade e Operações Industriais\" />\n    <meta name=\"keywords\" content=\"ZARA, qualidade, operações, indústria, controle\" />\n    <meta name=\"author\" content=\"Sistema ZARA\" />\n    \n    <!-- PWA Meta Tags -->\n    <meta name=\"theme-color\" content=\"#1f2937\" />\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"default\" />\n    <meta name=\"apple-mobile-web-app-title\" content=\"ZARA\" />\n    \n    <!-- Preconnect to external domains -->\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    \n    <!-- Google Fonts -->\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\" />\n    <link href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap\" rel=\"stylesheet\" />\n    \n    <!-- Favicon -->\n    <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-touch-icon.png\" />\n    <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/favicon-32x32.png\" />\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"/favicon-16x16.png\" />\n    <link rel=\"manifest\" href=\"/site.webmanifest\" />\n    \n    <title>Sistema ZARA - Controle de Qualidade</title>\n    \n    <!-- Loading styles -->\n    <style>\n      /* Loading screen styles */\n      #loading-screen {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        background: linear-gradient(135deg, #1f2937 0%, #374151 100%);\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        justify-content: center;\n        z-index: 9999;\n        transition: opacity 0.5s ease-out;\n      }\n      \n      .loading-logo {\n        width: 80px;\n        height: 80px;\n        margin-bottom: 2rem;\n        animation: pulse 2s infinite;\n      }\n      \n      .loading-text {\n        color: #f9fafb;\n        font-family: 'Inter', sans-serif;\n        font-size: 1.5rem;\n        font-weight: 600;\n        margin-bottom: 1rem;\n      }\n      \n      .loading-spinner {\n        width: 40px;\n        height: 40px;\n        border: 3px solid #374151;\n        border-top: 3px solid #3b82f6;\n        border-radius: 50%;\n        animation: spin 1s linear infinite;\n      }\n      \n      @keyframes pulse {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.5; }\n      }\n      \n      @keyframes spin {\n        0% { transform: rotate(0deg); }\n        100% { transform: rotate(360deg); }\n      }\n      \n      /* Hide loading screen when app is ready */\n      .app-ready #loading-screen {\n        opacity: 0;\n        pointer-events: none;\n      }\n    </style>\n    <script type=\"module\" crossorigin src=\"/assets/index-CkEcoi_V.js\"></script>\n    <link rel=\"modulepreload\" crossorigin href=\"/assets/vendor-BKU87Gzz.js\">\n    <link rel=\"modulepreload\" crossorigin href=\"/assets/query-B88w_-l3.js\">\n    <link rel=\"modulepreload\" crossorigin href=\"/assets/router-Cr3qqr-L.js\">\n    <link rel=\"modulepreload\" crossorigin href=\"/assets/utils-CZH8StwO.js\">\n    <link rel=\"stylesheet\" crossorigin href=\"/assets/index-CdB0r4wI.css\">\n  <link rel=\"manifest\" href=\"/manifest.webmanifest\"><script id=\"vite-plugin-pwa:register-sw\" src=\"/registerSW.js\"></script></head>\n  <body>\n    <!-- Loading Screen -->\n    <div id=\"loading-screen\">\n      <div class=\"loading-logo\">\n        <svg viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n          <rect x=\"10\" y=\"10\" width=\"80\" height=\"80\" rx=\"12\" fill=\"#3b82f6\" />\n          <rect x=\"20\" y=\"20\" width=\"60\" height=\"60\" rx=\"8\" fill=\"#1f2937\" />\n          <circle cx=\"35\" cy=\"35\" r=\"8\" fill=\"#3b82f6\" />\n          <circle cx=\"65\" cy=\"35\" r=\"8\" fill=\"#10b981\" />\n          <rect x=\"30\" y=\"55\" width=\"40\" height=\"4\" rx=\"2\" fill=\"#f59e0b\" />\n          <rect x=\"25\" y=\"65\" width=\"50\" height=\"4\" rx=\"2\" fill=\"#ef4444\" />\n        </svg>\n      </div>\n      <div class=\"loading-text\">Sistema ZARA</div>\n      <div class=\"loading-spinner\"></div>\n    </div>\n    \n    <!-- React App Root -->\n    <div id=\"root\"></div>\n    \n    <!-- Service Worker Registration -->\n    <script>\n      // Register service worker for PWA\n      if ('serviceWorker' in navigator) {\n        window.addEventListener('load', () => {\n          navigator.serviceWorker.register('/sw.js')\n            .then((registration) => {\n              console.log('SW registered: ', registration);\n            })\n            .catch((registrationError) => {\n              console.log('SW registration failed: ', registrationError);\n            });\n        });\n      }\n      \n      // Hide loading screen when app is ready\n      window.addEventListener('DOMContentLoaded', () => {\n        setTimeout(() => {\n          document.body.classList.add('app-ready');\n          setTimeout(() => {\n            const loadingScreen = document.getElementById('loading-screen');\n            if (loadingScreen) {\n              loadingScreen.remove();\n            }\n          }, 500);\n        }, 1000);\n      });\n    </script>\n    \n  </body>\n</html>",
+      "headers": {
+        "accept-ranges": "bytes",
+        "access-control-allow-origin": "*",
+        "age": "5942",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "content-disposition": "inline",
+        "content-length": "5377",
+        "content-security-policy": "default-src 'self'; connect-src 'self' https://zara-backend-production-aab3.up.railway.app https://zara-backend-production-aab3.up.railway.app/api wss://*.railway.app ws://*.railway.app; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Wed, 10 Sep 2025 02:24:00 GMT",
+        "etag": "\"39fbd269a69c047bdbe5985452af8ed3\"",
+        "last-modified": "Wed, 10 Sep 2025 00:44:57 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "server": "Vercel",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "x-vercel-cache": "HIT",
+        "x-vercel-id": "gru1::tmjqm-1757471040102-2c83e4d78882",
+        "x-xss-protection": "1; mode=block"
+      }
+    },
+    {
+      "name": "Backend Local",
+      "status": 0
+    },
+    {
+      "name": "Backend Railway",
+      "status": 404,
+      "data": {
+        "status": "error",
+        "code": 404,
+        "message": "Application not found",
+        "request_id": "rzospHrsTLu0k-6SCx5-qw"
+      },
+      "headers": {
+        "content-length": "101",
+        "content-type": "application/json",
+        "server": "railway-edge",
+        "x-railway-edge": "railway/us-east4-eqdc4a",
+        "x-railway-fallback": "true",
+        "x-railway-request-id": "rzospHrsTLu0k-6SCx5-qw",
+        "date": "Wed, 10 Sep 2025 02:24:00 GMT"
+      }
+    }
+  ],
+  "fixes": [
+    "🔴 CRÍTICO: 6 APIs quebradas no Railway",
+    "   - Corrigir: Health Check",
+    "   - Corrigir: Auth Login",
+    "   - Corrigir: Machines List",
+    "   - Corrigir: Users List",
+    "   - Corrigir: Production Data",
+    "   - Corrigir: Reports"
+  ]
+}
