@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Ambiente - Sistema ZARA</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .info { background: #e3f2fd; padding: 15px; margin: 10px 0; border-radius: 4px; }
+        .error { background: #ffebee; padding: 15px; margin: 10px 0; border-radius: 4px; color: #c62828; }
+        .success { background: #e8f5e8; padding: 15px; margin: 10px 0; border-radius: 4px; color: #2e7d32; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        .btn { background: #1976d2; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug de Configuração de Ambiente</h1>
+        
+        <div class="info">
+            <h3>Informações do Ambiente:</h3>
+            <div id="env-info"></div>
+        </div>
+        
+        <div class="info">
+            <h3>Variáveis de Ambiente:</h3>
+            <div id="env-vars"></div>
+        </div>
+        
+        <div class="info">
+            <h3>Teste de API:</h3>
+            <button class="btn" onclick="testApi()">Testar Conexão API</button>
+            <div id="api-test"></div>
+        </div>
+        
+        <div class="info">
+            <h3>Logs do Console:</h3>
+            <pre id="console-logs"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Capturar logs do console
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        let logs = [];
+        
+        function addLog(type, ...args) {
+            logs.push(`[${type}] ${args.join(' ')}`);
+            updateConsoleLogs();
+        }
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            addLog('LOG', ...args);
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            addLog('ERROR', ...args);
+        };
+        
+        console.warn = (...args) => {
+            originalWarn(...args);
+            addLog('WARN', ...args);
+        };
+        
+        function updateConsoleLogs() {
+            document.getElementById('console-logs').textContent = logs.join('\n');
+        }
+        
+        // Simular detecção de ambiente como no código React
+        function detectEnvironment() {
+            const hostname = window.location.hostname;
+            const isDevelopment = hostname === 'localhost' || hostname === '127.0.0.1';
+            
+            console.log('🔍 Detectando ambiente:');
+            console.log('- Hostname:', hostname);
+            console.log('- isDevelopment:', isDevelopment);
+            
+            return { hostname, isDevelopment };
+        }
+        
+        // Mostrar informações do ambiente
+        function showEnvironmentInfo() {
+            const { hostname, isDevelopment } = detectEnvironment();
+            
+            document.getElementById('env-info').innerHTML = `
+                <strong>Hostname:</strong> ${hostname}<br>
+                <strong>É Desenvolvimento:</strong> ${isDevelopment ? 'Sim' : 'Não'}<br>
+                <strong>User Agent:</strong> ${navigator.userAgent}<br>
+                <strong>URL Atual:</strong> ${window.location.href}
+            `;
+        }
+        
+        // Mostrar variáveis de ambiente (simuladas)
+        function showEnvironmentVars() {
+            // Em produção, essas variáveis viriam do build do Vite
+            const envVars = {
+                'VITE_API_URL': 'https://zara-backend-production-aab3.up.railway.app/api',
+                'VITE_BACKEND_URL': 'https://zara-backend-production-aab3.up.railway.app',
+                'VITE_SOCKET_URL': 'https://zara-backend-production-aab3.up.railway.app',
+                'VITE_ENVIRONMENT': 'production'
+            };
+            
+            let html = '';
+            for (const [key, value] of Object.entries(envVars)) {
+                html += `<strong>${key}:</strong> ${value}<br>`;
+            }
+            
+            document.getElementById('env-vars').innerHTML = html;
+        }
+        
+        // Testar conexão com API
+        async function testApi() {
+            const testDiv = document.getElementById('api-test');
+            testDiv.innerHTML = '<p>Testando conexão...</p>';
+            
+            try {
+                const apiUrl = 'https://zara-backend-production-aab3.up.railway.app/api/health';
+                console.log('🚀 Testando API:', apiUrl);
+                
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log('📡 Resposta da API:', response.status, response.statusText);
+                
+                if (response.ok) {
+                    testDiv.innerHTML = `
+                        <div class="success">
+                            ✅ <strong>API Conectada com Sucesso!</strong><br>
+                            Status: ${response.status} ${response.statusText}<br>
+                            URL: ${apiUrl}
+                        </div>
+                    `;
+                } else {
+                    testDiv.innerHTML = `
+                        <div class="error">
+                            ❌ <strong>Erro na API</strong><br>
+                            Status: ${response.status} ${response.statusText}<br>
+                            URL: ${apiUrl}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('❌ Erro ao testar API:', error);
+                testDiv.innerHTML = `
+                    <div class="error">
+                        ❌ <strong>Erro de Conexão:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // Inicializar quando a página carregar
+        window.onload = function() {
+            showEnvironmentInfo();
+            showEnvironmentVars();
+            console.log('🎯 Página de debug carregada');
+        };
+    </script>
+</body>
+</html>
