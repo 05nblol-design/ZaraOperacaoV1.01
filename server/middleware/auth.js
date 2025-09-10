@@ -209,11 +209,14 @@ const requireMachinePermission = (permissionType = 'canView') => {
       if (user.role === 'OPERATOR') {
         const machineId = parseInt(id);
         
+        logger.info('🔍 DEBUG - ID recebido:', id, 'Convertido para:', machineId, 'isNaN:', isNaN(machineId));
+        
         if (!machineId || isNaN(machineId)) {
+          logger.error('🔍 DEBUG - ID inválido:', { id, machineId, isNaN: isNaN(machineId) });
           return res.status(400).json({
             success: false,
-            message: 'ID da máquina inválido',
-            code: 'INVALID_MACHINE_ID'
+            message: 'Dados de entrada inválidos',
+            code: 'VALIDATION_ERROR'
           });
         }
         
