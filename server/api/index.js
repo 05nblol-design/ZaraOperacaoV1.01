@@ -194,7 +194,7 @@ if (process.env.VERCEL !== '1') {
   server.listen(PORT, () => {
     logger.info(`🚀 Servidor ZARA (HTTP) rodando na porta ${PORT}`);
     logger.info(`🌍 Ambiente: ${process.env.NODE_ENV}`);
-    logger.info(`📊 Health check: http://localhost:${PORT}/api/health`);
+    logger.info(`📊 Health check: ${process.env.NODE_ENV === 'production' ? process.env.RAILWAY_STATIC_URL || 'https://production-url' : `http://localhost:${PORT}`}/api/health`);
   });
 
   // Iniciar servidor HTTPS se disponível (desabilitado no Railway)
