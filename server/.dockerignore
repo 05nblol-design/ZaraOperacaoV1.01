@@ -62,5 +62,5 @@ ecosystem.config.js
 prisma/dev.db
 prisma/migrations
 
-# Uploads (will be mounted as volume)
+# Uploads (Railway compatibility - no volumes)
 uploads

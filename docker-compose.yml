@@ -13,9 +13,9 @@ services:
       - DATABASE_URL=file:./dev.db
       - JWT_SECRET=${JWT_SECRET}
       - CORS_ORIGIN=${CORS_ORIGIN}
-    volumes:
-      - ./server/uploads:/app/uploads
-      - ./server/prisma/dev.db:/app/prisma/dev.db
+    # volumes:
+      # - ./server/uploads:/app/uploads  # Comentado para Railway
+      # - ./server/prisma/dev.db:/app/prisma/dev.db  # Comentado para Railway
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]

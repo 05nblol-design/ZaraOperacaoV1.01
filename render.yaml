@@ -90,10 +90,10 @@ services:
           type: web
           name: zara-frontend
           property: host
-    disk:
-      name: zara-uploads
-      mountPath: /opt/render/project/src/server/uploads
-      sizeGB: 1
+    # disk:
+      # name: zara-uploads
+      # mountPath: /opt/render/project/src/server/uploads  # Comentado para Railway compatibility
+      # sizeGB: 1
 
   # Frontend (Static Site)
   - type: web
