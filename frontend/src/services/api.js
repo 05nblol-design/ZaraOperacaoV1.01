@@ -120,6 +120,17 @@ export const authService = {
   changePassword: (data) => api.put('/auth/change-password', data),
 };
 
+// Serviços de usuários
+export const userService = {
+  getAll: (params) => api.get('/users', { params }),
+  getById: (id) => api.get(`/users/${id}`),
+  create: (data) => api.post('/users', data),
+  update: (id, data) => api.put(`/users/${id}`, data),
+  delete: (id) => api.delete(`/users/${id}`),
+  updateProfile: (data) => api.put('/users/profile', data),
+  changePassword: (data) => api.put('/users/change-password', data),
+};
+
 // Serviços de máquinas
 export const machineService = {
   getAll: () => api.get('/machines'),

@@ -15,7 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../hooks/useAuth';
 import { cn } from '../lib/utils';
-import api from '../services/api';
+import { userService } from '../services/api';
 
 const Users = () => {
   const { user } = useAuth();
@@ -78,7 +78,7 @@ const Users = () => {
       if (roleFilter) params.append('role', roleFilter);
       if (statusFilter) params.append('active', statusFilter);
 
-      const response = await api.get(`/users?${params.toString()}`);
+      const response = await userService.getAll(Object.fromEntries(params));
       
       if (response.data.success) {
         setUsers(response.data.data);

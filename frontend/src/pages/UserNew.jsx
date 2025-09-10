@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
-import api from '@/services/api';
+import { userService } from '@/services/api';
 
 const UserNew = () => {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const UserNew = () => {
     setError(null);
 
     try {
-      const response = await api.post('/users', formData);
+      const response = await userService.create(formData);
 
       if (response.data.success) {
         setSuccess(true);
