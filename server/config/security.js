@@ -11,7 +11,12 @@ const getCorsConfig = () => {
       if (!origin && !isProduction) return callback(null, true);
       
       const allowedOrigins = isProduction
-        ? (process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || '').split(',').map(url => url.trim()).filter(Boolean)
+        ? [
+            'https://sistema-zara-frontend.vercel.app',
+            'https://sistema-zara-frontend-i90xa6vrg-05nblol-designs-projects.vercel.app',
+            'https://sistema-zara-frontend-cp1cg9k3p-05nblol-designs-projects.vercel.app',
+            ...(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || '').split(',').map(url => url.trim()).filter(Boolean)
+          ]
         : [
             'http://localhost:5173',
             'http://localhost:5174',
